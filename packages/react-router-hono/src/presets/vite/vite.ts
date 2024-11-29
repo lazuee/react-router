@@ -110,10 +110,11 @@ export const viteDevServer = (
               }
             }
 
-            const honoServerOptions: HonoServerOptions =
+            const honoServerOptions: HonoServerOptions = (
               await viteDevServer.ssrLoadModule(
                 `${options.serverFile}?t=${Date.now()}`,
-              );
+              )
+            )?.default;
             let build: ServerBuild;
             try {
               build = (await viteDevServer.ssrLoadModule(

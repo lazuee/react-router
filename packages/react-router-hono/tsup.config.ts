@@ -5,14 +5,9 @@ const baseConfig: Options = {
   platform: "node",
   target: "node20",
   treeshake: true,
+  bundle: true,
   dts: true,
-  minify: "terser",
-  terserOptions: {
-    compress: true,
-    mangle: true,
-    toplevel: true,
-    format: { comments: "all", wrap_iife: true },
-  },
+  minify: true,
 };
 
 export default defineConfig([

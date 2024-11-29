@@ -23,6 +23,4 @@ const vercel = isVercel && createHonoVercelServer;
 const node = createHonoNodeServer;
 const createHonoServer = vercel || node;
 
-export const server = await createHonoServer(reactRouterHono);
-
-export default server;
+export default await createHonoServer(reactRouterHono);
