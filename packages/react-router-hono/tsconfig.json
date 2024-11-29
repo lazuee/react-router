@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["DOM", "DOM.Iterable", "ES2022"],
+    "moduleDetection": "force",
+    "module": "preserve",
+
+    "resolveJsonModule": true,
+    "allowJs": true,
+
+    "noEmit": true,
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true,
+    "esModuleInterop": true,
+    "strict": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "skipLibCheck": true
+  },
+  "include": ["src/**/*", "tsup.config.ts", "global.d.ts"]
+}

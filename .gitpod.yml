@@ -1,0 +1,3 @@
+tasks:
+  - init: pnpm install && pnpm format
+    command: cd website && pnpm run build && pnpm run start
