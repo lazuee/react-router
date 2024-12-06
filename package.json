@@ -16,13 +16,13 @@
     "website:vercel": "cross-env VERCEL=1 pnpm --filter website... run build"
   },
   "devDependencies": {
-    "@ntnyq/eslint-config": "3.6.0",
+    "@ntnyq/eslint-config": "3.9.0",
     "@types/node": "22.10.1",
     "cross-env": "7.0.3",
-    "eslint": "9.15.0",
+    "eslint": "9.16.0",
     "stylelint": "16.11.0",
     "stylelint-config-clean-order": "6.1.0",
-    "stylelint-config-standard-scss": "13.1.0",
+    "stylelint-config-standard-scss": "14.0.0",
     "stylelint-config-tailwindcss": "0.0.7",
     "stylelint-scss": "6.10.0",
     "typescript": "5.7.2"

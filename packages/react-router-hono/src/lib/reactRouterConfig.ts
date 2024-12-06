@@ -39,9 +39,8 @@ export const getReactRouterConfig = async () => {
 
   reactRouterConfig ||= {
     ...defaultReactRouterConfig,
-    // eslint-disable-next-line jsdoc/check-tag-names
-    ...(await import(/** @vite-ignore */ `${outfile}?t=${Date.now()}`))
-      ?.default,
+    // eslint-disable-next-line jsdoc/no-bad-blocks
+    ...(await import(/* @vite-ignore */ `${outfile}?t=${Date.now()}`))?.default,
   };
 
   await fsp.rm(outfile);

@@ -18,6 +18,7 @@ export default defineConfig({
     },
   ],
   rules: {
+    "no-descending-specificity": null,
     "scss/at-rule-no-unknown": [
       true,
       {
@@ -33,7 +34,6 @@ export default defineConfig({
         ],
       },
     ],
-    "no-descending-specificity": null,
     "selector-class-pattern": null,
   },
 });

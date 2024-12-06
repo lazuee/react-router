@@ -25,7 +25,7 @@ export const viteDevServer = (
   let reactRouterConfig: Awaited<ReturnType<typeof getReactRouterConfig>>;
 
   return {
-    name: "@hono/vite-dev-server",
+    name: "@lazuee/react-router-hono[vite]",
     async config(viteConfig) {
       reactRouterConfig ||= await getReactRouterConfig();
       if (!reactRouterConfig.ssr) {
@@ -62,6 +62,18 @@ export const viteDevServer = (
         viteConfig.root,
         viteConfig.publicDir,
       );
+
+      const pluginIndex = (name: string) =>
+        viteConfig.plugins.findIndex((plugin) => plugin.name === name);
+      const reactRouterPluginIndex = pluginIndex("react-router");
+      if (
+        reactRouterPluginIndex >= 0 &&
+        reactRouterPluginIndex < pluginIndex("@lazuee/react-router-hono[vite]")
+      ) {
+        throw new Error(
+          `'reactRouterHono' plugin should be placed before the 'reactRouter' plugin in your Vite configuration.`,
+        );
+      }
 
       if (viteConfig.command === "build") {
         if (!global.REACT_ROUTER_HONO_PRESETS?.vercel && isVercel) {

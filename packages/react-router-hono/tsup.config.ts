@@ -1,13 +1,22 @@
 import { defineConfig, type Options } from "tsup";
 
 const baseConfig: Options = {
+  bundle: true,
+  clean: true,
+  dts: true,
   format: ["esm"],
+  minify: "terser",
   platform: "node",
   target: "node20",
+  terserOptions: {
+    compress: true,
+    format: {
+      comments: /\s*@vite-ignore\s*/,
+    },
+    nameCache: {},
+    toplevel: true,
+  },
   treeshake: true,
-  bundle: true,
-  dts: true,
-  minify: true,
 };
 
 export default defineConfig([

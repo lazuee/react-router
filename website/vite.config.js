@@ -1,5 +1,3 @@
-//@ts-check
-
 import { env } from "node:process";
 
 import { reactRouterHono } from "@lazuee/react-router-hono";
@@ -12,13 +10,15 @@ import tsconfigPaths from "vite-tsconfig-paths";
 const port = Number.parseInt(env?.PORT || "3000");
 
 export default defineConfig({
-  plugins: [
-    reactRouterHono({
-      serverFile: "src/server/index.ts",
-    }),
-    reactRouter(),
-    tsconfigPaths(),
-  ],
+  build: {
+    assetsInlineLimit: 0,
+    chunkSizeWarningLimit: 1024,
+    copyPublicDir: false,
+    minify: "esbuild",
+    rollupOptions: {
+      output: { minifyInternalExports: true },
+    },
+  },
   css: {
     preprocessorOptions: {
       scss: {
@@ -26,21 +26,19 @@ export default defineConfig({
       },
     },
   },
-  build: {
-    minify: "esbuild",
-    assetsInlineLimit: 0,
-    chunkSizeWarningLimit: 1024,
-    copyPublicDir: false,
-    rollupOptions: {
-      output: { minifyInternalExports: true },
-    },
-  },
   esbuild: {
     format: "esm",
     mangleCache: {},
   },
+  plugins: [
+    reactRouterHono({
+      serverFile: "src/server/index.ts",
+    }),
+    reactRouter(),
+    tsconfigPaths(),
+  ],
   server: {
-    port,
     open: false,
+    port,
   },
 });

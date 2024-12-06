@@ -1,21 +1,20 @@
-//@ts-check
-
-/** @param config */
+// eslint-disable-next-line jsdoc/no-types
+/** @param {import("tailwindcss").Config} config */
 function defineConfig(config) {
   return config;
 }
 
 export default defineConfig({
-  important: true,
-  content: ["./src/client/**/{**,.client,.server}/**/*.{js,jsx,ts,tsx}"],
+  content: ["./src/client/**/{**,.*}/**/*.{js,jsx,ts,tsx}"],
   darkMode: ["selector", '[data-theme="dark"]'],
+  important: true,
+  plugins: [],
   theme: {
     extend: {
       fontFamily: {
-        sans: "var(--font-sans)",
         mono: "var(--font-mono)",
+        sans: "var(--font-sans)",
       },
     },
   },
-  plugins: [],
 });

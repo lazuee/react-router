@@ -4,9 +4,9 @@ declare global {
   var REACT_ROUTER_HONO_ENTRY_FILE: string | undefined;
   var REACT_ROUTER_HONO_PRESETS:
     | {
-        vite?: true;
         node?: true;
         vercel?: true;
+        vite?: true;
       }
     | undefined;
 }
