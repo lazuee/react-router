@@ -43,15 +43,16 @@ import { nodePreset, vercelPreset } from "@lazuee/react-router-hono";
 
 export default {
   appDirectory: "src/client", // react-router app directory
-  presets: [vercelPreset(), nodePreset()],
+  presets: [vercelPreset({ regions: "hnd1" }), nodePreset()],
   future: { unstable_optimizeDeps: true },
 };
 ```
 
 ### Presets
 
-- `nodePreset`: Prepares the app for Node.js. Start the server with:  `node ./build/server/index.js`
-- `vercelPreset`: Optimizes for Vercel deployment. Automatically detects `VERCEL=1` or the Vercel environment.
+- `nodePreset` : Prepares the app for Node.js. Start the server with:  `node ./build/server/index.js`
+- `vercelPreset` : Optimizes for Vercel deployment. Automatically detects `VERCEL=1` or the Vercel environment.
+  - `regions` : [Vercel Regions](https://vercel.com/docs/edge-network/regions#region-list) where the Serverless Function will be deployed to.
 
 For a usage example, check the [website](../../website) folder.
 

@@ -11,5 +11,5 @@ export default defineConfig({
   future: {
     unstable_optimizeDeps: true,
   },
-  presets: [nodePreset(), vercelPreset()],
+  presets: [nodePreset(), vercelPreset({ regions: "hnd1" })],
 });

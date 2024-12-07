@@ -13,7 +13,36 @@ import {
   writePackageJson,
 } from "../../lib/utils";
 
-export const vercelPreset = (): Preset => {
+type VercelRegion =
+  | "arn1"
+  | "bom1"
+  | "cdg1"
+  | "cle1"
+  | "cpt1"
+  | "dub1"
+  | "fra1"
+  | "gru1"
+  | "hkg1"
+  | "hnd1"
+  | "iad1"
+  | "icn1"
+  | "kix1"
+  | "lhr1"
+  | "pdx1"
+  | "sfo1"
+  | "sin1"
+  | "syd1";
+
+export interface VercelPresetOptions {
+  /**
+   * @see https://vercel.com/docs/edge-network/regions#region-list
+   */
+  regions?: VercelRegion | VercelRegion[];
+}
+
+export const vercelPreset = (
+  { regions } = {} as VercelPresetOptions,
+): Preset => {
   if (
     !global.REACT_ROUTER_HONO_PRESETS?.vite &&
     !argv.some((arg) => arg.includes("@react-router/"))
@@ -136,6 +165,9 @@ export const vercelPreset = (): Preset => {
                   launcherType: "Nodejs",
                   supportsResponseStreaming: true,
                   maxDuration: 60,
+                  ...(regions && {
+                    regions: Array.isArray(regions) ? regions : [regions],
+                  }),
                 },
                 null,
                 2,
