@@ -2,7 +2,7 @@ import { existsSync, promises as fsp } from "node:fs";
 import { join, parse } from "node:path";
 import { cwd } from "node:process";
 
-import { fileURLToPath } from "node:url";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import { type Config } from "@react-router/dev/config";
 import esbuild from "esbuild";
 
@@ -39,8 +39,12 @@ export const getReactRouterConfig = async () => {
 
   reactRouterConfig ||= {
     ...defaultReactRouterConfig,
-    // eslint-disable-next-line jsdoc/no-bad-blocks
-    ...(await import(/* @vite-ignore */ `${outfile}?t=${Date.now()}`))?.default,
+    ...(
+      await import(
+        // eslint-disable-next-line jsdoc/no-bad-blocks
+        /* @vite-ignore */ `${pathToFileURL(outfile).href}?t=${Date.now()}`
+      )
+    )?.default,
   };
 
   await fsp.rm(outfile);

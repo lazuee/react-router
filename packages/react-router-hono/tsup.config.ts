@@ -8,15 +8,15 @@ const baseConfig: Options = {
   minify: "terser",
   platform: "node",
   target: "node20",
+  treeshake: true,
   terserOptions: {
     compress: true,
+    nameCache: {},
+    toplevel: true,
     format: {
       comments: /\s*@vite-ignore\s*/,
     },
-    nameCache: {},
-    toplevel: true,
   },
-  treeshake: true,
 };
 
 export default defineConfig([

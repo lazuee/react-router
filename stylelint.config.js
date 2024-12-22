@@ -1,6 +1,13 @@
 //@ts-check
 
-/** @param config */
+/**
+ * @param {Omit<import("stylelint").Config, "rules"> &
+ * { rules?: Partial<import("stylelint-config-clean-order")["rules"]> } &
+ * { rules?: Partial<import("stylelint-config-standard-scss")["rules"]> } &
+ * { rules?: Partial<import("stylelint-config-tailwindcss")["rules"]> } &
+ * { rules?: Partial<{ [K in keyof typeof import("stylelint")["default"]["rules"] as `${string & K}`]: any }>} &
+ * { rules?: Partial<{ [K in keyof typeof import("./node_modules/stylelint-scss/src/rules") as `scss/${string & K}`]: any }>}} config
+ */
 function defineConfig(config) {
   return config;
 }
@@ -19,6 +26,7 @@ export default defineConfig({
   ],
   rules: {
     "no-descending-specificity": null,
+    "selector-class-pattern": null,
     "scss/at-rule-no-unknown": [
       true,
       {
@@ -34,6 +42,5 @@ export default defineConfig({
         ],
       },
     ],
-    "selector-class-pattern": null,
   },
 });
