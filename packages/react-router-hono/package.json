@@ -14,7 +14,12 @@
     "name": "lazuee",
     "email": "lazuee.dev@gmail.com"
   },
-  "repository": "lazuee/react-router",
+  "homepage": "https://github.com/lazuee/react-router/tree/main/packages/react-router-hono#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lazuee/react-router.git",
+    "directory": "packages/react-router-hono"
+  },
   "exports": {
     ".": {
       "types": "./dist/hono.d.ts",
@@ -52,8 +57,5 @@
   "devDependencies": {
     "terser": "5.37.0",
     "tsup": "8.3.5"
-  },
-  "engines": {
-    "node": ">=20"
   }
 }

@@ -1,5 +1,4 @@
 import { createCookie, redirect, type ActionFunctionArgs } from "react-router";
-import { IS_HOSTED, IS_PRODUCTION_BUILD, SITE_URL } from "~/lib/env";
 
 import { safeRedirect } from "~/lib/utils";
 import { isValidTheme, Theme } from ".";
@@ -9,7 +8,6 @@ const themeCookie = createCookie("theme", {
   httpOnly: true,
   sameSite: "lax",
   secrets: ["r0ut3r"],
-  ...(IS_PRODUCTION_BUILD && IS_HOSTED && { domain: SITE_URL, secure: true }),
 });
 
 export const serializeTheme = async (theme: Theme) =>

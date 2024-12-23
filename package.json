@@ -1,13 +1,15 @@
 {
   "type": "module",
   "private": true,
-  "packageManager": "pnpm@9.14.2",
+  "workspaces": [
+    "packages/*",
+    "website"
+  ],
   "scripts": {
     "eslint": "eslint .",
     "eslint:fix": "eslint . --fix",
     "lint": "pnpm eslint && pnpm stylelint",
     "lint:fix": "pnpm eslint:fix && pnpm stylelint:fix",
-    "preinstall": "npx only-allow pnpm",
     "stylelint": "stylelint --ignore-path .gitignore \"{website,packages}/**/*.{css,scss}\"",
     "stylelint:fix": "stylelint --ignore-path .gitignore \"{website,packages}/**/*.{css,scss}\"",
     "website:build": "pnpm --filter website... run build",
@@ -27,14 +29,10 @@
     "stylelint-scss": "6.10.0",
     "typescript": "5.7.2"
   },
-  "engines": {
-    "node": ">=20",
-    "pnpm": ">=9"
-  },
   "pnpm": {
     "overrides": {
-      "react": "19.0.0-rc.1",
-      "react-dom": "19.0.0-rc.1"
+      "react": "19.0.0",
+      "react-dom": "19.0.0"
     }
   }
 }

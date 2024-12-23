@@ -5,8 +5,8 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  react: 19.0.0-rc.1
-  react-dom: 19.0.0-rc.1
+  react: 19.0.0
+  react-dom: 19.0.0
 
 importers:
 
@@ -50,7 +50,7 @@ importers:
         version: 1.13.7(hono@4.6.14)
       '@react-router/dev':
         specifier: pre
-        version: 7.1.1-pre.0(@types/node@22.10.2)(react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(sass-embedded@1.83.0)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0))
+        version: 7.1.1-pre.0(@types/node@22.10.2)(react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(sass-embedded@1.83.0)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0))
       '@vercel/nft':
         specifier: 0.27.10
         version: 0.27.10(rollup@4.29.1)
@@ -68,7 +68,7 @@ importers:
         version: 10.0.1
       react-router:
         specifier: pre
-        version: 7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+        version: 7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       vite:
         specifier: 5.4.11
         version: 5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0)
@@ -84,7 +84,7 @@ importers:
     dependencies:
       '@react-router/node':
         specifier: pre
-        version: 7.1.1-pre.0(react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(typescript@5.7.2)
+        version: 7.1.1-pre.0(react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.2)
       hono:
         specifier: 4.6.14
         version: 4.6.14
@@ -95,24 +95,24 @@ importers:
         specifier: 5.1.18
         version: 5.1.18
       react:
-        specifier: 19.0.0-rc.1
-        version: 19.0.0-rc.1
+        specifier: 19.0.0
+        version: 19.0.0
       react-dom:
-        specifier: 19.0.0-rc.1
-        version: 19.0.0-rc.1(react@19.0.0-rc.1)
+        specifier: 19.0.0
+        version: 19.0.0(react@19.0.0)
       react-router:
         specifier: pre
-        version: 7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+        version: 7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       usehooks-ts:
         specifier: 3.1.0
-        version: 3.1.0(react@19.0.0-rc.1)
+        version: 3.1.0(react@19.0.0)
     devDependencies:
       '@lazuee/react-router-hono':
         specifier: workspace:^
         version: link:../packages/react-router-hono
       '@react-router/dev':
         specifier: pre
-        version: 7.1.1-pre.0(@types/node@22.10.2)(react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(sass-embedded@1.83.0)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0))
+        version: 7.1.1-pre.0(@types/node@22.10.2)(react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(sass-embedded@1.83.0)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0))
       '@types/node':
         specifier: 22.10.2
         version: 22.10.2
@@ -2866,10 +2866,10 @@ packages:
   queue-microtask@1.2.3:
     resolution: {integrity: sha512-NuaNSa6flKT5JaSYQzJok04JzTL1CA6aGhv5rfLW3PgqA+M2ChpZQnAC8h8i4ZFkBS8X5RqkDBHA7r4hej3K9A==}
 
-  react-dom@19.0.0-rc.1:
-    resolution: {integrity: sha512-k8MfDX+4G+eaa1cXXI9QF4d+pQtYol3nx8vauqRWUEOPqC7NQn2qmEqUsLoSd28rrZUL+R3T2VC+kZ2Hyx1geQ==}
+  react-dom@19.0.0:
+    resolution: {integrity: sha512-4GV5sHFG0e/0AD4X+ySy6UJd3jVl1iNsNHdpad0qhABJ11twS3TTBnseqsKurKcsNqCEFeGL3uLpVChpIO3QfQ==}
     peerDependencies:
-      react: 19.0.0-rc.1
+      react: 19.0.0
 
   react-refresh@0.14.2:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
@@ -2879,14 +2879,14 @@ packages:
     resolution: {integrity: sha512-q90nAZCYdAQVOV+FQFGYENJb/j74PhEDUm7Pqw/wUh0f6RYZkP0FEcz1rGWhiBjQ+qBlUcRJ3P7QpOX4nMo2TA==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
-      react: 19.0.0-rc.1
-      react-dom: 19.0.0-rc.1
+      react: 19.0.0
+      react-dom: 19.0.0
     peerDependenciesMeta:
       react-dom:
         optional: true
 
-  react@19.0.0-rc.1:
-    resolution: {integrity: sha512-NZKln+uyPuyHchzP07I6GGYFxdAoaKhehgpCa3ltJGzwE31OYumLeshGaitA1R/fS5d9D2qpZVwTFAr6zCLM9w==}
+  react@19.0.0:
+    resolution: {integrity: sha512-V8AVnmPIICiWpGfm6GLzCR/W5FXLchHop40W4nXBmdlEceh16rCN8O8LNWm5bh5XUX91fh7KpA+W0TgMKmgTpQ==}
     engines: {node: '>=0.10.0'}
 
   read-cache@1.0.0:
@@ -3101,8 +3101,8 @@ packages:
   sax@1.4.1:
     resolution: {integrity: sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==}
 
-  scheduler@0.25.0-rc.1:
-    resolution: {integrity: sha512-fVinv2lXqYpKConAMdergOl5owd0rY1O4P/QTe0aWKCqGtu7VsCt1iqQFxSJtqK4Lci/upVSBpGwVC7eWcuS9Q==}
+  scheduler@0.25.0:
+    resolution: {integrity: sha512-xFVuu11jh+xcO7JOAGJNOXld8/TcEHK/4CituBUeUb5hqxJLj9YuemAEuvm9gQ/+pgXYfbQuqAkiYu+u7YEsNA==}
 
   scslre@0.3.0:
     resolution: {integrity: sha512-3A6sD0WYP7+QrjbfNA2FN3FsOaGGFoekCVgTyypy53gPxhbkCIjtO6YWgdrfM+n/8sI8JeXZOIxsHjMTNxQ4nQ==}
@@ -3515,7 +3515,7 @@ packages:
     resolution: {integrity: sha512-bBIa7yUyPhE1BCc0GmR96VU/15l/9gP1Ch5mYdLcFBaFGQsdmXkvjV0TtOqW1yUd6VjIwDunm+flSciCQXujiw==}
     engines: {node: '>=16.15.0'}
     peerDependencies:
-      react: 19.0.0-rc.1
+      react: 19.0.0
 
   util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}
@@ -4348,7 +4348,7 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@react-router/dev@7.1.1-pre.0(@types/node@22.10.2)(react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(sass-embedded@1.83.0)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0))':
+  '@react-router/dev@7.1.1-pre.0(@types/node@22.10.2)(react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(sass-embedded@1.83.0)(terser@5.37.0)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.2)(sass-embedded@1.83.0)(terser@5.37.0))':
     dependencies:
       '@babel/core': 7.26.0
       '@babel/generator': 7.26.3
@@ -4359,7 +4359,7 @@ snapshots:
       '@babel/traverse': 7.26.4
       '@babel/types': 7.26.3
       '@npmcli/package-json': 4.0.1
-      '@react-router/node': 7.1.1-pre.0(react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(typescript@5.7.2)
+      '@react-router/node': 7.1.1-pre.0(react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.2)
       arg: 5.0.2
       babel-dead-code-elimination: 1.0.8
       chokidar: 4.0.3
@@ -4375,7 +4375,7 @@ snapshots:
       picomatch: 2.3.1
       prettier: 2.8.8
       react-refresh: 0.14.2
-      react-router: 7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+      react-router: 7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       semver: 7.6.3
       set-cookie-parser: 2.7.1
       valibot: 0.41.0(typescript@5.7.2)
@@ -4396,10 +4396,10 @@ snapshots:
       - supports-color
       - terser
 
-  '@react-router/node@7.1.1-pre.0(react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1))(typescript@5.7.2)':
+  '@react-router/node@7.1.1-pre.0(react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(typescript@5.7.2)':
     dependencies:
       '@mjackson/node-fetch-server': 0.2.0
-      react-router: 7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1)
+      react-router: 7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       source-map-support: 0.5.21
       stream-slice: 0.1.2
       undici: 6.21.0
@@ -6512,24 +6512,24 @@ snapshots:
 
   queue-microtask@1.2.3: {}
 
-  react-dom@19.0.0-rc.1(react@19.0.0-rc.1):
+  react-dom@19.0.0(react@19.0.0):
     dependencies:
-      react: 19.0.0-rc.1
-      scheduler: 0.25.0-rc.1
+      react: 19.0.0
+      scheduler: 0.25.0
 
   react-refresh@0.14.2: {}
 
-  react-router@7.1.1-pre.0(react-dom@19.0.0-rc.1(react@19.0.0-rc.1))(react@19.0.0-rc.1):
+  react-router@7.1.1-pre.0(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@types/cookie': 0.6.0
       cookie: 1.0.2
-      react: 19.0.0-rc.1
+      react: 19.0.0
       set-cookie-parser: 2.7.1
       turbo-stream: 2.4.0
     optionalDependencies:
-      react-dom: 19.0.0-rc.1(react@19.0.0-rc.1)
+      react-dom: 19.0.0(react@19.0.0)
 
-  react@19.0.0-rc.1: {}
+  react@19.0.0: {}
 
   read-cache@1.0.0:
     dependencies:
@@ -6730,7 +6730,7 @@ snapshots:
 
   sax@1.4.1: {}
 
-  scheduler@0.25.0-rc.1: {}
+  scheduler@0.25.0: {}
 
   scslre@0.3.0:
     dependencies:
@@ -7204,10 +7204,10 @@ snapshots:
     dependencies:
       punycode: 2.3.1
 
-  usehooks-ts@3.1.0(react@19.0.0-rc.1):
+  usehooks-ts@3.1.0(react@19.0.0):
     dependencies:
       lodash.debounce: 4.0.8
-      react: 19.0.0-rc.1
+      react: 19.0.0
 
   util-deprecate@1.0.2: {}
 
