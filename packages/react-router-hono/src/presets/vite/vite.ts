@@ -123,14 +123,12 @@ export const viteDevServer = (
             }
 
             const honoServerOptions: HonoServerOptions = (
-              await viteDevServer.ssrLoadModule(
-                `${options.serverFile}?t=${Date.now()}`,
-              )
+              await viteDevServer.ssrLoadModule(`${options.serverFile}`)
             )?.default;
             let build: ServerBuild;
             try {
               build = (await viteDevServer.ssrLoadModule(
-                `virtual:react-router/server-build?t=${Date.now()}`,
+                "virtual:react-router/server-build",
               )) as ServerBuild;
             } catch (err) {
               return next(err);

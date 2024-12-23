@@ -16,7 +16,5 @@ if (env.NODE_ENV !== "production") {
 export async function importDevBuild() {
   if (!viteDevServer) return undefined;
 
-  return viteDevServer.ssrLoadModule(
-    `virtual:react-router/server-build?t=${Date.now()}`,
-  );
+  return viteDevServer.ssrLoadModule("virtual:react-router/server-build");
 }

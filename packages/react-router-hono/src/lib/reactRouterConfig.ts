@@ -42,7 +42,7 @@ export const getReactRouterConfig = async () => {
     ...(
       await import(
         // eslint-disable-next-line jsdoc/no-bad-blocks
-        /* @vite-ignore */ `${pathToFileURL(outfile).href}?t=${Date.now()}`
+        /* @vite-ignore */ `${pathToFileURL(outfile).href}`
       )
     )?.default,
   };

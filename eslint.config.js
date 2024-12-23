@@ -2,6 +2,11 @@
 import { defineESLintConfig } from "@ntnyq/eslint-config";
 
 export default defineESLintConfig({
+  depend: {
+    overrides: {
+      "depend/ban-dependencies": ["off", { modules: ["execa"] }],
+    },
+  },
   jsdoc: {
     overrides: {
       "jsdoc/no-types": "off",
