@@ -1,17 +1,17 @@
-import { existsSync, promises as fsp } from "node:fs";
+import { promises as fsp } from "node:fs";
 import { basename, dirname, join, relative } from "node:path";
 import { argv } from "node:process";
 import { type BuildManifest, type Preset } from "@react-router/dev/config";
-
 import { nodeFileTrace } from "@vercel/nft";
-import { execa, ExecaError } from "execa";
+import { monorepoRootSync } from "monorepo-root";
+import { NonZeroExitError, x } from "tinyexec";
 
 import { buildEntry } from "../../lib/buildEntry";
 import {
   getPackageDependencies,
   isVercel,
   writePackageJson,
-} from "../../lib/utils";
+} from "../../lib/util";
 
 type VercelRegion =
   | "arn1"
@@ -69,7 +69,10 @@ export const vercelPreset = (
           const { serverBuildFile, buildDirectory } = reactRouterConfig;
           const clientBuildDir = join(buildDirectory, "client");
           const serverBuildDir = join(buildDirectory, "server");
-          const vercelRootDir = join(getRootDir(rootDir), ".vercel");
+          const vercelRootDir = join(
+            monorepoRootSync(rootDir) || rootDir,
+            ".vercel",
+          );
           const vercelOutDir = join(vercelRootDir, "output");
           const vercelStaticDir = join(vercelOutDir, "static");
 
@@ -137,9 +140,9 @@ export const vercelPreset = (
                 continue;
               }
 
-              if (source.includes("/node_modules/")) {
+              if (source.includes("node_modules")) {
                 const pkgName = source.match(
-                  /\/node_modules\/([^/]+(?:\/.*)?)?/,
+                  /[/\\]node_modules[/\\]([^/\\]+(?:[/\\].*)?)?/,
                 )?.[1];
                 if (pkgName && packageDependencies[pkgName]) {
                   dependencies[pkgName] = packageDependencies[pkgName] ?? "*";
@@ -186,13 +189,16 @@ export const vercelPreset = (
             );
 
             try {
-              await execa({ cwd: vercelFuncDir })`npm install --force`;
+              await x("npm", ["install", "--force"], {
+                nodeOptions: { cwd: vercelFuncDir },
+                throwOnError: true,
+              });
             } catch (err) {
-              if (err instanceof ExecaError) {
+              if (err instanceof NonZeroExitError) {
                 console.error(
                   "[react-router-hono]: Failed to install packages",
                 );
-                throw new Error(`${err.stderr}`);
+                throw new Error(`${err.output?.stderr}`);
               }
             }
           }
@@ -209,19 +215,6 @@ export const vercelPreset = (
     }),
   };
 };
-
-function getRootDir(rootDir: string) {
-  let currentDir = rootDir;
-  let realRootDir = "";
-  while (currentDir !== dirname(currentDir)) {
-    if (existsSync(join(currentDir, "package.json"))) {
-      realRootDir = currentDir;
-    } else if (realRootDir) break;
-    currentDir = dirname(currentDir);
-  }
-
-  return realRootDir;
-}
 
 function getServerRoutes(buildManifest: BuildManifest | undefined) {
   if (!buildManifest?.routeIdToServerBundleId) {

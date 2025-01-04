@@ -4,7 +4,7 @@ import { argv } from "node:process";
 import { type Preset } from "@react-router/dev/config";
 
 import { buildEntry } from "../../lib/buildEntry";
-import { isVercel } from "../../lib/utils";
+import { isVercel } from "../../lib/util";
 
 export const nodePreset = (): Preset => {
   if (!global.REACT_ROUTER_HONO_PRESETS?.vite && !argv.includes("typegen")) {

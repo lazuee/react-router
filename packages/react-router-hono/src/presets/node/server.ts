@@ -28,15 +28,13 @@ export const createHonoNodeServer = async <E extends Env = Env>(
     },
     getLoadContext: options.getLoadContext,
     honoOptions: options.honoOptions,
+    listeningListener: options.listeningListener,
   });
 
   if (isProduction) {
     serve(
       { ...server, port: Number(env.PORT) || 3000 },
-      options.listeningListener ||
-        ((info) => {
-          console.log(`Server is running on port: ${info.port}`);
-        }),
+      options.listeningListener,
     );
   }
 

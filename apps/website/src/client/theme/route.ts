@@ -1,6 +1,6 @@
 import { createCookie, redirect, type ActionFunctionArgs } from "react-router";
 
-import { safeRedirect } from "~/lib/utils";
+import { safeRedirect } from "~/client/lib/util";
 import { isValidTheme, Theme } from ".";
 
 const themeCookie = createCookie("theme", {
@@ -9,9 +9,6 @@ const themeCookie = createCookie("theme", {
   sameSite: "lax",
   secrets: ["r0ut3r"],
 });
-
-export const serializeTheme = async (theme: Theme) =>
-  themeCookie.serialize({ theme });
 
 export const getTheme = async (request: Request) => {
   const cookie = await themeCookie.parse(request.headers.get("Cookie"));
@@ -25,7 +22,7 @@ export const action = async ({ request }: ActionFunctionArgs) => {
 
   return redirect(safeRedirect(formData.get("redirect")), {
     headers: {
-      "Set-Cookie": await serializeTheme(theme as Theme),
+      "Set-Cookie": await themeCookie.serialize({ theme }),
     },
   });
 };

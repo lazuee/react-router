@@ -1,6 +1,14 @@
-import { type Plugin } from "vite";
+import { dirname, join, relative } from "node:path";
 
+import { cwd } from "node:process";
+
+import { fileURLToPath } from "node:url";
+
+import { type Plugin } from "vite";
 import { viteDevServer } from "./vite";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 export interface ReactRouterHonoOptions {
   serverFile?: string;
@@ -10,8 +18,9 @@ export interface ReactRouterHonoOptions {
 export const reactRouterHono = (
   config: ReactRouterHonoOptions = {},
 ): Plugin => {
+  const serverFile = relative(cwd(), join(__dirname, "entryServer.js"));
   const mergedConfig: Required<ReactRouterHonoOptions> = {
-    serverFile: "./server.ts",
+    serverFile,
     exclude: [],
     ...config,
   };

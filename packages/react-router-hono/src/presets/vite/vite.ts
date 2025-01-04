@@ -1,26 +1,28 @@
 import { existsSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { isAbsolute, join } from "node:path";
 
+import { cwd } from "node:process";
 import { getRequestListener } from "@hono/node-server";
-
 import { minimatch } from "minimatch";
+
 import { type ServerBuild } from "react-router";
 import { type Plugin } from "vite";
-
 import { type HonoServerOptions } from "../../hono/server";
 import { getReactRouterConfig } from "../../lib/reactRouterConfig";
-import { isVercel } from "../../lib/utils";
+import { isVercel } from "../../lib/util";
 import { type ReactRouterHonoOptions } from "./preset";
 import { createHonoViteServer } from "./server";
+
+const isRelativePath = (path: string) =>
+  !isAbsolute(path) && !path.startsWith("/");
 
 export const viteDevServer = (
   options: Required<ReactRouterHonoOptions>,
 ): Plugin => {
-  let publicDirPath = "";
-
   global.REACT_ROUTER_HONO_ENTRY_FILE = options.serverFile;
   global.REACT_ROUTER_HONO_PRESETS ||= {};
   global.REACT_ROUTER_HONO_PRESETS.vite ||= true;
+  global.REACT_ROUTER_HONO_PUBLIC_DIR = "";
 
   let reactRouterConfig: Awaited<ReturnType<typeof getReactRouterConfig>>;
 
@@ -33,6 +35,7 @@ export const viteDevServer = (
           "'ssr' is currently disabled in your React Router configuration. Please enable it to continue.",
         );
       }
+      viteConfig.root ||= cwd(); // 'root' was removed in vite v6
       if (viteConfig.build) {
         if (!viteConfig.build.target) viteConfig.build.target = "node20";
         if (!viteConfig.build.cssTarget) {
@@ -50,49 +53,36 @@ export const viteDevServer = (
           viteConfig.build.copyPublicDir = true;
         }
 
+        if (!isRelativePath(global.REACT_ROUTER_HONO_ENTRY_FILE!)) {
+          throw new Error(
+            "The 'serverFile' specified in the 'reactRouterHono' plugin in your Vite configuration must be a relative path.",
+          );
+        }
+
+        if (
+          !existsSync(
+            join(viteConfig.root!, global.REACT_ROUTER_HONO_ENTRY_FILE!),
+          )
+        ) {
+          throw new Error(
+            `The 'serverFile' specified in the 'reactRouterHono' plugin in your Vite configuration does not exist: ${join(viteConfig.root!, global.REACT_ROUTER_HONO_ENTRY_FILE!)}`,
+          );
+        }
         return viteConfig;
       }
     },
     configResolved(viteConfig) {
-      publicDirPath = viteConfig.publicDir;
-
-      global.REACT_ROUTER_HONO_COPY_PUBLIC_DIR =
-        viteConfig?.build.copyPublicDir;
-      global.REACT_ROUTER_HONO_PUBLIC_DIR = relative(
-        viteConfig.root,
-        viteConfig.publicDir,
-      );
-
-      const pluginIndex = (name: string) =>
-        viteConfig.plugins.findIndex((plugin) => plugin.name === name);
-      const reactRouterPluginIndex = pluginIndex("react-router");
-      if (
-        reactRouterPluginIndex >= 0 &&
-        reactRouterPluginIndex < pluginIndex("@lazuee/react-router-hono[vite]")
-      ) {
-        throw new Error(
-          `'reactRouterHono' plugin should be placed before the 'reactRouter' plugin in your Vite configuration.`,
-        );
-      }
-
-      if (viteConfig.command === "build") {
-        if (!global.REACT_ROUTER_HONO_PRESETS?.vercel && isVercel) {
-          throw new Error(
-            "'vercelPreset' is missing in your React Router configuration.",
-          );
-        } else if (!global.REACT_ROUTER_HONO_PRESETS?.node) {
-          throw new Error(
-            "'nodePreset' is missing in your React Router configuration.",
-          );
-        }
-      }
+      global.REACT_ROUTER_HONO_PUBLIC_DIR = viteConfig.publicDir;
     },
     configureServer: async (viteDevServer) => {
       return () => {
         if (!viteDevServer.config.server.middlewareMode) {
           viteDevServer.middlewares.use(async (req, res, next) => {
             if (req.url) {
-              const filePath = join(publicDirPath, req.url);
+              const filePath = join(
+                global.REACT_ROUTER_HONO_PUBLIC_DIR,
+                req.url,
+              );
 
               try {
                 if (existsSync(filePath) && statSync(filePath).isFile()) {

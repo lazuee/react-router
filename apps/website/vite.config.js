@@ -1,9 +1,9 @@
-//@ts-check
 import { env } from "node:process";
 
 import { reactRouterHono } from "@lazuee/react-router-hono";
-
 import { reactRouter } from "@react-router/dev/vite";
+
+import tailwindcss from "@tailwindcss/vite";
 
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
@@ -15,16 +15,8 @@ export default defineConfig({
     assetsInlineLimit: 0,
     chunkSizeWarningLimit: 1024,
     copyPublicDir: false,
-    minify: "esbuild",
     rollupOptions: {
       output: { minifyInternalExports: true },
-    },
-  },
-  css: {
-    preprocessorOptions: {
-      scss: {
-        silenceDeprecations: ["legacy-js-api"],
-      },
     },
   },
   esbuild: {
@@ -32,6 +24,7 @@ export default defineConfig({
     mangleCache: {},
   },
   plugins: [
+    tailwindcss(),
     reactRouterHono({
       serverFile: "src/server/index.ts",
     }),
@@ -39,7 +32,6 @@ export default defineConfig({
     tsconfigPaths(),
   ],
   server: {
-    open: false,
     port,
   },
 });

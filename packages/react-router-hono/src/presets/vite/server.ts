@@ -20,6 +20,7 @@ export const createHonoViteServer = async <E extends Env = Env>(
     },
     getLoadContext: options.getLoadContext,
     honoOptions: options.honoOptions,
+    listeningListener: options.listeningListener,
   });
 
   return server;

@@ -33,6 +33,18 @@ export default defineConfig([
   {
     ...baseConfig,
     entry: {
+      entryServer: "src/hono/entryServer.ts",
+    },
+  },
+  {
+    ...baseConfig,
+    entry: {
+      http: "src/hono/http.ts",
+    },
+  },
+  {
+    ...baseConfig,
+    entry: {
       hono: "src/index.ts",
     },
   },

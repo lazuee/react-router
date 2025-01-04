@@ -24,6 +24,7 @@ export const createHonoVercelServer = async <E extends Env = Env>(
     server: options.server,
     getLoadContext: options.getLoadContext,
     honoOptions: options.honoOptions,
+    listeningListener: options.listeningListener,
   });
 
   return handle(server);

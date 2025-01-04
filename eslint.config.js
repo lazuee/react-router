@@ -21,7 +21,7 @@ export default defineESLintConfig({
       "vars-on-top": "off",
     },
     parserOptions: {
-      project: ["website/tsconfig.json", "packages/*/tsconfig.json"],
+      project: ["apps/*/tsconfig.json", "packages/*/tsconfig.json"],
     },
   },
   yml: {

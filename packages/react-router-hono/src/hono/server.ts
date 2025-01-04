@@ -1,17 +1,19 @@
 import { type AddressInfo } from "node:net";
 
+import { relative } from "node:path";
+
+import { cwd } from "node:process";
+
 import { serveStatic } from "@hono/node-server/serve-static";
 
 import { Hono, type Context, type Env, type MiddlewareHandler } from "hono";
-
 import { type HonoOptions } from "hono/hono-base";
-
 import {
   createRequestHandler,
   type AppLoadContext,
   type ServerBuild,
 } from "react-router";
-import { isVercel } from "../lib/utils";
+import { isVercel } from "../lib/util";
 import { cache, type CacheOptions } from "../middleware/cache";
 
 type ReactRouterOptions = {
@@ -51,7 +53,14 @@ export const createHonoServer = async <E extends Env = Env>(
   options: HonoServerOptions<E> = {},
 ) => {
   const isProduction = mode === "production";
+  const publicDir = relative(cwd(), global.REACT_ROUTER_HONO_PUBLIC_DIR);
   const server = new Hono<E>(options.honoOptions);
+  server.all("*", (ctx, next) => {
+    global.REACT_ROUTER_HONO_REQUEST_FROM = "hono";
+    global.REACT_ROUTER_HONO_REQUEST_PATH = ctx.req.path;
+    return next();
+  });
+
   if (options.server) await options.server(server, { mode, build });
 
   if (!isVercel) {
@@ -74,18 +83,10 @@ export const createHonoServer = async <E extends Env = Env>(
         serveStatic({ root: build.assetsBuildDirectory }),
       );
       if (!global.REACT_ROUTER_HONO_COPY_PUBLIC_DIR) {
-        server.use(
-          "*",
-          cache(staticCache),
-          serveStatic({ root: global.REACT_ROUTER_HONO_PUBLIC_DIR }),
-        );
+        server.use("*", cache(staticCache), serveStatic({ root: publicDir }));
       }
     } else {
-      server.use(
-        "*",
-        cache(staticCache),
-        serveStatic({ root: global.REACT_ROUTER_HONO_PUBLIC_DIR }),
-      );
+      server.use("*", cache(staticCache), serveStatic({ root: publicDir }));
     }
   }
 
@@ -94,8 +95,10 @@ export const createHonoServer = async <E extends Env = Env>(
     reactRouter({
       build,
       mode,
-      getLoadContext: (ctx) =>
-        options.getLoadContext?.(ctx, { build, mode }) ?? {},
+      getLoadContext: (ctx) => {
+        global.REACT_ROUTER_HONO_REQUEST_FROM = "react-router";
+        return options.getLoadContext?.(ctx, { build, mode }) || {};
+      },
     }),
   );
 
