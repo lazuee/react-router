@@ -1,7 +1,7 @@
 {
   "name": "@lazuee/react-router-hono",
   "type": "module",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A vite plugin that integrates hono with react-router, providing presets to simplify production setups.",
   "keywords": [
     "hono",
@@ -52,26 +52,6 @@
     "hono": "4.6.15",
     "react-router": "pre",
     "vite": "5.4.11"
-  },
-  "peerDependenciesMeta": {
-    "@hono/node-server": {
-      "optional": true
-    },
-    "@react-router/dev": {
-      "optional": true
-    },
-    "esbuild": {
-      "optional": true
-    },
-    "hono": {
-      "optional": true
-    },
-    "react-router": {
-      "optional": true
-    },
-    "vite": {
-      "optional": true
-    }
   },
   "dependencies": {
     "@vercel/nft": "0.29.0",
