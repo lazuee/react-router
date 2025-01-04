@@ -2,7 +2,7 @@ import { defineConfig, type Options } from "tsup";
 
 const baseConfig: Options = {
   bundle: true,
-  clean: true,
+  clean: false,
   dts: true,
   format: ["esm"],
   minify: "terser",

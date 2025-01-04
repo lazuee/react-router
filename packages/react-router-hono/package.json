@@ -1,7 +1,7 @@
 {
   "name": "@lazuee/react-router-hono",
   "type": "module",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A vite plugin that integrates hono with react-router, providing presets to simplify production setups.",
   "keywords": [
     "hono",
@@ -43,7 +43,7 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "tsup"
+    "build": "rimraf dist && tsup"
   },
   "peerDependencies": {
     "@hono/node-server": "1.13.7",
@@ -61,6 +61,7 @@
   },
   "devDependencies": {
     "@types/node": "22.10.5",
+    "rimraf": "6.0.1",
     "terser": "5.37.0",
     "tsup": "8.3.5"
   }
