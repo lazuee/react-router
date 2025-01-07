@@ -4,6 +4,7 @@ import { compress } from "hono/compress";
 import { prettyJSON } from "hono/pretty-json";
 import * as env from "~/env.server";
 import { clientIp } from "./middleware/clientIp";
+import { csp } from "./middleware/csp";
 import { protectRoute } from "./middleware/protectRoute";
 import routes from "./routes";
 
@@ -23,6 +24,7 @@ const reactRouterHono: ReactRouterHono = {
   getLoadContext(ctx) {
     return {
       clientIp: ctx.var.clientIp,
+      nonce: ctx.var.nonce,
       env,
     };
   },
@@ -33,6 +35,7 @@ const reactRouterHono: ReactRouterHono = {
       prettyJSON({ space: 4 }),
       clientIp(),
       protectRoute(),
+      csp(),
     );
 
     app.route("/", routes);

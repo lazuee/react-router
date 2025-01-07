@@ -1,15 +1,18 @@
-import { Links, Meta, Scripts, ScrollRestoration } from "react-router";
+import { useContext } from "react";
 
+import { Links, Meta, Scripts, ScrollRestoration } from "react-router";
 import { useTheme } from "~/client/theme";
 import { ThemeScript } from "~/client/theme/script";
+import { NonceContext } from "../context/nonce";
 
 export function RootLayout({ children }: React.PropsWithChildren) {
+  const nonce = useContext(NonceContext);
   const theme = useTheme();
 
   return (
     <html lang="en" data-theme={theme}>
       <head>
-        <ThemeScript theme={theme} />
+        <ThemeScript nonce={nonce} theme={theme} />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
@@ -17,8 +20,8 @@ export function RootLayout({ children }: React.PropsWithChildren) {
       </head>
       <body>
         {children}
-        <ScrollRestoration />
-        <Scripts />
+        <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );

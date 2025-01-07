@@ -10,6 +10,7 @@ import {
   type RenderToPipeableStreamOptions,
 } from "react-dom/server";
 import { ServerRouter, type HandleDocumentRequestFunction } from "react-router";
+import { NonceContext } from "./components/context/nonce";
 
 export const streamTimeout = 10_000;
 
@@ -18,7 +19,7 @@ const handleDocumentRequest: HandleDocumentRequestFunction = (
   responseStatusCode,
   responseHeaders,
   routerContext,
-  _appLoadContext,
+  { nonce },
 ) => {
   return new Promise((resolve, reject) => {
     let shellRendered = false;
@@ -32,8 +33,11 @@ const handleDocumentRequest: HandleDocumentRequestFunction = (
         : "onShellReady";
 
     const { pipe, abort } = renderToPipeableStream(
-      <ServerRouter context={routerContext} url={request.url} />,
+      <NonceContext.Provider value={nonce}>
+        <ServerRouter nonce={nonce} context={routerContext} url={request.url} />
+      </NonceContext.Provider>,
       {
+        nonce,
         [readyOption]() {
           shellRendered = true;
           const body = new PassThrough();
