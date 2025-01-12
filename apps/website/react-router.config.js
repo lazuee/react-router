@@ -1,4 +1,4 @@
-import { nodePreset, vercelPreset } from "@lazuee/react-router-hono";
+import { bunPreset, nodePreset, vercelPreset } from "@lazuee/react-router-hono";
 
 /** @param {import("@react-router/dev/config").Config} config */
 function defineConfig(config) {
@@ -8,7 +8,7 @@ function defineConfig(config) {
 export default defineConfig({
   appDirectory: "src/client",
   prerender: ["pre-rendered"],
-  presets: [nodePreset(), vercelPreset({ regions: "hnd1" })],
+  presets: [bunPreset(), nodePreset(), vercelPreset({ regions: "hnd1" })],
   future: {
     unstable_optimizeDeps: true,
   },

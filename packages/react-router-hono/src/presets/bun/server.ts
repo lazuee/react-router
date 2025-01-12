@@ -1,6 +1,4 @@
 import { env } from "node:process";
-
-import { serve } from "@hono/node-server";
 import { type Env } from "hono";
 
 import { type ServerBuild } from "react-router";
@@ -8,7 +6,7 @@ import { createHonoServer, type HonoServerOptions } from "../../hono/server";
 
 import { importDevBuild } from "../../lib/importDevBuild";
 
-export const createHonoNodeServer = async <E extends Env = Env>(
+export const createHonoBunServer = async <E extends Env = Env>(
   options: HonoServerOptions<E> = {},
 ) => {
   const mode =
@@ -31,9 +29,9 @@ export const createHonoNodeServer = async <E extends Env = Env>(
     listeningListener: options.listeningListener,
   });
 
-  if (isProduction) {
-    serve({ ...server, port: options.port }, options.listeningListener);
-  }
-
-  return server;
+  return {
+    port: options.port,
+    fetch: server.fetch,
+    development: !isProduction,
+  };
 };

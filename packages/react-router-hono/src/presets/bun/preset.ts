@@ -4,21 +4,22 @@ import { argv } from "node:process";
 import { type Preset } from "@react-router/dev/config";
 
 import { buildEntry } from "../../lib/buildEntry";
-import { isVercel } from "../../lib/util";
+import { isBun, isVercel } from "../../lib/util";
 
-export const nodePreset = (): Preset => {
+export const bunPreset = (): Preset => {
   if (!global.REACT_ROUTER_HONO_PRESETS?.vite && !argv.includes("typegen")) {
     throw new Error(
       "'reactRouterHono' plugin is not configured in your Vite configuration.",
     );
   }
-  if (global.REACT_ROUTER_HONO_PRESETS) {
-    global.REACT_ROUTER_HONO_PRESETS.node ||= true;
+
+  if (global.REACT_ROUTER_HONO_PRESETS && isBun) {
+    global.REACT_ROUTER_HONO_PRESETS.bun ||= true;
   }
 
   return {
-    name: "react-router-hono-node",
-    ...(global.REACT_ROUTER_HONO_PRESETS?.node &&
+    name: "react-router-hono-bun",
+    ...(global.REACT_ROUTER_HONO_PRESETS?.bun &&
       !isVercel && {
         reactRouterConfig: () => ({
           buildEnd: async ({
@@ -26,7 +27,9 @@ export const nodePreset = (): Preset => {
             reactRouterConfig,
             viteConfig,
           }) => {
+            if (!global.REACT_ROUTER_HONO_PRESETS?.bun) return;
             if (!reactRouterConfig.ssr) return;
+
             console.time("[react-router-hono]");
             console.info(
               `[react-router-hono]: Generating '${reactRouterConfig.buildDirectory}'...`,

@@ -54,4 +54,11 @@ export default defineConfig([
       cache: "src/middleware/cache.ts",
     },
   },
+  {
+    ...baseConfig,
+    external: ["@hono/node-server/serve-static", "hono/bun"],
+    entry: {
+      serveStatic: "src/middleware/serveStatic.ts",
+    },
+  },
 ]);

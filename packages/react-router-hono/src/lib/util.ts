@@ -1,11 +1,13 @@
 import { writeFile } from "node:fs/promises";
-import { env } from "node:process";
+import { env, versions } from "node:process";
 
 import { type ResolvedConfig } from "vite";
 
 export type SsrExternal = ResolvedConfig["ssr"]["external"];
 
 export const isVercel = env.VERCEL === "1" || env.VERCEL_ENV;
+
+export const isBun = versions.bun;
 
 export const getPackageDependencies = (
   dependencies: Record<string, string | undefined>,
@@ -39,6 +41,9 @@ export const writePackageJson = async (
           postinstall: pkg.scripts?.postinstall ?? "",
         },
         dependencies,
+        ...(pkg.trustedDependencies && {
+          trustedDependencies: pkg.trustedDependencies,
+        }),
       },
       null,
       2,

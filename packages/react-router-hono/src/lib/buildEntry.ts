@@ -22,13 +22,24 @@ export async function buildEntry(
     format: "esm",
     bundle: true,
     minify: true,
-    define: {
-      "global.REACT_ROUTER_HONO_COPY_PUBLIC_DIR": `${global.REACT_ROUTER_HONO_COPY_PUBLIC_DIR}`,
-      "global.REACT_ROUTER_HONO_PUBLIC_DIR": `'${global.REACT_ROUTER_HONO_PUBLIC_DIR}'`,
-      "process.env.NODE_ENV": "'production'",
-    },
     external: ["vite", ...Object.keys(packageDependencies)],
   };
+  const _global = Object.fromEntries(
+    Object.keys(global)
+      .filter((key) => key.startsWith("REACT_ROUTER_HONO"))
+      .map((key) => [key, (global as any)[key]]),
+  ) as {
+    [K in Extract<
+      keyof typeof global,
+      `REACT_ROUTER_HONO${string}`
+    >]: (typeof global)[K];
+  };
+
+  delete _global.REACT_ROUTER_HONO_PRESETS?.vite;
+  const inlineKeys = Object.keys(_global)
+    .filter((key) => key.startsWith("REACT_ROUTER_HONO"))
+    .map((key) => `global.${key} ||= ${JSON.stringify((global as any)[key])};`)
+    .join("\n");
 
   await rename(buildFile, serverBuildFile);
   await esbuild.build({
@@ -42,7 +53,9 @@ export async function buildEntry(
       "virtual:lazuee/react-router": entryFile,
     },
     banner: {
-      js: "import { createRequire } from 'module';const require = createRequire(import.meta.url);",
+      js: `import { createRequire } from 'module';const require = createRequire(import.meta.url);${
+        inlineKeys
+      }`,
     },
   });
 

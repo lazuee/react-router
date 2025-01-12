@@ -1,7 +1,7 @@
 import { existsSync, statSync } from "node:fs";
 import { isAbsolute, join } from "node:path";
 
-import { cwd } from "node:process";
+import { cwd, env } from "node:process";
 import { getRequestListener } from "@hono/node-server";
 import { minimatch } from "minimatch";
 
@@ -10,6 +10,7 @@ import { type Plugin } from "vite";
 import { type HonoServerOptions } from "../../hono/server";
 import { getReactRouterConfig } from "../../lib/reactRouterConfig";
 import { isVercel } from "../../lib/util";
+import { getViteConfig } from "../../lib/viteConfig";
 import { type ReactRouterHonoOptions } from "./preset";
 import { createHonoViteServer } from "./server";
 
@@ -35,44 +36,72 @@ export const viteDevServer = (
           "'ssr' is currently disabled in your React Router configuration. Please enable it to continue.",
         );
       }
+
+      viteConfig = { ...viteConfig, ...(await getViteConfig()) };
       viteConfig.root ||= cwd(); // 'root' was removed in vite v6
-      if (viteConfig.build) {
-        if (!viteConfig.build.target) viteConfig.build.target = "node20";
-        if (!viteConfig.build.cssTarget) {
-          viteConfig.build.cssTarget = [
-            "edge88",
-            "firefox78",
-            "chrome87",
-            "safari14",
-          ];
-        }
-        if (viteConfig.build.rollupOptions) {
-          viteConfig.build.rollupOptions.input = undefined;
-        }
-        if (viteConfig.build.copyPublicDir !== true && isVercel) {
-          viteConfig.build.copyPublicDir = true;
-        }
+      viteConfig.server ||= {};
+      viteConfig.build = { ...(viteConfig?.build || {}) };
+      viteConfig.build.target ||= "node20";
+      viteConfig.build.cssTarget ||= [
+        ...new Set([
+          ...(viteConfig.build.cssTarget ? viteConfig.build.cssTarget : []),
+          "edge88",
+          "firefox78",
+          "chrome87",
+          "safari14",
+        ]),
+      ];
 
-        if (!isRelativePath(global.REACT_ROUTER_HONO_ENTRY_FILE!)) {
-          throw new Error(
-            "The 'serverFile' specified in the 'reactRouterHono' plugin in your Vite configuration must be a relative path.",
-          );
-        }
+      global.REACT_ROUTER_HONO_PORT = viteConfig.server.port ||=
+        Number(env.PORT) ||
+        Number(env.APP_PORT) ||
+        viteConfig.server.port ||
+        3000;
 
-        if (
-          !existsSync(
-            join(viteConfig.root!, global.REACT_ROUTER_HONO_ENTRY_FILE!),
-          )
-        ) {
-          throw new Error(
-            `The 'serverFile' specified in the 'reactRouterHono' plugin in your Vite configuration does not exist: ${join(viteConfig.root!, global.REACT_ROUTER_HONO_ENTRY_FILE!)}`,
-          );
-        }
-        return viteConfig;
+      global.REACT_ROUTER_HONO_PUBLIC_DIR = `${viteConfig.publicDir}`;
+
+      const rollupOutput =
+        viteConfig.build.rollupOptions?.output &&
+        !Array.isArray(viteConfig.build.rollupOptions?.output)
+          ? viteConfig.build.rollupOptions.output
+          : {};
+      const rollupPlugins = rollupOutput?.plugins
+        ? Array.isArray(rollupOutput.plugins)
+          ? rollupOutput.plugins
+          : [rollupOutput.plugins]
+        : [];
+
+      viteConfig.build = {
+        ...viteConfig.build,
+        ...(isVercel && { copyPublicDir: true }),
+        rollupOptions: {
+          output: {
+            ...rollupOutput,
+          },
+          input: undefined,
+          plugins: [...rollupPlugins],
+        },
+      };
+      if (!isRelativePath(global.REACT_ROUTER_HONO_ENTRY_FILE!)) {
+        throw new Error(
+          "The 'serverFile' specified in the 'reactRouterHono' plugin in your Vite configuration must be a relative path.",
+        );
       }
-    },
-    configResolved(viteConfig) {
-      global.REACT_ROUTER_HONO_PUBLIC_DIR = viteConfig.publicDir;
+
+      if (
+        !existsSync(
+          join(viteConfig.root!, global.REACT_ROUTER_HONO_ENTRY_FILE!),
+        )
+      ) {
+        throw new Error(
+          `The 'serverFile' specified in the 'reactRouterHono' plugin in your Vite configuration does not exist: ${join(viteConfig.root!, global.REACT_ROUTER_HONO_ENTRY_FILE!)}`,
+        );
+      }
+
+      if (viteConfig.build.rollupOptions?.input) {
+        throw new Error("input is not empty!");
+      }
+      return viteConfig;
     },
     configureServer: async (viteDevServer) => {
       return () => {

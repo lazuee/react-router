@@ -32,6 +32,10 @@
     "./http": {
       "types": "./dist/http.d.ts",
       "import": "./dist/http.js"
+    },
+    "./serveStatic": {
+      "types": "./dist/serveStatic.d.ts",
+      "import": "./dist/serveStatic.js"
     }
   },
   "files": [
@@ -43,26 +47,28 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "rimraf dist && tsup"
+    "build": "pnpm run clean && tsup",
+    "clean": "node -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true });\""
   },
   "peerDependencies": {
-    "@hono/node-server": "1.13.7",
-    "@react-router/dev": "pre",
-    "esbuild": "0.24.2",
-    "hono": "4.6.15",
-    "react-router": "pre",
-    "vite": "5.4.11"
+    "@hono/node-server": "^1.13.7",
+    "@react-router/dev": "^7.1.1",
+    "esbuild": "^0.24.2",
+    "hono": "^4.6.15",
+    "react-router": "^7.1.1",
+    "vite": "^5.1.8 || ^6.0.7"
   },
   "dependencies": {
-    "@vercel/nft": "0.29.0",
-    "minimatch": "10.0.1",
-    "monorepo-root": "3.3.1",
-    "tinyexec": "0.3.2"
+    "@vercel/nft": "^0.29.0",
+    "minimatch": "^10.0.1",
+    "monorepo-root": "^3.3.1",
+    "tinyexec": "^0.3.2"
   },
   "devDependencies": {
-    "@types/node": "22.10.5",
-    "rimraf": "6.0.1",
-    "terser": "5.37.0",
-    "tsup": "8.3.5"
+    "@types/bun": "^1.1.16",
+    "@types/node": "^22.10.5",
+    "terser": "^5.37.0",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.3"
   }
 }

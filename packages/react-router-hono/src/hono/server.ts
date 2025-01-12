@@ -4,8 +4,6 @@ import { relative } from "node:path";
 
 import { cwd } from "node:process";
 
-import { serveStatic } from "@hono/node-server/serve-static";
-
 import { Hono, type Context, type Env, type MiddlewareHandler } from "hono";
 import { type HonoOptions } from "hono/hono-base";
 import {
@@ -15,6 +13,7 @@ import {
 } from "react-router";
 import { isVercel } from "../lib/util";
 import { cache, type CacheOptions } from "../middleware/cache";
+import { serveStatic } from "../middleware/serveStatic";
 
 type ReactRouterOptions = {
   build: ServerBuild;
@@ -45,6 +44,7 @@ export type HonoServerOptions<E extends Env = Env> = {
   ) => Promise<AppLoadContext> | AppLoadContext;
   listeningListener?: (info: AddressInfo) => void;
   honoOptions?: HonoOptions<E>;
+  port?: number;
 };
 
 export const createHonoServer = async <E extends Env = Env>(

@@ -9,6 +9,7 @@ import { NonZeroExitError, x } from "tinyexec";
 import { buildEntry } from "../../lib/buildEntry";
 import {
   getPackageDependencies,
+  isBun,
   isVercel,
   writePackageJson,
 } from "../../lib/util";
@@ -48,13 +49,13 @@ export const vercelPreset = (
       "'reactRouterHono' plugin is not configured in your Vite configuration.",
     );
   }
-  if (global.REACT_ROUTER_HONO_PRESETS) {
+  if (global.REACT_ROUTER_HONO_PRESETS && isVercel) {
     global.REACT_ROUTER_HONO_PRESETS.vercel ||= true;
   }
 
   return {
     name: "react-router-hono-vercel",
-    ...(isVercel && {
+    ...(global.REACT_ROUTER_HONO_PRESETS?.vercel && {
       reactRouterConfig: () => ({
         buildEnd: async ({ buildManifest, reactRouterConfig, viteConfig }) => {
           if (!reactRouterConfig.ssr) return;
@@ -189,7 +190,7 @@ export const vercelPreset = (
             );
 
             try {
-              await x("npm", ["install", "--force"], {
+              await x(isBun ? "bun" : "npm", ["install", "--force"], {
                 nodeOptions: { cwd: vercelFuncDir },
                 throwOnError: true,
               });
