@@ -21,7 +21,7 @@
     "@ntnyq/eslint-config": "^3.12.1",
     "cross-env": "^7.0.3",
     "eslint": "^9.18.0",
-    "stylelint": "^16.12.0",
+    "stylelint": "^16.13.0",
     "stylelint-config-clean-order": "^7.0.0",
     "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-config-tailwindcss": "^0.0.7",

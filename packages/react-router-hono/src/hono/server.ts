@@ -1,37 +1,17 @@
 import { type AddressInfo } from "node:net";
-
 import { relative } from "node:path";
-
 import { cwd } from "node:process";
 
-import { Hono, type Context, type Env, type MiddlewareHandler } from "hono";
+import { Hono, type Context, type Env } from "hono";
 import { type HonoOptions } from "hono/hono-base";
-import {
-  createRequestHandler,
-  type AppLoadContext,
-  type ServerBuild,
-} from "react-router";
+import { type AppLoadContext, type ServerBuild } from "react-router";
 import { isVercel } from "../lib/util";
 import { cache, type CacheOptions } from "../middleware/cache";
+import {
+  reactRouter,
+  type ReactRouterOptions,
+} from "../middleware/reactRouter";
 import { serveStatic } from "../middleware/serveStatic";
-
-type ReactRouterOptions = {
-  build: ServerBuild;
-  mode?: string;
-  getLoadContext?: (ctx: Context) => Promise<AppLoadContext> | AppLoadContext;
-};
-
-const reactRouter =
-  ({
-    build,
-    mode,
-    getLoadContext = (ctx) => ctx.env as unknown as AppLoadContext,
-  }: ReactRouterOptions): MiddlewareHandler =>
-  async (ctx) => {
-    const requestHandler = createRequestHandler(build, mode);
-    const loadContext = await Promise.resolve(getLoadContext(ctx));
-    return requestHandler(ctx.req.raw, loadContext);
-  };
 
 export type HonoServerOptions<E extends Env = Env> = {
   server?: (
