@@ -2,8 +2,8 @@
   "compilerOptions": {
     "target": "ES2022",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
-    "moduleDetection": "force",
-    "module": "preserve",
+    "module": "ES2022",
+    "moduleResolution": "Bundler",
 
     "resolveJsonModule": true,
     "allowJs": true,

@@ -4,7 +4,7 @@ import { argv } from "node:process";
 import { type Preset } from "@react-router/dev/config";
 
 import { buildEntry } from "../../lib/buildEntry";
-import { isVercel } from "../../lib/util";
+import { isBun, isVercel } from "../../lib/util";
 
 export const nodePreset = (): Preset => {
   if (!global.REACT_ROUTER_HONO_PRESETS?.vite && !argv.includes("typegen")) {
@@ -12,7 +12,7 @@ export const nodePreset = (): Preset => {
       "'reactRouterHono' plugin is not configured in your Vite configuration.",
     );
   }
-  if (global.REACT_ROUTER_HONO_PRESETS) {
+  if (global.REACT_ROUTER_HONO_PRESETS && !isBun) {
     global.REACT_ROUTER_HONO_PRESETS.node ||= true;
   }
 

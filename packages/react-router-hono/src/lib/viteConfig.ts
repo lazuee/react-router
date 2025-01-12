@@ -34,12 +34,8 @@ export const getViteConfig = async () => {
 
   viteConfig ||= {
     ...defaultviteConfig,
-    ...(
-      await import(
-        // eslint-disable-next-line jsdoc/no-bad-blocks
-        /* @vite-ignore */ `${pathToFileURL(outfile).href}`
-      )
-    )?.default,
+    ...(await import(/* @vite-ignore */ `${pathToFileURL(outfile).href}`))
+      ?.default,
   };
 
   await fsp.rm(outfile);

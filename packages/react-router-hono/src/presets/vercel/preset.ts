@@ -3,9 +3,10 @@ import { basename, dirname, join, relative } from "node:path";
 import { argv } from "node:process";
 import { type BuildManifest, type Preset } from "@react-router/dev/config";
 import { nodeFileTrace } from "@vercel/nft";
-import { monorepoRootSync } from "monorepo-root";
+import * as rwr from "resolve-workspace-root";
 import { NonZeroExitError, x } from "tinyexec";
 
+import { glob } from "tinyglobby";
 import { buildEntry } from "../../lib/buildEntry";
 import {
   getPackageDependencies,
@@ -70,15 +71,13 @@ export const vercelPreset = (
           const { serverBuildFile, buildDirectory } = reactRouterConfig;
           const clientBuildDir = join(buildDirectory, "client");
           const serverBuildDir = join(buildDirectory, "server");
-          const vercelRootDir = join(
-            monorepoRootSync(rootDir) || rootDir,
-            ".vercel",
-          );
+          const monorepoRootDir = rwr.resolveWorkspaceRoot(rootDir) || rootDir;
+          const vercelRootDir = join(monorepoRootDir, ".vercel");
           const vercelOutDir = join(vercelRootDir, "output");
           const vercelStaticDir = join(vercelOutDir, "static");
 
           console.warn("[react-router-hono]: Vercel Detected!");
-          console.info(`[react-router-hono]: Generating '${vercelRootDir}'`);
+          console.log(`[react-router-hono]: Generating '${vercelRootDir}'...`);
 
           await fsp.rm(vercelRootDir, { recursive: true, force: true });
           await fsp.mkdir(vercelRootDir, { recursive: true });
@@ -119,7 +118,7 @@ export const vercelPreset = (
               ...pkg.dependencies,
               ...pkg.devDependencies,
             };
-            const dependencies = getPackageDependencies(
+            let dependencies = getPackageDependencies(
               packageDependencies,
               ssrExternal,
             );
@@ -154,6 +153,32 @@ export const vercelPreset = (
                   join(vercelFuncDir, relative(rootDir, source)),
                   { recursive: true },
                 );
+              }
+            }
+
+            if (isBun) {
+              dependencies = { ...dependencies, ...packageDependencies };
+              const paths = await glob(
+                rwr.getWorkspaceGlobs(monorepoRootDir) ?? [],
+                {
+                  cwd: monorepoRootDir,
+                  onlyDirectories: true,
+                },
+              );
+              for (const path of paths) {
+                const jsonPath = join(monorepoRootDir, path, "package.json");
+                if (await fsp.exists(jsonPath)) {
+                  const json = JSON.parse(
+                    await fsp.readFile(jsonPath, "utf-8"),
+                  );
+                  if (
+                    Object.keys(dependencies).includes(json.name) &&
+                    dependencies[json.name].startsWith("workspace:")
+                  ) {
+                    dependencies[json.name] =
+                      `file:${relative(vercelFuncDir, join(monorepoRootDir, path))}`;
+                  }
+                }
               }
             }
 
@@ -197,7 +222,7 @@ export const vercelPreset = (
             } catch (err) {
               if (err instanceof NonZeroExitError) {
                 console.error(
-                  "[react-router-hono]: Failed to install packages",
+                  "[react-router-hono-vercel]: Failed to install packages",
                 );
                 throw new Error(`${err.output?.stderr}`);
               }

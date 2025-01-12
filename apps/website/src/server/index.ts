@@ -1,5 +1,4 @@
 import { type ReactRouterHono } from "@lazuee/react-router-hono";
-import { compress } from "hono/compress";
 
 import { prettyJSON } from "hono/pretty-json";
 import * as env from "~/env.server";
@@ -29,14 +28,7 @@ const reactRouterHono: ReactRouterHono = {
     };
   },
   server(app) {
-    app.use(
-      "*",
-      compress({ encoding: "gzip" }),
-      prettyJSON({ space: 4 }),
-      clientIp(),
-      protectRoute(),
-      csp(),
-    );
+    app.use("*", prettyJSON({ space: 4 }), clientIp(), protectRoute(), csp());
 
     app.route("/", routes);
   },

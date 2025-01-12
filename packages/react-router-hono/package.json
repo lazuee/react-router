@@ -61,8 +61,9 @@
   "dependencies": {
     "@vercel/nft": "^0.29.0",
     "minimatch": "^10.0.1",
-    "monorepo-root": "^3.3.1",
-    "tinyexec": "^0.3.2"
+    "resolve-workspace-root": "^2.0.0",
+    "tinyexec": "^0.3.2",
+    "tinyglobby": "^0.2.10"
   },
   "devDependencies": {
     "@types/bun": "^1.1.16",

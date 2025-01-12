@@ -121,15 +121,18 @@ importers:
       minimatch:
         specifier: ^10.0.1
         version: 10.0.1
-      monorepo-root:
-        specifier: ^3.3.1
-        version: 3.3.1
       react-router:
         specifier: ^7.1.1
         version: 7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      resolve-workspace-root:
+        specifier: ^2.0.0
+        version: 2.0.0
       tinyexec:
         specifier: ^0.3.2
         version: 0.3.2
+      tinyglobby:
+        specifier: ^0.2.10
+        version: 0.2.10
       vite:
         specifier: ^5.1.8 || ^6.0.7
         version: 6.0.7(@types/node@22.10.5)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0)
@@ -752,22 +755,6 @@ packages:
   '@mjackson/node-fetch-server@0.2.0':
     resolution: {integrity: sha512-EMlH1e30yzmTpGLQjlFmaDAjyOeZhng1/XCd7DExR8PNAnG/G1tyruZxEoUe11ClnwGhGrtsdnyyUx1frSzjng==}
 
-  '@node-kit/extra.fs@3.3.1':
-    resolution: {integrity: sha512-3HJ6g6kADuVBASMgo99iJf1P2UToxOYtxjzt8JrpaSdfPw2YM9U9FzWAoM8vMdfTMwXCX7t7jVM7nqxZ3VJTeg==}
-    hasBin: true
-
-  '@node-kit/lerna-workspace-root@3.3.1':
-    resolution: {integrity: sha512-NoQ2+L13iqRLx3J8uyW7+05x/POMGwYcF8mzLpYvfrKFTPPh8XdN7YNuHguba0jXZwV6X2VDn8dAGdMhNERcNg==}
-    hasBin: true
-
-  '@node-kit/pnpm-workspace-root@3.3.1':
-    resolution: {integrity: sha512-IBvLeY+X3CgvS7aLQnn4AZDRTguFs5W/WxZJNi4YWlvAIdua1N8GTCjQQps3f6NUnV83IPrZkTJh5HTzYTMY2w==}
-    hasBin: true
-
-  '@node-kit/yarn-workspace-root@3.3.1':
-    resolution: {integrity: sha512-9PmP3y9814aPOsB4CFnYDbIcJ7/nPZZolbFhJ0f0gqYG3aySFrBTL1o2RRq9KlBct19HfceyT80Ut4c/Q+UVpA==}
-    hasBin: true
-
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
     engines: {node: '>= 8'}
@@ -823,14 +810,6 @@ packages:
   '@pkgr/core@0.1.1':
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
-
-  '@pnpm/constants@7.1.1':
-    resolution: {integrity: sha512-31pZqMtjwV+Vaq7MaPrT1EoDFSYwye3dp6BiHIGRJmVThCQwySRKM7hCvqqI94epNkqFAAYoWrNynWoRYosGdw==}
-    engines: {node: '>=16.14'}
-
-  '@pnpm/error@5.0.3':
-    resolution: {integrity: sha512-ONJU5cUeoeJSy50qOYsMZQHTA/9QKmGgh1ATfEpCLgtbdwqUiwD9MxHNeXUYYI/pocBCz6r1ZCFqiQvO+8SUKA==}
-    engines: {node: '>=16.14'}
 
   '@react-router/dev@7.1.1':
     resolution: {integrity: sha512-+UCrQZBAmdRcC7Bx1ho89T/DeP+FzEErkzrTvdBCpstr8AzOQ6mKlaglXGty15o3fgihBSFF4/J67jGveYIR8Q==}
@@ -2513,10 +2492,6 @@ packages:
   module-replacements@2.6.0:
     resolution: {integrity: sha512-LL+VhVXMIie3aO/uqPPAGaP7fhJb6yr98FW5IcSSJv+0gmJvS2c/L3C8WIaAA/HPyVhabKFKBKcfeLLi7WnRvg==}
 
-  monorepo-root@3.3.1:
-    resolution: {integrity: sha512-ntL/tHHvVuDqjskzDFqcURiAoxyHeBoeU3ovTs0do09mM9vkAFeEvrDbTEeZW1W3O3QOI0k6F3LO2NMdY2WZeg==}
-    hasBin: true
-
   ms@2.1.3:
     resolution: {integrity: sha512-6FlzubTLZG3J2a/NVCAleEhjzq5oxgHyaCU9yYXvcLsvoVaHJq/s5xXI6/XXP6tz7R9xAOtHnSO/tXtF3WRTlA==}
 
@@ -2866,6 +2841,9 @@ packages:
 
   resolve-pkg-maps@1.0.0:
     resolution: {integrity: sha512-seS2Tj26TBVOC2NIc2rOe2y2ZO7efxITtLZcGSOnHHNOQ7CkiUBfw0Iw2ck6xkIhPwLhKNLS8BO+hEpngQlqzw==}
+
+  resolve-workspace-root@2.0.0:
+    resolution: {integrity: sha512-IsaBUZETJD5WsI11Wt8PKHwaIe45or6pwNc8yflvLJ4DWtImK9kuLoH5kUva/2Mmx/RdIyr4aONNSa2v9LTJsw==}
 
   resolve@1.22.10:
     resolution: {integrity: sha512-NPRy+/ncIMeDlTAsuqwKIiferiawhefFJtkNSW0qZJEqMEb+qBt/77B/jGeeek+F0uOeN05CDa6HXbbIgtVX4w==}
@@ -3407,10 +3385,6 @@ packages:
   word-wrap@1.2.5:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
-
-  workspace-root@3.3.1:
-    resolution: {integrity: sha512-t/KqdJ8+Fa6ovo2o0tV2+WKfd+5gg2SP59MicW8dnwiN6A2huw73yQrnFyrFokJLPJ+ItwJHUjjhNvabUvl/gg==}
-    hasBin: true
 
   wrap-ansi@7.0.0:
     resolution: {integrity: sha512-YVGIj2kamLSTxw6NsZjoBxfSwsn0ycdesmc4p+Q21c5zPuZ1pl+NfxVdxPtdHvmNVOQ6XSYG4AUtyt/Fi7D16Q==}
@@ -3985,25 +3959,6 @@ snapshots:
 
   '@mjackson/node-fetch-server@0.2.0': {}
 
-  '@node-kit/extra.fs@3.3.1': {}
-
-  '@node-kit/lerna-workspace-root@3.3.1':
-    dependencies:
-      '@node-kit/extra.fs': 3.3.1
-      find-up: 5.0.0
-
-  '@node-kit/pnpm-workspace-root@3.3.1':
-    dependencies:
-      '@node-kit/extra.fs': 3.3.1
-      '@pnpm/error': 5.0.3
-      find-up: 5.0.0
-
-  '@node-kit/yarn-workspace-root@3.3.1':
-    dependencies:
-      '@node-kit/extra.fs': 3.3.1
-      find-up: 5.0.0
-      micromatch: 4.0.8
-
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
       '@nodelib/fs.stat': 2.0.5
@@ -4110,12 +4065,6 @@ snapshots:
     optional: true
 
   '@pkgr/core@0.1.1': {}
-
-  '@pnpm/constants@7.1.1': {}
-
-  '@pnpm/error@5.0.3':
-    dependencies:
-      '@pnpm/constants': 7.1.1
 
   '@react-router/dev@7.1.1(@types/node@22.10.5)(jiti@2.4.2)(lightningcss@1.29.1)(react-router@7.1.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(terser@5.37.0)(tsx@4.19.2)(typescript@5.7.3)(vite@6.0.7(@types/node@22.10.5)(jiti@2.4.2)(lightningcss@1.29.1)(terser@5.37.0)(tsx@4.19.2)(yaml@2.7.0))(yaml@2.7.0)':
     dependencies:
@@ -6027,10 +5976,6 @@ snapshots:
 
   module-replacements@2.6.0: {}
 
-  monorepo-root@3.3.1:
-    dependencies:
-      workspace-root: 3.3.1
-
   ms@2.1.3: {}
 
   mz@2.7.0:
@@ -6338,6 +6283,8 @@ snapshots:
   resolve-from@5.0.0: {}
 
   resolve-pkg-maps@1.0.0: {}
+
+  resolve-workspace-root@2.0.0: {}
 
   resolve@1.22.10:
     dependencies:
@@ -6932,12 +6879,6 @@ snapshots:
       isexe: 2.0.0
 
   word-wrap@1.2.5: {}
-
-  workspace-root@3.3.1:
-    dependencies:
-      '@node-kit/lerna-workspace-root': 3.3.1
-      '@node-kit/pnpm-workspace-root': 3.3.1
-      '@node-kit/yarn-workspace-root': 3.3.1
 
   wrap-ansi@7.0.0:
     dependencies:
