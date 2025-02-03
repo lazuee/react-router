@@ -2,7 +2,6 @@ import { readableStreamToString } from "@react-router/node";
 import { isbot } from "isbot";
 import * as reactDomServer from "react-dom/server";
 import { ServerRouter, type HandleDocumentRequestFunction } from "react-router";
-import { NonceContext } from "./components/context/nonce";
 
 export const streamTimeout = 10_000;
 
@@ -11,7 +10,7 @@ const handleDocumentRequest: HandleDocumentRequestFunction = async (
   responseStatusCode,
   responseHeaders,
   routerContext,
-  { nonce },
+  _appLoadContext,
 ) => {
   let shellRendered = false;
   const userAgent = request.headers.get("user-agent");
@@ -19,11 +18,8 @@ const handleDocumentRequest: HandleDocumentRequestFunction = async (
   request.signal.addEventListener("abort", abortController.abort);
 
   const stream = await reactDomServer.renderToReadableStream(
-    <NonceContext.Provider value={nonce}>
-      <ServerRouter nonce={nonce} context={routerContext} url={request.url} />
-    </NonceContext.Provider>,
+    <ServerRouter context={routerContext} url={request.url} />,
     {
-      nonce,
       signal: abortController.signal,
       onError(error: unknown) {
         responseStatusCode = 500;

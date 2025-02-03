@@ -14,13 +14,13 @@ export const meta: MetaFunction = () => {
 };
 
 export function loader({ context }: Route.LoaderArgs) {
-  const { env } = context;
+  const { env, isBun } = context;
 
-  return { env };
+  return { env, isBun };
 }
 
 export default function Page() {
-  const { env } = useLoaderData<Info["loaderData"]>();
+  const { env, isBun } = useLoaderData<Info["loaderData"]>();
 
   return (
     <div className="flex h-full items-center justify-center bg-gradient-to-b from-zinc-50 via-zinc-200 to-zinc-400 dark:from-zinc-700 dark:via-neutral-900 dark:to-zinc-900">
@@ -83,7 +83,8 @@ export default function Page() {
                   ? "Vercel"
                   : !env?.IS_LOCALHOST
                     ? "Cloud"
-                    : "Localhost"}
+                    : "Localhost"}{" "}
+            with {isBun ? "Bun" : "NodeJS"}
           </p>
         </nav>
       </div>

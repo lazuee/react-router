@@ -5,7 +5,6 @@ function defineConfig(config) {
 
 export default defineConfig({
   appDirectory: "src/client",
-  prerender: ["pre-rendered"],
   future: {
     unstable_optimizeDeps: true,
   },

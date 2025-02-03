@@ -5,10 +5,10 @@ import {
 } from "react-router";
 
 const isHonoRequestData = () =>
-  global.REACT_ROUTER_HONO_REQUEST_PATH?.endsWith(".data") &&
-  global.REACT_ROUTER_HONO_REQUEST_FROM === "hono";
+  __reactRouterHono.request.path?.endsWith(".data") &&
+  __reactRouterHono.request.from === "hono";
 
-export function redirect(url: string, headers?: HeadersInit) {
+export function redirect(url: string, headers?: HeadersInit): Response {
   const res = reactRouterRedirect(url, { headers });
 
   if (isHonoRequestData()) {
@@ -45,7 +45,7 @@ export function redirect(url: string, headers?: HeadersInit) {
   return res;
 }
 
-export function redirectDocument(url: string, headers?: HeadersInit) {
+export function redirectDocument(url: string, headers?: HeadersInit): Response {
   const res = reactRouterRedirectDocument(url, { headers });
   if (isHonoRequestData()) {
     res.headers.set("X-Remix-Response", "yes");
@@ -82,7 +82,7 @@ export function redirectDocument(url: string, headers?: HeadersInit) {
   return res;
 }
 
-export function replace(url: string, headers?: HeadersInit) {
+export function replace(url: string, headers?: HeadersInit): Response {
   const res = reactRouterReplace(url, { headers });
   if (isHonoRequestData()) {
     res.headers.set("X-Remix-Response", "yes");

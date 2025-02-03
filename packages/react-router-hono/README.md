@@ -61,27 +61,6 @@ const reactRouterHono: ReactRouterHono = {
 export default reactRouterHono;
 ```
 
-#### React Router Configuration
-
-Configure `react-router.config.js` for production:
-
-```js
-import { bunPreset, nodePreset, vercelPreset } from "@lazuee/react-router-hono";
-
-export default {
-  appDirectory: "src/client", // react-router app directory
-  presets: [bunPreset(), nodePreset(), vercelPreset({ regions: "hnd1" })],
-  future: { unstable_optimizeDeps: true },
-};
-```
-
-### Presets
-
-- `bunPreset` : Prepares the app for Bun. Start the server with:  `bun run --bun ./build/server/index.js`
-- `nodePreset` : Prepares the app for Node.js. Start the server with:  `node ./build/server/index.js`
-- `vercelPreset` : Optimizes for Vercel deployment. Automatically detects `VERCEL=1` or the Vercel environment.
-  - `regions` : [Vercel Regions](https://vercel.com/docs/edge-network/regions#region-list) where the Serverless Function will be deployed to.
-
 For a usage example, check the [website](../../website) folder.
 
 ## License

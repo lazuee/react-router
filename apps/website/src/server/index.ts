@@ -1,3 +1,4 @@
+import { versions } from "node:process";
 import { type ReactRouterHono } from "@lazuee/react-router-hono";
 
 import { prettyJSON } from "hono/pretty-json";
@@ -10,6 +11,7 @@ import routes from "./routes";
 declare module "react-router" {
   export interface AppLoadContext {
     readonly env: typeof env;
+    readonly isBun: boolean;
   }
 }
 
@@ -24,6 +26,7 @@ const reactRouterHono: ReactRouterHono = {
     return {
       clientIp: ctx.var.clientIp,
       nonce: ctx.var.nonce,
+      isBun: !!versions.bun,
       env,
     };
   },

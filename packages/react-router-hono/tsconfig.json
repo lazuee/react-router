@@ -1,12 +1,12 @@
 {
   "compilerOptions": {
+    "composite": true,
     "target": "ES2022",
     "lib": ["DOM", "DOM.Iterable", "ES2022"],
     "module": "ES2022",
     "moduleResolution": "Bundler",
-
     "resolveJsonModule": true,
-    "allowJs": true,
+    "isolatedDeclarations": true,
 
     "noEmit": true,
     "isolatedModules": true,
@@ -17,5 +17,5 @@
     "noImplicitOverride": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "tsup.config.ts", "global.d.ts"]
+  "include": ["src/**/*", "tsdown.config.ts", "global.d.ts"]
 }

@@ -22,20 +22,16 @@
   },
   "exports": {
     ".": {
-      "types": "./dist/hono.d.ts",
-      "import": "./dist/hono.js"
-    },
-    "./cache": {
-      "types": "./dist/cache.d.ts",
-      "import": "./dist/cache.js"
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
     },
     "./http": {
-      "types": "./dist/http.d.ts",
-      "import": "./dist/http.js"
+      "types": "./dist/hono/http.d.ts",
+      "import": "./dist/hono/http.js"
     },
-    "./serveStatic": {
-      "types": "./dist/serveStatic.d.ts",
-      "import": "./dist/serveStatic.js"
+    "./middleware/*": {
+      "types": "./dist/hono/middleware/*.d.ts",
+      "import": "./dist/hono/middleware/*.js"
     }
   },
   "files": [
@@ -47,29 +43,23 @@
   },
   "sideEffects": false,
   "scripts": {
-    "build": "pnpm run clean && tsup",
-    "clean": "node -e \"import { rmSync } from 'node:fs'; rmSync('dist', { recursive: true, force: true });\""
+    "build": "tsdown"
   },
   "peerDependencies": {
-    "@hono/node-server": "^1.13.7",
-    "@react-router/dev": "^7.1.1",
-    "esbuild": "^0.24.2",
     "hono": "^4.6.15",
-    "react-router": "^7.1.1",
-    "vite": "^5.1.8 || ^6.0.7"
+    "react-router": "^7.1.5",
+    "vite": "^5.4.14 || ^6.0.11 || ^6.1.0-beta.0"
   },
   "dependencies": {
-    "@vercel/nft": "^0.29.0",
+    "@hono/node-server": "^1.13.8",
+    "@vercel/nft": "^0.29.1",
     "minimatch": "^10.0.1",
-    "resolve-workspace-root": "^2.0.0",
-    "tinyexec": "^0.3.2",
-    "tinyglobby": "^0.2.10"
+    "resolve-workspace-root": "^2.0.0"
   },
   "devDependencies": {
-    "@types/bun": "^1.1.16",
-    "@types/node": "^22.10.5",
-    "terser": "^5.37.0",
-    "tsup": "^8.3.5",
+    "@types/bun": "^1.2.2",
+    "@types/node": "^22.13.0",
+    "tsdown": "^0.5.6",
     "typescript": "^5.7.3"
   }
 }
