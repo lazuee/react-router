@@ -58,8 +58,8 @@
   },
   "devDependencies": {
     "@types/bun": "^1.2.2",
-    "@types/node": "^22.13.1",
-    "tsdown": "^0.5.9",
+    "@types/node": "^22.13.4",
+    "tsdown": "^0.6.0",
     "typescript": "^5.7.3"
   }
 }
