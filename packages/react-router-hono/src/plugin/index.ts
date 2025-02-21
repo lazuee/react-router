@@ -11,7 +11,7 @@ export interface ReactRouterHonoOpts {
 }
 
 export async function reactRouterHono(
-  opts: ReactRouterHonoOpts,
+  opts: ReactRouterHonoOpts = {},
 ): Promise<Plugin[]> {
   const plugins = await Promise.all([
     config.plugin(opts),
