@@ -1,32 +1,59 @@
-import { existsSync, promises as fsp, readlinkSync } from "node:fs";
+import {
+  existsSync,
+  promises as fsp,
+  readFileSync,
+  readlinkSync,
+} from "node:fs";
 import { join, resolve } from "node:path";
 import { cwd } from "node:process";
+import { type Config as ReactRouterConfig } from "@react-router/dev/config";
 import { nodeFileTrace } from "@vercel/nft";
 import rwr from "resolve-workspace-root";
+import { globSync } from "tinyglobby";
+import { loadConfig } from "unconfig";
 import { mergeConfig, type Plugin, type UserConfig } from "vite";
 import { colors, isVercel } from "../../../lib/utils";
 
+let _hasVercelPreset: boolean;
+async function hasVercelPreset(): Promise<boolean> {
+  const {
+    config,
+    sources: [filePath],
+  } = await loadConfig<ReactRouterConfig>({
+    sources: [
+      {
+        files: "react-router.config",
+        extensions: ["ts", "mts", "cts", "js", "mjs", "cjs"],
+      },
+    ],
+  });
+
+  const code = readFileSync(filePath, "utf8");
+  const hasImport = /["']@vercel\/react-router\/vite['"]/.test(code);
+  const hasPreset =
+    /vercelPreset\(.*\)/.test(code) &&
+    !!config.presets?.find((x) => x.name === "vercel");
+  return (_hasVercelPreset ??= hasImport && hasPreset);
+}
+
 export function plugin(): Plugin[] {
   if (!isVercel) return [];
-  let isBuild = false;
 
   return [
     {
       name: "@lazuee/react-router-hono[deploy-vercel]",
+      apply: "build",
       enforce: "post",
-      config(_, { command }) {
-        isBuild = command === "build";
-
-        if (!isBuild) return;
+      config(_) {
         return mergeConfig(_, {
           build: { copyPublicDir: true },
         } satisfies UserConfig);
       },
       closeBundle: {
         order: "post",
+        sequential: true,
         async handler() {
           if (this.environment.name !== "ssr") return;
-
           __logger.info(
             `${colors().green("Vercel detected")}, generating '${colors().gray(".vercel")}' directory...`,
           );
@@ -40,9 +67,20 @@ export function plugin(): Plugin[] {
             static: join(rootDir, ".vercel/output/static"),
           };
 
+          const vercelDir = join(cwd(), ".vercel");
+          await fsp.rm(vercelDir, { recursive: true, force: true });
           await fsp.rm(vercelDirs.root, { recursive: true, force: true });
-          await fsp.mkdir(vercelDirs.static, { recursive: true });
+          await fsp.mkdir(vercelDirs.root, { recursive: true });
 
+          if (await hasVercelPreset()) {
+            // eslint-disable-next-line node/prefer-global/process
+            process.once("exit", () => {
+              const file = "react-router-build-result.json";
+              fsp.copyFile(join(vercelDir, file), join(vercelDirs.root, file));
+            });
+          }
+
+          await fsp.mkdir(vercelDirs.static, { recursive: true });
           await Promise.all([
             fsp.cp(
               join(__reactRouterHono.directory.build, "server"),
@@ -56,17 +94,18 @@ export function plugin(): Plugin[] {
             ),
           ]);
 
-          const serverIndex = join(
-            __reactRouterHono.directory.build,
-            "server",
-            "index.js",
-          );
-          const chunkFiles = (
-            await fsp.readdir(
-              join(__reactRouterHono.directory.build, "server", "chunks"),
-            )
-          ).map((file) =>
-            join(__reactRouterHono.directory.build, "server", "chunks", file),
+          const serverIndex = globSync(
+            join(__reactRouterHono.directory.build, "server", "**", "index.js"),
+          )?.[0];
+          const chunkFiles = globSync(
+            join(
+              __reactRouterHono.directory.build,
+              "server",
+              "**",
+              "chunks",
+              "**",
+              "*.js",
+            ),
           );
 
           const { fileList, esmFileList } = await nodeFileTrace(
@@ -106,8 +145,12 @@ export function plugin(): Plugin[] {
             targetPath = resolve(rootDir, targetPath);
 
             if (!existsSync(dest) || !(await fsp.stat(dest)).isDirectory()) {
-              await fsp.mkdir(dest, { recursive: true });
-              await fsp.cp(targetPath, dest, { recursive: true });
+              try {
+                await fsp.mkdir(dest, { recursive: true });
+                await fsp.cp(targetPath, dest, { recursive: true });
+              } catch {
+                await fsp.rmdir(dest).catch(() => {});
+              }
             }
           }
 
@@ -116,7 +159,10 @@ export function plugin(): Plugin[] {
               join(vercelDirs.func, ".vc-config.json"),
               JSON.stringify(
                 {
-                  handler: "index.js",
+                  handler: serverIndex.replace(
+                    join(__reactRouterHono.directory.build, "server"),
+                    ".",
+                  ),
                   runtime: "nodejs20.x",
                   launcherType: "Nodejs",
                 },

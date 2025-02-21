@@ -34,17 +34,14 @@ const esbuild = requireFrom("esbuild") as typeof import("esbuild");
 
 export function plugin(): Plugin[] {
   let runtimeFile = "";
-  let isBuild = false;
 
   return [
     {
       name: "@lazuee/react-router-hono[prod]",
+      apply: "build",
       config: {
         order: "post",
-        handler(_, { isSsrBuild, command }) {
-          isBuild = command === "build";
-          if (!isBuild) return _;
-
+        handler(_, { isSsrBuild }) {
           runtimeFile = join(
             `${_.__reactRouterHono?.directory?.honoEntry}`,
             `${_.__reactRouterHono?.runtime}.js`,
@@ -86,12 +83,10 @@ export function plugin(): Plugin[] {
         },
       },
       resolveId(id) {
-        if (!isBuild) return;
         const vmod = Object.values(vm).find((vmod) => vmod.id === id);
         if (vmod) return vmod.resolvedId;
       },
       async load(id) {
-        if (!isBuild) return;
         switch (id) {
           case vm.entry.resolvedId: {
             const entry = resolve(

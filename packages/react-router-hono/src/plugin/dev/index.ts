@@ -11,6 +11,7 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
   return [
     {
       name: "@lazuee/react-router-hono[dev]",
+      apply: "serve",
       configureServer: {
         order: "pre",
         async handler() {
