@@ -31,7 +31,7 @@ export const createHonoServer = async <E extends Env = Env>(
       server.route("/", options.server);
   }
 
-  if (!isVercel) {
+  if (!isVercel()) {
     const assetsCache: CacheOptions = {
       maxAge: "1w",
       public: true,

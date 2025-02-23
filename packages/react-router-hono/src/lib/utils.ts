@@ -1,5 +1,8 @@
+import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
 import { env, versions } from "node:process";
+import { type Config as ReactRouterConfig } from "@react-router/dev/config";
+import { loadConfig } from "unconfig";
 
 const importCache: {
   [cacheKey: string]: any;
@@ -31,9 +34,30 @@ export function createVM(name: string): {
   };
 }
 
-export const isVercel: boolean = env.VERCEL === "1" || !!env.VERCEL_ENV;
+let _hasVercelPreset = false;
+export async function hasVercelPreset(): Promise<boolean> {
+  const {
+    config,
+    sources: [filePath],
+  } = await loadConfig<ReactRouterConfig>({
+    sources: [
+      {
+        files: "react-router.config",
+        extensions: ["ts", "mts", "cts", "js", "mjs", "cjs"],
+      },
+    ],
+  });
+  const code = readFileSync(filePath, "utf8");
+  return (_hasVercelPreset =
+    /["']@vercel\/react-router\/vite['"]/.test(code) &&
+    /vercelPreset\(.*\)/.test(code) &&
+    !!config.presets?.find((x) => x.name === "vercel"));
+}
 
-export const isBun: boolean = !!versions.bun;
+export const isVercel = (): boolean =>
+  _hasVercelPreset || env.VERCEL === "1" || !!env.VERCEL_ENV;
+
+export const isBun = (): boolean => !!versions.bun;
 
 export const colors = () =>
   ((globalThis as any).__colors ??=
