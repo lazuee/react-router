@@ -52,34 +52,36 @@ export function plugin(): Plugin[] {
 
           const immutable = "_immutable";
 
-          return mergeConfig(_, {
-            build: {
-              rollupOptions: {
-                external: ["@lazuee/react-router-hono"],
-                output: {
-                  entryFileNames: `${isSsrBuild ? "" : `${immutable}/`}[name]${isSsrBuild ? "" : ".[hash]"}.js`,
-                  assetFileNames: `${isSsrBuild ? "" : `${immutable}/`}assets/[name].[hash][extname]`,
-                  chunkFileNames: `${isSsrBuild ? "" : `${immutable}/`}chunks/[name].[hash].js`,
-                },
-              },
-            },
-            environments: {
-              ssr: {
-                build: {
-                  target: "es2022",
-                  rollupOptions: {
-                    input: { index: runtimeFile },
-                  },
-                },
-                optimizeDeps: {
-                  esbuildOptions: {
-                    platform: "node",
-                    target: "esnext",
+          return mergeConfig(
+            mergeConfig(_, {
+              build: {
+                rollupOptions: {
+                  external: ["@lazuee/react-router-hono"],
+                  output: {
+                    entryFileNames: `${isSsrBuild ? "" : `${immutable}/`}[name]${isSsrBuild ? "" : ".[hash]"}.js`,
+                    assetFileNames: `${isSsrBuild ? "" : `${immutable}/`}assets/[name].[hash][extname]`,
+                    chunkFileNames: `${isSsrBuild ? "" : `${immutable}/`}chunks/[name].[hash].js`,
                   },
                 },
               },
-            },
-          } satisfies UserConfig);
+            } satisfies UserConfig),
+            isSsrBuild
+              ? ({
+                  build: {
+                    target: "es2022",
+                    rollupOptions: {
+                      input: { index: runtimeFile },
+                    },
+                  },
+                  optimizeDeps: {
+                    esbuildOptions: {
+                      platform: "node",
+                      target: "esnext",
+                    },
+                  },
+                } satisfies UserConfig)
+              : {},
+          );
         },
       },
       resolveId(id) {

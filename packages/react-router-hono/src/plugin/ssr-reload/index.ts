@@ -8,7 +8,7 @@ export function plugin(): Plugin {
   return {
     name: "@lazuee/react-router-hono[ssr-reload]",
     hotUpdate({ modules, server, timestamp }) {
-      if (this.environment.name !== "ssr") return;
+      if (this.environment?.name !== "ssr") return;
 
       const seen = new Set<EnvironmentModuleNode>();
       let hasSsrOnlyModule = false;

@@ -27,6 +27,7 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
       config: {
         order: "pre",
         handler(_, { mode }) {
+          _.root ??= cwd();
           globalThis.__logger ??= createLogger(_.logLevel, {
             prefix: "[@lazuee/react-router-hono]",
             allowClearScreen: true,
@@ -35,7 +36,7 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
             ? "production"
             : "development";
 
-          const entry = relative(cwd(), `${_.build?.rollupOptions?.input}`);
+          const entry = relative(_.root, `${_.build?.rollupOptions?.input}`);
           if (existsSync(entry)) serverFile = entry as any;
           const port = mode !== "production" ? 5173 : 3000;
 
@@ -60,10 +61,11 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
           }
 
           return mergeConfig(
+            _,
             {
               mode,
-              root: cwd(),
-              envDir: cwd(),
+              root: _.root,
+              envDir: _.root,
               appType: "custom",
               build: {
                 cssTarget: [
@@ -91,7 +93,6 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
                 directory: { honoEntry },
               },
             } satisfies UserConfig,
-            _,
             false,
           );
         },
