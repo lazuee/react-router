@@ -1,0 +1,5 @@
+{
+    "installDependencies": false,
+    "startCommand": "pnpm install && pnpm dev",
+    "compileTrigger": "save"
+}
