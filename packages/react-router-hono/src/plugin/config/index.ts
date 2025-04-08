@@ -103,7 +103,6 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
           const __ = _.__reactRouterPluginContext!;
           const ___ = _.__reactRouterHono!;
           if (!__?.reactRouterConfig) return;
-          console.log(JSON.stringify(__.reactRouterConfig, null, 2));
 
           globalThis.__viteConfig ??= _;
           globalThis.__reactRouterHono = {
