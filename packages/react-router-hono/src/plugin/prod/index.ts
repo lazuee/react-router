@@ -113,7 +113,7 @@ export function plugin(): Plugin[] {
               ["hono/compress", "CompressionStream"].some((x) =>
                 code.includes(x),
               ) &&
-              isBun
+              isBun()
             ) {
               const warnCompression = [
                 "Bun environment detected. 'CompressionStream' is not supported in Bun.",

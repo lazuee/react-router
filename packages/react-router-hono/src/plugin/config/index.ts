@@ -17,7 +17,7 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
   let serverFile = opts?.serverFile;
 
   switch (true) {
-    case isBun:
+    case isBun():
       runtime = "bun";
       break;
   }
@@ -102,6 +102,8 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
         handler(_) {
           const __ = _.__reactRouterPluginContext!;
           const ___ = _.__reactRouterHono!;
+          if (!__?.reactRouterConfig) return;
+          console.log(JSON.stringify(__.reactRouterConfig, null, 2));
 
           globalThis.__viteConfig ??= _;
           globalThis.__reactRouterHono = {

@@ -23,7 +23,7 @@ export function serveStatic<E extends Env>(
 
   return createMiddleware(async (ctx, next) => {
     switch (true) {
-      case isBun:
+      case isBun():
         _serveStatic ||= (await import("hono/bun")).serveStatic;
         break;
       default:

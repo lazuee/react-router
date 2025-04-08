@@ -1,4 +1,4 @@
-import { defineConfig, type Config, type Options } from "tsdown";
+import { defineConfig, type Options, type UserConfig } from "tsdown";
 
 export const baseConfig: Options = {
   bundleDts: true,
@@ -16,7 +16,7 @@ export const baseConfig: Options = {
   ],
 };
 
-const config: Config = defineConfig({
+const config: UserConfig = defineConfig({
   ...baseConfig,
   inputOptions: { resolve: { tsconfigFilename: "tsconfig.json" } },
   entry: [
