@@ -75,15 +75,10 @@ interface ViteConfig {
 }
 
 declare global {
-  // eslint-disable-next-line vars-on-top, no-var
   var __reactRouterHono: ReactRouterHono;
-  // eslint-disable-next-line vars-on-top, no-var
   var __viteConfig: ResolvedConfig;
-  // eslint-disable-next-line vars-on-top, no-var
   var __viteDevServer: ViteDevServer;
-  // eslint-disable-next-line vars-on-top, no-var
   var __serveStaticRoots: string[];
-  // eslint-disable-next-line vars-on-top, no-var
   var __logger: Logger;
 }
 

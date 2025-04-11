@@ -18,7 +18,7 @@
     "website:vercel": "cross-env VERCEL=1 pnpm run website:build"
   },
   "devDependencies": {
-    "@ntnyq/eslint-config": "^3.12.3",
+    "@ntnyq/eslint-config": "^4.0.3",
     "cross-env": "^7.0.3",
     "eslint": "^9.24.0",
     "stylelint": "^16.18.0",
@@ -26,15 +26,5 @@
     "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-config-tailwindcss": "^1.0.0",
     "stylelint-scss": "^6.11.1"
-  },
-  "pnpm": {
-    "overrides": {
-      "esbuild": "^0.25.2",
-      "react": "^19.1.0",
-      "react-dom": "^19.1.0"
-    },
-    "onlyBuiltDependencies": [
-      "esbuild"
-    ]
   }
 }

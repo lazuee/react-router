@@ -51,7 +51,7 @@
     "vite": "^5.4.14 || ^6.1.0"
   },
   "dependencies": {
-    "@hono/node-server": "^1.14.0",
+    "@hono/node-server": "^1.14.1",
     "@vercel/nft": "^0.29.2",
     "minimatch": "^10.0.1",
     "resolve-workspace-root": "^2.0.0",
@@ -59,7 +59,7 @@
     "unconfig": "^7.3.1"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.8",
+    "@types/bun": "^1.2.9",
     "@types/node": "^22.14.0",
     "tsdown": "^0.6.10",
     "typescript": "^5.8.3"
