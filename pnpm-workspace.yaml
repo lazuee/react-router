@@ -1,9 +1,3 @@
 packages:
   - "apps/*"
   - "packages/*"
-overrides:
-  esbuild: ^0.25.2
-  react: ^19.1.0
-  react-dom: ^19.1.0
-onlyBuiltDependencies:
-  - esbuild

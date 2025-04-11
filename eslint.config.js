@@ -18,7 +18,7 @@ export default defineESLintConfig({
   pnpm: {
     overridesJsonRules: {
       "pnpm/json-enforce-catalog": "off",
-      "pnpm/json-prefer-workspace-settings": "error",
+      "pnpm/json-prefer-workspace-settings": "off",
     },
   },
   typescript: {
