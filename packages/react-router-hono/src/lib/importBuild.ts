@@ -1,6 +1,6 @@
 import { type ServerBuild } from "react-router";
 
-export async function importBuild(): Promise<ServerBuild | undefined> {
+export async function importBuild(): Promise<ServerBuild> {
   if (__reactRouterHono.mode !== "production") {
     return (
       await import("vite").then(({ createServer }) =>

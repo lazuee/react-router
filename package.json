@@ -6,14 +6,16 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "pnpm run --stream --if-present /^build:.*/",
+    "build": "pnpm run build:package && pnpm run build:app",
     "build:app": "pnpm run -r  --stream --if-present --parallel --filter {apps/**} --workspace-concurrency=Infinity /^build.*/",
     "build:package": "pnpm run -r  --stream --if-present --parallel --filter {packages/**} --workspace-concurrency=Infinity /^build.*/",
     "dev": "pnpm run -r  --stream --if-present --parallel --filter {apps/website} --workspace-concurrency=Infinity /^dev.*/",
+    "dev:minimal": "pnpm run -r  --stream --if-present --parallel --filter {apps/minimal} --workspace-concurrency=Infinity /^dev.*/",
     "lint": "pnpm run --stream --if-present /^lint:.*/",
     "lint:eslint": "eslint . --fix",
     "lint:stylelint": "stylelint --ignore-path .gitignore \"{apps,packages}/**/*.{css,scss}\"",
-    "start": "pnpm run -r  --stream --if-present --parallel --filter {apps/website} --workspace-concurrency=Infinity /^start.*/"
+    "start": "pnpm run -r  --stream --if-present --parallel --filter {apps/website} --workspace-concurrency=Infinity /^start.*/",
+    "start:minimal": "pnpm run -r  --stream --if-present --parallel --filter {apps/minimal} --workspace-concurrency=Infinity /^start.*/"
   },
   "devDependencies": {
     "@ntnyq/eslint-config": "^4.3.0",
