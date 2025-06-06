@@ -1,22 +1,18 @@
-import { defineConfig, type Options, type UserConfig } from "tsdown";
+import { defineConfig, type Options } from "tsdown";
 
 export const baseConfig: Options = {
-  bundleDts: true,
-  clean: true,
-  dts: { transformer: "typescript" },
+  dts: true,
   format: "esm",
-  platform: "node",
   shims: true,
   skipNodeModulesBundle: true,
   target: "node20",
-  unused: false,
   external: [
     "virtual:react-router/server-build",
     "virtual:lazuee/react-router-hono-entry",
   ],
 };
 
-const config: UserConfig = defineConfig({
+const config = defineConfig({
   ...baseConfig,
   inputOptions: { resolve: { tsconfigFilename: "tsconfig.json" } },
   entry: [
@@ -27,6 +23,15 @@ const config: UserConfig = defineConfig({
     "src/hono/entry/*.ts",
     "src/hono/middleware/*.ts",
   ],
+  exports: {
+    customExports: (exports) =>
+      Object.fromEntries(
+        Object.entries(exports).map(([key, value]) => [
+          key.replace(/^.\/hono\//, "./").replace(/\/index$/, ""),
+          value,
+        ]),
+      ),
+  },
 });
 
 export default config;

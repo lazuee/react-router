@@ -21,17 +21,25 @@
     "directory": "packages/react-router-hono"
   },
   "exports": {
-    ".": {
-      "types": "./dist/index.d.ts",
-      "import": "./dist/index.js"
-    },
-    "./http": {
-      "types": "./dist/hono/http.d.ts",
-      "import": "./dist/hono/http.js"
-    },
-    "./middleware/*": {
-      "types": "./dist/hono/middleware/*.d.ts",
-      "import": "./dist/hono/middleware/*.js"
+    "./package.json": "./package.json",
+    ".": "./dist/index.js",
+    "./entry/bun": "./dist/hono/entry/bun.js",
+    "./entry/node": "./dist/hono/entry/node.js",
+    "./http": "./dist/hono/http.js",
+    "./middleware/cache": "./dist/hono/middleware/cache.js",
+    "./middleware/reactRouter": "./dist/hono/middleware/reactRouter.js",
+    "./middleware/serveStatic": "./dist/hono/middleware/serveStatic.js",
+    "./options": "./dist/hono/options/index.js",
+    "./server": "./dist/hono/server/index.js"
+  },
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "*": [
+        "./dist/*"
+      ]
     }
   },
   "files": [
@@ -46,22 +54,22 @@
     "build": "tsdown"
   },
   "peerDependencies": {
-    "hono": "^4.7.8",
-    "react-router": "^7.5.3",
-    "vite": "^5.4.19 || ^6.2.3"
+    "@hono/node-server": "^1.14.3",
+    "hono": "^4.7.11",
+    "react-router": "^7.6.2",
+    "vite": "^5.4.19 || ^6.3.5"
   },
   "dependencies": {
-    "@hono/node-server": "^1.14.1",
-    "@vercel/nft": "^0.29.2",
+    "@vercel/nft": "^0.29.4",
     "minimatch": "^10.0.1",
     "resolve-workspace-root": "^2.0.0",
-    "tinyglobby": "^0.2.13",
+    "tinyglobby": "^0.2.14",
     "unconfig": "^7.3.2"
   },
   "devDependencies": {
-    "@types/bun": "^1.2.12",
-    "@types/node": "^22.15.3",
-    "tsdown": "^0.6.10",
+    "@types/bun": "^1.2.15",
+    "@types/node": "^22.15.29",
+    "tsdown": "^0.12.7",
     "typescript": "^5.8.3"
   }
 }
