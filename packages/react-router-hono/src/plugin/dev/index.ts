@@ -1,89 +1,72 @@
-import { existsSync, statSync } from "node:fs";
-import { join } from "node:path";
-import { minimatch } from "minimatch";
+import honoDevServer, { type DevServerOptions } from "@hono/vite-dev-server";
+import bunAdapter from "@hono/vite-dev-server/bun";
+import nodeAdapter from "@hono/vite-dev-server/node";
 import { type Plugin } from "vite";
 import { type ReactRouterHonoOpts } from "..";
-import { resolveReactRouterHono } from "../../hono/options";
-import { createHonoServer } from "../../hono/server";
-import { requestListener } from "../../lib/requestListener";
+import { vm } from "../../constants";
 
 export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
   return [
     {
       name: "@lazuee/react-router-hono[dev]",
       apply: "serve",
+      load: {
+        order: "post",
+        async handler(id) {
+          if (id === vm.server.resolvedId) {
+            return `
+            import { resolveReactRouterHono } from "@lazuee/react-router-hono/options";
+            import { createHonoServer } from "@lazuee/react-router-hono/server";
+            const reactRouterHono = await resolveReactRouterHono();
+            const app = await createHonoServer(reactRouterHono);
+            export default app;
+            `;
+          }
+        },
+      },
       configureServer: {
         order: "pre",
         async handler() {
+          let adapter: DevServerOptions["adapter"] = nodeAdapter;
+          if (__reactRouterHono.runtime === "bun") {
+            adapter = bunAdapter;
+          }
+
           const appDir = __reactRouterHono.directory.app;
-
-          __viteDevServer.middlewares.use(async (req, res, next) => {
-            if (req.url) {
-              const filePath = join(
-                __reactRouterHono.directory.public,
-                req.url,
-              );
-              try {
-                if (existsSync(filePath) && statSync(filePath).isFile()) {
-                  return next();
-                }
-              } catch {}
-            }
-
-            const exclude = [
-              `/${appDir}/**/*`,
-              `/${appDir}/**/.*/**`,
+          const honoDev = honoDevServer({
+            adapter,
+            entry: vm.server.resolvedId,
+            export: "default",
+            injectClientScript: false,
+            exclude: [
               new RegExp(
-                `^(?=\\/${appDir.replaceAll("/", "")}\\/)((?!.*\\.data(\\?|$)).*\\..*(\\\?.*)?$)`,
+                `^(?=\\/${appDir.replace(/^[/\\]+|[/\\]+$/g, "").replaceAll(/[/\\]+/g, "/")}\\/)((?!.*\\.data(\\?|$)).*\\..*(\\?.*)?$)`,
               ),
-              /^\/@.+$/,
+              new RegExp(
+                `^(?=\\/${
+                  appDir
+                    .replace(/^[/\\]+|[/\\]+$/g, "")
+                    .replaceAll(/[/\\]+/g, "/")
+                    .split("/")[0]
+                }\\/)((?!.*\\.data(\\?|$)).*\\..*(\\?.*)?$)`,
+              ),
               /\?import(\?.*)?$/,
-              /^\/favicon\.ico$/,
+              /^\/@.+$/,
               /^\/node_modules\/.*/,
+              `^(?=\\/${appDir.replace(/^[/\\]+|[/\\]+$/g, "").replace(/[/\\]+/g, "/")}/**/.*/**)`,
+              `^(?=\\/${
+                appDir
+                  .replace(/^[/\\]+|[/\\]+$/g, "")
+                  .replace(/[/\\]+/g, "/")
+                  .split("/")[0]
+              }/**/.*/**)`,
               ...(Array.isArray(opts?.exclude) ? opts.exclude : []),
-            ];
-
-            for (const pattern of exclude) {
-              if (req.url) {
-                if (pattern instanceof RegExp) {
-                  if (pattern.test(req.url)) return next();
-                } else if (minimatch(req.url?.toString(), pattern)) {
-                  return next();
-                }
-              }
-            }
-
-            requestListener(
-              async (request) => {
-                const reactRouterHono = await resolveReactRouterHono();
-                const app = await createHonoServer(reactRouterHono);
-                const response = await app?.fetch(request, {
-                  incoming: req,
-                  outgoing: res,
-                });
-
-                if (!(response instanceof Response)) throw response;
-                return response;
-              },
-              {
-                onError: (e) => {
-                  let error: Error;
-                  if (e instanceof Error) {
-                    error = e;
-                    __viteDevServer.ssrFixStacktrace(error);
-                  } else if (typeof e === "string") {
-                    error = new Error(
-                      `The response is not an instance of "Response".\n\nServer returned:\n\n${e}`,
-                    );
-                  } else {
-                    error = new Error(`Unknown error: ${e}`);
-                  }
-
-                  next(error);
-                },
-              },
-            )(req, res);
+            ],
           });
+
+          if (typeof honoDev.configureServer === "function") {
+            honoDev.configureServer(__viteDevServer);
+          }
         },
       },
     },

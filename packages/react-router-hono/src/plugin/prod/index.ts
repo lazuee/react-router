@@ -84,10 +84,6 @@ export function plugin(): Plugin[] {
           );
         },
       },
-      resolveId(id) {
-        const vmod = Object.values(vm).find((vmod) => vmod.id === id);
-        if (vmod) return vmod.resolvedId;
-      },
       async load(id) {
         switch (id) {
           case vm.entry.resolvedId: {

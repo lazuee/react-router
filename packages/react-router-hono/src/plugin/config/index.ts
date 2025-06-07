@@ -5,6 +5,7 @@ import { cwd, env, exit } from "node:process";
 import { fileURLToPath } from "node:url";
 import { createLogger, mergeConfig, type Plugin, type UserConfig } from "vite";
 import { type ReactRouterHonoOpts } from "..";
+import { vm } from "../../constants";
 import { colors, isBun } from "../../lib/utils";
 
 const __dirname = fileURLToPath(new URL(".", import.meta.url));
@@ -147,6 +148,13 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
         order: "pre",
         async handler(server) {
           globalThis.__viteDevServer = server;
+        },
+      },
+      resolveId: {
+        order: "pre",
+        handler(id) {
+          const vmod = Object.values(vm).find((vmod) => vmod.id === id);
+          if (vmod) return vmod.resolvedId;
         },
       },
     },

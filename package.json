@@ -25,7 +25,8 @@
     "stylelint-config-clean-order": "^7.0.0",
     "stylelint-config-standard-scss": "^15.0.1",
     "stylelint-config-tailwindcss": "^1.0.0",
-    "stylelint-scss": "^6.12.0"
+    "stylelint-scss": "^6.12.0",
+    "tsdown": "^0.12.7"
   },
   "pnpm": {
     "overrides": {

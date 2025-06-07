@@ -26,10 +26,12 @@ const config = defineConfig({
   exports: {
     customExports: (exports) =>
       Object.fromEntries(
-        Object.entries(exports).map(([key, value]) => [
-          key.replace(/^.\/hono\//, "./").replace(/\/index$/, ""),
-          value,
-        ]),
+        Object.entries(exports)
+          .map(([key, value]) => [
+            key.replace(/^.\/hono\//, "./").replace(/\/index$/, ""),
+            value,
+          ])
+          .filter(([key]) => [/^.\/entry/].some((x) => !x.test(key))),
       ),
   },
 });
