@@ -1,16 +1,17 @@
 import { Hono, type Env } from "hono";
-import { importBuild } from "../../lib/importBuild";
+import { createRequestHandler, type ServerBuild } from "react-router";
 import { isVercel } from "../../lib/utils";
 import { cache, type CacheOptions } from "../middleware/cache";
-import { reactRouter } from "../middleware/reactRouter";
 import { serveStatic } from "../middleware/serveStatic";
 import { type ReactRouterHono } from "./types";
 
 export const createHonoServer = async <E extends Env = Env>(
   options: ReactRouterHono<E> = {},
-): Promise<Hono<E> | undefined> => {
-  const build = await importBuild();
-  if (!build) return undefined;
+): Promise<Hono<E>> => {
+  let build: ServerBuild = await import(
+    //@ts-expect-error - virtual module
+    /* @vite-ignore */ "virtual:react-router/server-build"
+  );
 
   const mode = __reactRouterHono.mode;
   const publicDir = __reactRouterHono.directory.public;
@@ -64,17 +65,18 @@ export const createHonoServer = async <E extends Env = Env>(
     }
   }
 
-  server.use(
-    "*",
-    reactRouter({
-      build,
-      mode,
-      getLoadContext: (ctx) => {
-        __reactRouterHono.request.from = "react-router";
-        return options.getLoadContext?.(ctx, { build, mode }) || {};
-      },
-    }),
-  );
+  server.use("*", async (ctx) => {
+    build = await import(
+      //@ts-expect-error - virtual module
+      /* @vite-ignore */ "virtual:react-router/server-build"
+    );
+
+    const requestHandler = createRequestHandler(build, mode);
+    const loadContext = await Promise.resolve(
+      options.getLoadContext?.(ctx, { build, mode }),
+    );
+    return requestHandler(ctx.req.raw, loadContext);
+  });
 
   return server;
 };

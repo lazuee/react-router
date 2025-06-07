@@ -1,16 +1,13 @@
 import { type Context, type Env } from "hono";
 import { type Hono } from "hono";
 import { type HonoOptions } from "hono/hono-base";
-import { type AppLoadContext } from "react-router";
+import { type AppLoadContext, type ServerBuild } from "react-router";
 import { type MaybePromise } from "../../lib/types";
-import { type ReactRouterOptions } from "../middleware/reactRouter";
 
-export type ReactRouterHono<E extends Env = Env> = {
-  getLoadContext?: LoadContext;
-  honoOptions?: HonoOptions<E>;
-  listeningListener?: ListeningListener;
-  port?: number;
-  server?: Hono<E> | HonoServer<E>;
+type ReactRouterOptions = {
+  build: ServerBuild;
+  mode?: string;
+  getLoadContext?: (ctx: Context) => MaybePromise<AppLoadContext>;
 };
 
 type HonoServer<E extends Env> = (
@@ -25,4 +22,10 @@ type LoadContext = (
   options: Pick<ReactRouterOptions, "build" | "mode">,
 ) => MaybePromise<AppLoadContext>;
 
-export {};
+export type ReactRouterHono<E extends Env = Env> = {
+  getLoadContext?: LoadContext;
+  honoOptions?: HonoOptions<E>;
+  listeningListener?: ListeningListener;
+  port?: number;
+  server?: Hono<E> | HonoServer<E>;
+};

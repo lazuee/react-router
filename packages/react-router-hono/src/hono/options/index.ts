@@ -10,17 +10,9 @@ export async function resolveReactRouterHono(): Promise<
     | undefined;
 
   try {
-    if (__reactRouterHono.mode !== "production") {
-      if (__reactRouterHono.entry?.hono) {
-        virtual = (await __viteDevServer?.ssrLoadModule?.(
-          __reactRouterHono.entry.hono,
-        )) as any;
-      }
-    } else {
-      virtual = await import(
-        /* @vite-ignore */ "virtual:lazuee/react-router-hono-entry"
-      );
-    }
+    virtual = await import(
+      /* @vite-ignore */ "virtual:lazuee/react-router-hono-entry"
+    );
   } catch {
     // do nothing
   }

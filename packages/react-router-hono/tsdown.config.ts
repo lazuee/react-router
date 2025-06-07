@@ -31,7 +31,9 @@ const config = defineConfig({
             key.replace(/^.\/hono\//, "./").replace(/\/index$/, ""),
             value,
           ])
-          .filter(([key]) => [/^.\/entry/].some((x) => !x.test(key))),
+          .filter(([key]) =>
+            [/^.\/(?:entry|options|server)/].some((x) => !x.test(key)),
+          ),
       ),
   },
 });

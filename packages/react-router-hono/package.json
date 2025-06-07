@@ -21,14 +21,11 @@
     "directory": "packages/react-router-hono"
   },
   "exports": {
+    "./package.json": "./package.json",
     ".": "./dist/index.js",
     "./http": "./dist/hono/http.js",
     "./middleware/cache": "./dist/hono/middleware/cache.js",
-    "./middleware/reactRouter": "./dist/hono/middleware/reactRouter.js",
-    "./middleware/serveStatic": "./dist/hono/middleware/serveStatic.js",
-    "./options": "./dist/hono/options/index.js",
-    "./server": "./dist/hono/server/index.js",
-    "./package.json": "./package.json"
+    "./middleware/serveStatic": "./dist/hono/middleware/serveStatic.js"
   },
   "main": "./dist/index.js",
   "module": "./dist/index.js",
@@ -36,7 +33,8 @@
   "typesVersions": {
     "*": {
       "*": [
-        "./dist/*"
+        "./dist/*",
+        "./*"
       ]
     }
   },

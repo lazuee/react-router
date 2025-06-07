@@ -1,9 +1,15 @@
+import { join, relative } from "node:path";
+import { cwd } from "node:process";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import honoDevServer, { type DevServerOptions } from "@hono/vite-dev-server";
 import bunAdapter from "@hono/vite-dev-server/bun";
 import nodeAdapter from "@hono/vite-dev-server/node";
 import { type Plugin } from "vite";
 import { type ReactRouterHonoOpts } from "..";
 import { vm } from "../../constants";
+
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const honoDir = relative(cwd(), join(__dirname, "hono"));
 
 export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
   return [
@@ -15,8 +21,8 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
         async handler(id) {
           if (id === vm.server.resolvedId) {
             return `
-            import { resolveReactRouterHono } from "@lazuee/react-router-hono/options";
-            import { createHonoServer } from "@lazuee/react-router-hono/server";
+            import { resolveReactRouterHono } from "${pathToFileURL(honoDir)}/options";
+            import { createHonoServer } from "${pathToFileURL(honoDir)}/server";
             const reactRouterHono = await resolveReactRouterHono();
             const app = await createHonoServer(reactRouterHono);
             export default app;
