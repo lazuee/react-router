@@ -1,6 +1,6 @@
 import React from "react";
 import { Await, useAsyncError, useLoaderData } from "react-router";
-import { type Info, type Route } from "./+types/loader";
+import { type Route } from "./+types/loader";
 
 const delay = 8_000; // 8 secs
 
@@ -38,7 +38,8 @@ function Error() {
 }
 
 export default function Page() {
-  const { clientIp, env, message } = useLoaderData<Info["loaderData"]>();
+  const { clientIp, env, message } =
+    useLoaderData<Route.ComponentProps["loaderData"]>();
 
   return (
     <div className="flex h-full flex-col items-center justify-center font-mono text-2xl font-bold text-zinc-800 dark:text-zinc-100 gap-1">
