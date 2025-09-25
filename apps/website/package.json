@@ -9,7 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@lazuee/react-router-hono": "^1.1.6",
+    "@lazuee/react-router-hono": "^1.1.7",
     "@react-router/node": "^7.9.2",
     "hono": "^4.9.8",
     "is-ip": "^5.0.1",
