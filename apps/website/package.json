@@ -9,28 +9,28 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@react-router/node": "^7.8.2",
+    "@react-router/node": "^7.9.2",
     "@vercel/react-router": "^1.2.3",
-    "hono": "^4.9.6",
+    "hono": "^4.9.8",
     "is-ip": "^5.0.1",
-    "isbot": "^5.1.30",
+    "isbot": "^5.1.31",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-router": "^7.8.2",
+    "react-router": "^7.9.2",
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
     "@lazuee/react-router-hono": "^1.1.6",
-    "@react-router/dev": "^7.8.2",
+    "@react-router/dev": "^7.9.2",
     "@tailwindcss/vite": "^4.1.13",
-    "@types/react": "^19.1.12",
+    "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "clsx": "^2.1.1",
     "cross-env": "^10.0.0",
     "tailwind-merge": "^3.3.1",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
-    "vite": "^7.1.4",
+    "vite": "^7.1.7",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }
