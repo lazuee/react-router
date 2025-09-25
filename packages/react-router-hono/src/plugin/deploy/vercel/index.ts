@@ -32,6 +32,13 @@ export function plugin(): Plugin[] {
       configResolved: {
         order: "post",
         async handler(config) {
+          if (await hasVercelPreset()) {
+            __logger.info(
+              `${colors().yellow("Vercel Preset detected")}, skip generating '${colors().gray(".vercel")}' directory...`,
+            );
+            return;
+          }
+
           if (!isVercel()) {
             return;
           }

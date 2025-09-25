@@ -37,6 +37,10 @@ export function createVM(name: string): {
 
 let _hasVercelPreset = false;
 export async function hasVercelPreset(): Promise<boolean> {
+  if (_hasVercelPreset) {
+    return true;
+  }
+
   const {
     config,
     sources: [filePath],
@@ -48,6 +52,7 @@ export async function hasVercelPreset(): Promise<boolean> {
       },
     ],
   });
+
   const code = readFileSync(filePath, "utf8");
   return (_hasVercelPreset =
     /["']@vercel\/react-router\/vite['"]/.test(code) &&
