@@ -12,5 +12,7 @@ export default defineConfig({
   presets: [...(env.VERCEL ? [vercelPreset()] : [])],
   future: {
     unstable_optimizeDeps: true,
+    unstable_splitRouteModules: true,
+    v8_middleware: true,
   },
 });

@@ -1,9 +1,10 @@
-import { cloneElement } from "react";
+import { cloneElement, useEffect } from "react";
 
 import { useLoaderData, type MetaFunction } from "react-router";
 
 import { ThemeToggle } from "~/client/theme/toggle";
 
+import { rootContext } from "../../contexts";
 import { type Route } from "./+types/home";
 
 export const meta: MetaFunction = () => {
@@ -15,12 +16,18 @@ export const meta: MetaFunction = () => {
 
 export function loader({ context }: Route.LoaderArgs) {
   const { env, isBun } = context;
+  const rootCtx = context.get(rootContext);
 
-  return { env, isBun };
+  return { env, isBun, rootCtx };
 }
 
 export default function Page() {
-  const { env, isBun } = useLoaderData<Route.ComponentProps["loaderData"]>();
+  const { env, isBun, rootCtx } =
+    useLoaderData<Route.ComponentProps["loaderData"]>();
+
+  useEffect(() => {
+    console.log(`[rootContext]: "${rootCtx}" <-- called from routes/home.tsx`);
+  }, [rootCtx]);
 
   return (
     <div className="flex h-full items-center justify-center bg-gradient-to-b from-zinc-50 via-zinc-200 to-zinc-400 dark:from-zinc-700 dark:via-neutral-900 dark:to-zinc-900">
