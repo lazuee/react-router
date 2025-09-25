@@ -1,5 +1,5 @@
-import { env } from "node:process";
 import { vercelPreset } from "@vercel/react-router/vite";
+import * as env from "./src/env.server";
 
 /** @param {import("@react-router/dev/config").Config} config */
 function defineConfig(config) {
@@ -9,7 +9,7 @@ function defineConfig(config) {
 export default defineConfig({
   appDirectory: "src/client",
   prerender: ["pre-rendered"],
-  presets: [...(env.VERCEL ? [vercelPreset()] : [])],
+  presets: [...(env.IS_VERCEL ? [vercelPreset()] : [])],
   future: {
     unstable_optimizeDeps: true,
     unstable_splitRouteModules: true,
