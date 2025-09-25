@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@lazuee/react-router-hono": "^1.1.6",
     "@react-router/node": "^7.9.2",
     "@vercel/react-router": "^1.2.3",
     "hono": "^4.9.8",
@@ -20,7 +21,6 @@
     "usehooks-ts": "^3.1.1"
   },
   "devDependencies": {
-    "@lazuee/react-router-hono": "^1.1.6",
     "@react-router/dev": "^7.9.2",
     "@tailwindcss/vite": "^4.1.13",
     "@types/react": "^19.1.13",
