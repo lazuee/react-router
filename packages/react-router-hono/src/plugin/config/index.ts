@@ -2,13 +2,12 @@ import { existsSync } from "node:fs";
 import { isAbsolute, join, relative } from "node:path";
 import { cwd, env, exit } from "node:process";
 
-import { fileURLToPath } from "node:url";
 import { createLogger, mergeConfig, type Plugin, type UserConfig } from "vite";
 import { type ReactRouterHonoOpts } from "..";
 import { vm } from "../../constants";
 import { colors, isBun } from "../../lib/utils";
 
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const __dirname = import.meta.dirname;
 const isRelativePath = (path: string) =>
   !isAbsolute(path) && !path.startsWith("/");
 
@@ -38,8 +37,10 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
             : "development";
 
           const entry = relative(_.root, `${_.build?.rollupOptions?.input}`);
-          if (existsSync(entry)) serverFile = entry as any;
-          const port = mode !== "production" ? 5173 : 3000;
+          if (existsSync(entry)) {
+            serverFile = entry as any;
+          }
+          const port = mode === "production" ? 3000 : 5173;
 
           if (serverFile) {
             if (!isRelativePath(serverFile!)) {
@@ -103,7 +104,9 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
         handler(_) {
           const __ = _.__reactRouterPluginContext!;
           const ___ = _.__reactRouterHono!;
-          if (!__?.reactRouterConfig) return;
+          if (!__?.reactRouterConfig) {
+            return;
+          }
 
           globalThis.__viteConfig ??= _;
           globalThis.__reactRouterHono = {
@@ -154,7 +157,9 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
         order: "pre",
         handler(id) {
           const vmod = Object.values(vm).find((vmod) => vmod.id === id);
-          if (vmod) return vmod.resolvedId;
+          if (vmod) {
+            return vmod.resolvedId;
+          }
         },
       },
     },

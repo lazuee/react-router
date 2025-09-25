@@ -2,12 +2,11 @@ import { existsSync, promises as fsp } from "node:fs";
 import { join, parse, resolve } from "node:path";
 
 import { exit } from "node:process";
-import { fileURLToPath } from "node:url";
 import { mergeConfig, type Plugin, type UserConfig } from "vite";
 import { vm } from "../../constants";
 import { colors, isBun, requireFrom } from "../../lib/utils";
 
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const __dirname = import.meta.dirname;
 const esbuildOptions: import("esbuild").BuildOptions = {
   target: "esnext",
   platform: "node",
@@ -91,7 +90,9 @@ export function plugin(): Plugin[] {
               __reactRouterHono.vite.root,
               `${__reactRouterHono.entry.hono}`,
             );
-            if (!existsSync(entry)) return "";
+            if (!existsSync(entry)) {
+              return "";
+            }
             const tempDir = await fsp.mkdtemp(join(__dirname, "temp-"));
             const tempEntry = join(tempDir, `${parse(entry).name}.js`);
 

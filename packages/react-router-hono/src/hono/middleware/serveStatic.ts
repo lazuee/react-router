@@ -19,7 +19,9 @@ export function serveStatic<E extends Env>(
     });
   }
 
-  if (options.root) __serveStaticRoots.push(options.root);
+  if (options.root) {
+    __serveStaticRoots.push(options.root);
+  }
 
   return createMiddleware(async (ctx, next) => {
     switch (true) {

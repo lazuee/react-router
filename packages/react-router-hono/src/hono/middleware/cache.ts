@@ -19,12 +19,24 @@ export type CacheOptions = {
 function buildCacheHeader(options: CacheOptions): string {
   const directives: string[] = [];
 
-  if (options.public) directives.push("public");
-  if (options.private) directives.push("private");
-  if (options.noStore) directives.push("no-store");
-  if (options.noCache) directives.push("no-cache");
-  if (options.mustRevalidate) directives.push("must-revalidate");
-  if (options.immutable) directives.push("immutable");
+  if (options.public) {
+    directives.push("public");
+  }
+  if (options.private) {
+    directives.push("private");
+  }
+  if (options.noStore) {
+    directives.push("no-store");
+  }
+  if (options.noCache) {
+    directives.push("no-cache");
+  }
+  if (options.mustRevalidate) {
+    directives.push("must-revalidate");
+  }
+  if (options.immutable) {
+    directives.push("immutable");
+  }
   if (options.maxAge) {
     directives.push(`max-age=${convertToSeconds(options.maxAge)}`);
   }
@@ -35,7 +47,9 @@ function buildCacheHeader(options: CacheOptions): string {
 function convertToSeconds(duration: string): number {
   const match = duration.match(/^(\d+)([smhdw])$/);
 
-  if (!match) throw new Error(`Invalid duration format: ${duration}`);
+  if (!match) {
+    throw new Error(`Invalid duration format: ${duration}`);
+  }
 
   const value = Number.parseInt(match[1], 10);
   const unit = match[2];

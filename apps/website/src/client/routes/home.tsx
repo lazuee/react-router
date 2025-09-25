@@ -81,9 +81,9 @@ export default function Page() {
                 ? "Github Codespace"
                 : env?.IS_VERCEL
                   ? "Vercel"
-                  : !env?.IS_LOCALHOST
-                    ? "Cloud"
-                    : "Localhost"}{" "}
+                  : env?.IS_LOCALHOST
+                    ? "Localhost"
+                    : "Cloud"}{" "}
             with {isBun ? "Bun" : "NodeJS"}
           </p>
         </nav>

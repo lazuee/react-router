@@ -32,7 +32,9 @@ export function plugin(): Plugin[] {
       configResolved: {
         order: "post",
         async handler(config) {
-          if (!isVercel()) return;
+          if (!isVercel()) {
+            return;
+          }
 
           if (ssr) {
             __logger.info(

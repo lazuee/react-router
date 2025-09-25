@@ -1,6 +1,6 @@
 import { join, relative } from "node:path";
 import { cwd } from "node:process";
-import { fileURLToPath, pathToFileURL } from "node:url";
+import { pathToFileURL } from "node:url";
 import honoDevServer, { type DevServerOptions } from "@hono/vite-dev-server";
 import bunAdapter from "@hono/vite-dev-server/bun";
 import nodeAdapter from "@hono/vite-dev-server/node";
@@ -8,7 +8,7 @@ import { type Plugin } from "vite";
 import { type ReactRouterHonoOpts } from "..";
 import { vm } from "../../constants";
 
-const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const __dirname = import.meta.dirname;
 const honoDir = relative(cwd(), join(__dirname, "hono"));
 
 export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
@@ -71,6 +71,7 @@ export function plugin(opts: ReactRouterHonoOpts): Plugin[] {
           });
 
           if (typeof honoDev.configureServer === "function") {
+            //@ts-expect-error - thisArg should pass MinimalPluginContextWithoutEnvironment
             honoDev.configureServer(__viteDevServer);
           }
         },

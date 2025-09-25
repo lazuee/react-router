@@ -11,7 +11,9 @@ export function plugin(): Plugin {
     hotUpdate: {
       order: "post",
       handler({ modules, server, timestamp }) {
-        if (this.environment?.name !== "ssr") return;
+        if (this.environment?.name !== "ssr") {
+          return;
+        }
 
         const seen = new Set<EnvironmentModuleNode>();
         let hasSsrOnlyModules = false;
@@ -20,7 +22,9 @@ export function plugin(): Plugin {
           const skip =
             !mod.id ||
             server.environments.client.moduleGraph.getModuleById(mod.id);
-          if (skip) continue;
+          if (skip) {
+            continue;
+          }
 
           this.environment.moduleGraph.invalidateModule(
             mod,

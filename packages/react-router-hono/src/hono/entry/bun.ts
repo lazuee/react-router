@@ -4,7 +4,9 @@ import { createHonoServer } from "../server";
 (async () => {
   const reactRouterHono = await resolveReactRouterHono();
   const app = await createHonoServer(reactRouterHono);
-  if (!app) return;
+  if (!app) {
+    return;
+  }
 
   const server = Bun.serve({
     port: reactRouterHono?.port,

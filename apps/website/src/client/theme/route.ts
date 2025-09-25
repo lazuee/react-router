@@ -18,7 +18,9 @@ export const getTheme = async (request: Request) => {
 export const action = async ({ request }: ActionFunctionArgs) => {
   const formData = await request.formData();
   const theme = formData.get("theme");
-  if (!isValidTheme(theme)) throw new Response("Bad Request", { status: 400 });
+  if (!isValidTheme(theme)) {
+    throw new Response("Bad Request", { status: 400 });
+  }
 
   return redirect(safeRedirect(formData.get("redirect")), {
     headers: {

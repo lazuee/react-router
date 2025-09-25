@@ -59,7 +59,9 @@ export async function resolveReactRouterHono(): Promise<
         app.route("/", entry.server);
       }
 
-      if (_default instanceof Hono) app.route("/", _default);
+      if (_default instanceof Hono) {
+        app.route("/", _default);
+      }
     },
   };
 }

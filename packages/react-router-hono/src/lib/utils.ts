@@ -13,6 +13,7 @@ export function requireFrom<T>(id: string): T {
     const require = createRequire(import.meta.url);
     importCache[id] ??= require(require.resolve(id));
   } catch {
+    // eslint-disable-next-line preserve-caught-error
     throw new Error(`[@lazuee/react-router-hono] "${id}" must be installed`);
   }
 
