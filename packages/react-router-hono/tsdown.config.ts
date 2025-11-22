@@ -1,11 +1,11 @@
-import { defineConfig, type Options } from "tsdown";
+import { defineConfig, type UserConfig } from "tsdown";
 
-export const baseConfig: Options = {
+export const baseConfig: UserConfig = {
   dts: true,
   format: "esm",
   shims: true,
   skipNodeModulesBundle: true,
-  target: "node20",
+  target: "node22",
   external: [
     "virtual:react-router/server-build",
     "virtual:lazuee/react-router-hono-entry",

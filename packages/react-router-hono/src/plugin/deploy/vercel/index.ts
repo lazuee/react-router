@@ -153,7 +153,7 @@ export function plugin(): Plugin[] {
                           }
                         : {
                             handler: basename(serverFile),
-                            runtime: "nodejs20.x",
+                            runtime: "nodejs22.x",
                             launcherType: "Nodejs",
                           }),
                     },

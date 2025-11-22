@@ -1,4 +1,4 @@
-/** @param {import("@react-router/dev/config").Config} config */
+/** @param {import('@react-router/dev/config').Config} config */
 function defineConfig(config) {
   return config;
 }

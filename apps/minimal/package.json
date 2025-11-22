@@ -9,18 +9,18 @@
   },
   "dependencies": {
     "@lazuee/react-router-hono": "^1.1.7",
-    "@react-router/node": "^7.9.3",
-    "isbot": "^5.1.31",
-    "react": "^19.1.1",
-    "react-dom": "^19.1.1",
-    "react-router": "^7.9.3"
+    "@react-router/node": "^7.9.6",
+    "isbot": "^5.1.32",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "react-router": "^7.9.6"
   },
   "devDependencies": {
-    "@react-router/dev": "^7.9.3",
-    "@types/react": "^19.1.14",
-    "@types/react-dom": "^19.1.9",
-    "typescript": "^5.9.2",
-    "vite": "^7.1.7",
+    "@react-router/dev": "^7.9.6",
+    "@types/react": "^19.2.6",
+    "@types/react-dom": "^19.2.3",
+    "typescript": "^5.9.3",
+    "vite": "^7.2.4",
     "vite-tsconfig-paths": "^5.1.4"
   }
 }

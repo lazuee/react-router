@@ -43,7 +43,7 @@ export function plugin(): Plugin[] {
         handler(_, { isSsrBuild }) {
           runtimeFile = join(
             `${_.__reactRouterHono?.directory?.honoEntry}`,
-            `${_.__reactRouterHono?.runtime}.js`,
+            `${_.__reactRouterHono?.runtime}.mjs`,
           );
           if (!existsSync(runtimeFile)) {
             throw new Error(`Environment is not supported: ${runtimeFile}.`);
