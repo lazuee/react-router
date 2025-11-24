@@ -9,7 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
-    "@lazuee/react-router-hono": "^1.1.7",
+    "@lazuee/react-router-hono": "^1.2.0",
     "@react-router/node": "^7.9.6",
     "hono": "^4.10.6",
     "is-ip": "^5.0.1",
@@ -22,7 +22,7 @@
   "devDependencies": {
     "@react-router/dev": "^7.9.6",
     "@tailwindcss/vite": "^4.1.17",
-    "@types/react": "^19.2.6",
+    "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
     "clsx": "^2.1.1",
     "cross-env": "^10.1.0",
