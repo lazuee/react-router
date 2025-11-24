@@ -15,7 +15,7 @@ const handleDocumentRequest: HandleDocumentRequestFunction = async (
   let shellRendered = false;
   const userAgent = request.headers.get("user-agent");
   const abortController = new AbortController();
-  request.signal.addEventListener("abort", abortController.abort);
+  request.signal.addEventListener("abort", () => abortController.abort());
 
   const stream = await reactDomServer.renderToReadableStream(
     <ServerRouter context={routerContext} url={request.url} />,
