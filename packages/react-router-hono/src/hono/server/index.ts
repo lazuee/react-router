@@ -26,7 +26,11 @@ export const createHonoServer = async <E extends Env = Env>(
 
   switch (true) {
     case typeof options.server === "function":
-      await options.server(server, { mode, build });
+      await options.server(server, {
+        mode,
+        build,
+        reactRouterHono: __reactRouterHono,
+      });
       break;
     case options.server instanceof Hono:
       server.route("/", options.server);
@@ -73,7 +77,11 @@ export const createHonoServer = async <E extends Env = Env>(
 
     const requestHandler = createRequestHandler(build, mode);
     const loadContext = await Promise.resolve(
-      options.getLoadContext?.(ctx, { build, mode }),
+      options.getLoadContext?.(ctx, {
+        build,
+        mode,
+        reactRouterHono: __reactRouterHono,
+      }),
     );
     return requestHandler(ctx.req.raw, loadContext);
   });

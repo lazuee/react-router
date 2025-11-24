@@ -48,13 +48,13 @@ export async function resolveReactRouterHono(): Promise<
     ...reactRouterHono,
     server(app, { mode, build }) {
       if (typeof honoServer === "function") {
-        honoServer(app, { mode, build });
+        honoServer(app, { mode, build, reactRouterHono: __reactRouterHono });
       } else if (honoServer instanceof Hono) {
         app.route("/", honoServer);
       }
 
       if (typeof entry.server === "function") {
-        entry.server(app, { mode, build });
+        entry.server(app, { mode, build, reactRouterHono: __reactRouterHono });
       } else if (entry.server instanceof Hono) {
         app.route("/", entry.server);
       }
