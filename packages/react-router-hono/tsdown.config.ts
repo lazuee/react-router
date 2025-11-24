@@ -6,6 +6,7 @@ export const baseConfig: UserConfig = {
   shims: true,
   skipNodeModulesBundle: true,
   target: "node22",
+  tsconfig: "tsconfig.json",
   external: [
     "virtual:react-router/server-build",
     "virtual:lazuee/react-router-hono-entry",
@@ -14,7 +15,6 @@ export const baseConfig: UserConfig = {
 
 const config = defineConfig({
   ...baseConfig,
-  inputOptions: { resolve: { tsconfigFilename: "tsconfig.json" } },
   entry: [
     "src/index.ts",
     "src/hono/server/index.ts",
