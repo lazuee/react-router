@@ -4,7 +4,7 @@ import { join, parse, resolve } from "node:path";
 import { exit } from "node:process";
 import { mergeConfig, type Plugin, type UserConfig } from "vite";
 import { vm } from "../../constants";
-import { colors, isBun, requireFrom } from "../../lib/utils";
+import { colors, isBun, requireFrom, semverCompare } from "../../lib/utils";
 
 const __dirname = import.meta.dirname;
 const esbuildOptions: import("esbuild").BuildOptions = {
@@ -110,15 +110,15 @@ export function plugin(): Plugin[] {
               ["hono/compress", "CompressionStream"].some((x) =>
                 code.includes(x),
               ) &&
-              isBun()
+              isBun() &&
+              !semverCompare(Bun.version, "1.3.3") // https://github.com/oven-sh/bun/issues/1723
             ) {
               const warnCompression = [
-                "Bun environment detected. 'CompressionStream' is not supported in Bun.",
-                "It appears you're using 'hono/compress', which relies on 'CompressionStream'.",
-                "To resolve this:",
-                `- Remove 'hono/compress' from ${__reactRouterHono.entry.hono}.`,
-                "- Replace it with an alternative compression implementation that is compatible with Bun.",
-                "- Run 'bun run --bun react-router build' to apply the Bun preset.",
+                "",
+                "Bun environment detected.",
+                "'CompressionStream' is not supported in Bun versions below 1.3.3.",
+                `It appears you're using 'hono/compress' in '${__reactRouterHono.entry.hono}'.`,
+                "Please update Bun to version 1.3.3 or higher to resolve this.",
               ].join("\n");
               __logger.error(colors().red(warnCompression));
               exit(1);

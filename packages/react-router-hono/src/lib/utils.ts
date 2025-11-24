@@ -68,3 +68,9 @@ export const isBun = (): boolean => !!versions.bun;
 export const colors = () =>
   ((globalThis as any).__colors ??=
     requireFrom("picocolors")) as typeof import("picocolors");
+
+export const semverCompare = (current: string, required: string) =>
+  current.localeCompare(required, undefined, {
+    numeric: true,
+    sensitivity: "base",
+  }) >= 0;
