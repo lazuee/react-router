@@ -11,20 +11,20 @@ import { getTheme } from "./theme/route";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }, next) => {
-    console.log("start root middleware");
-    context.set(rootContext, "ROOT");
+    console.log("start root server middleware");
+    context.set(rootContext, "[middleware] ROOT");
     const res = await next();
-    console.log("end root middleware");
+    console.log("end root server middleware");
     return res;
   },
 ];
 
 export const clientMiddleware: Route.ClientMiddlewareFunction[] = [
   async ({ context }, next) => {
-    console.log("start root middleware");
-    context.set(rootContext, "ROOT");
+    console.log("start root client middleware");
+    context.set(rootContext, "[clientMiddleware] ROOT");
     await next();
-    console.log("end root middleware");
+    console.log("end root client middleware");
   },
 ];
 
