@@ -206,7 +206,10 @@ export function plugin(opts: PluginOptions): Plugin[] {
                     rollupOptions: {
                       external: viteEnvConfig.isSsrBuild
                         ? []
-                        : ["virtual:react-router/server-build"],
+                        : [
+                            "virtual:react-router/server-build",
+                            "@hono/node-server",
+                          ],
                       input: {
                         hono: virtual.runtime.id,
                       },
@@ -238,7 +241,7 @@ export function plugin(opts: PluginOptions): Plugin[] {
                   Number(process.env.APP_PORT),
               },
               ssr: {
-                external: ["@hono/node-ws"],
+                external: ["@hono/node-ws", "@hono/node-server"],
                 noExternal: ["@lazuee/react-router-hono"],
                 target: runtime === "cloudflare" ? "webworker" : undefined,
               },
