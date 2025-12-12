@@ -204,12 +204,13 @@ export function plugin(opts: PluginOptions): Plugin[] {
                 ssr: {
                   build: {
                     rollupOptions: {
-                      external: viteEnvConfig.isSsrBuild
-                        ? []
-                        : [
-                            "virtual:react-router/server-build",
-                            "@hono/node-server",
-                          ],
+                      external: [
+                        "@hono/node-ws",
+                        "@hono/node-server",
+                        ...(viteEnvConfig.isSsrBuild
+                          ? []
+                          : ["virtual:react-router/server-build"]),
+                      ],
                       input: {
                         hono: virtual.runtime.id,
                       },
