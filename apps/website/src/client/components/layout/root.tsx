@@ -1,6 +1,6 @@
 import { useContext } from "react";
 
-import { Links, Meta, ScrollRestoration } from "react-router";
+import { Links, Meta, Scripts, ScrollRestoration } from "react-router";
 import { useTheme } from "~/client/theme";
 import { ThemeScript } from "~/client/theme/script";
 import { NonceContext } from "../context/nonce";
@@ -21,6 +21,7 @@ export function RootLayout({ children }: React.PropsWithChildren) {
       <body>
         {children}
         <ScrollRestoration nonce={nonce} />
+        <Scripts nonce={nonce} />
       </body>
     </html>
   );
