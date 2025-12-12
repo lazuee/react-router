@@ -1,14 +1,28 @@
-import { type Context, type Env } from "hono";
-import { type Hono } from "hono";
+import { type Context, type Env, type Hono } from "hono";
 import { type HonoOptions } from "hono/hono-base";
-import { type RequestHandler, type ServerBuild } from "react-router";
-import { type ReactRouterHono as ReactRouterHonoGlobal } from "../../../global.d";
-import { type MaybePromise } from "../../lib/types";
+import {
+  type UNSAFE_MiddlewareEnabled as MiddlewareEnabled,
+  type ServerBuild,
+} from "react-router";
 
-type InitialContext = Parameters<RequestHandler>[1];
+import { type RouterContextProvider } from "react-router";
+import { type AppLoadContext } from "react-router";
+import { type ReactRouterHono as ReactRouterHonoGlobal } from "../../plugin/config/types";
+
+type MaybePromise<T> = Promise<T> | T;
+
+type InitialContext = MiddlewareEnabled extends true
+  ? RouterContextProvider
+  : AppLoadContext;
+
+export type RSCServerBuild = {
+  assetsBuildDirectory: string;
+  publicPath: string;
+  fetch: (request: Request, requestContext?: RouterContextProvider) => Response;
+};
 
 type ReactRouterOptions = {
-  build: ServerBuild;
+  build: RSCServerBuild | ServerBuild;
   mode?: string;
   getLoadContext?: (ctx: Context) => MaybePromise<InitialContext>;
 };

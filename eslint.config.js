@@ -15,6 +15,11 @@ export default defineESLintConfig({
       "jsdoc/no-types": "off",
     },
   },
+  node: {
+    overrides: {
+      "node/prefer-global/process": "off",
+    },
+  },
   pnpm: {
     overridesJsonRules: {
       "pnpm/json-enforce-catalog": "off",

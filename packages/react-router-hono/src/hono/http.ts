@@ -5,8 +5,8 @@ import {
 } from "react-router";
 
 const isHonoRequestData = () =>
-  __reactRouterHono.request.path?.endsWith(".data") &&
-  __reactRouterHono.request.from === "hono";
+  globalThis.__reactRouterHono.request.path?.endsWith(".data") &&
+  globalThis.__reactRouterHono.request.from === "hono";
 
 export function redirect(url: string, headers?: HeadersInit): Response {
   const res = reactRouterRedirect(url, { headers });
@@ -36,8 +36,8 @@ export function redirect(url: string, headers?: HeadersInit): Response {
         },
       }),
       {
-        status: 202,
         headers: res.headers,
+        status: 202,
       },
     );
   }
@@ -57,7 +57,7 @@ export function redirectDocument(url: string, headers?: HeadersInit): Response {
           controller.enqueue(
             JSON.stringify([
               ["SingleFetchRedirect", 1],
-              { _2: 3, _4: 5, _6: 7, _8: 9, _10: 7 },
+              { _10: 7, _2: 3, _4: 5, _6: 7, _8: 9 },
               "redirect",
               url,
               "status",
@@ -73,8 +73,8 @@ export function redirectDocument(url: string, headers?: HeadersInit): Response {
         },
       }),
       {
-        status: 202,
         headers: res.headers,
+        status: 202,
       },
     );
   }
@@ -110,8 +110,8 @@ export function replace(url: string, headers?: HeadersInit): Response {
         },
       }),
       {
-        status: 202,
         headers: res.headers,
+        status: 202,
       },
     );
   }

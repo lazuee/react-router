@@ -2,9 +2,9 @@ import { env } from "node:process";
 
 import { reactRouterHono } from "@lazuee/react-router-hono";
 import { reactRouter } from "@react-router/dev/vite";
-
+// import { unstable_reactRouterRSC as reactRouterRSC } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
-
+// import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 

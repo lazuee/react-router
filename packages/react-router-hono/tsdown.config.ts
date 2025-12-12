@@ -9,7 +9,7 @@ export const baseConfig: UserConfig = {
   tsconfig: "tsconfig.json",
   external: [
     "virtual:react-router/server-build",
-    "virtual:lazuee/react-router-hono-entry",
+    "virtual:lazuee/react-router-hono[entry]",
   ],
 };
 
@@ -20,7 +20,8 @@ const config = defineConfig({
     "src/hono/server/index.ts",
     "src/hono/options/index.ts",
     "src/hono/http.ts",
-    "src/hono/entry/*.ts",
+    "src/hono/runtime/*.ts",
+    "src/deploy/*.ts",
     "src/hono/middleware/*.ts",
   ],
   exports: {
@@ -32,7 +33,7 @@ const config = defineConfig({
             value,
           ])
           .filter(([key]) =>
-            [/^.\/(?:entry|options|server)/].some((x) => !x.test(key)),
+            [/^.\/(?:deploy|runtime|options|server)/].some((x) => !x.test(key)),
           ),
       ),
   },

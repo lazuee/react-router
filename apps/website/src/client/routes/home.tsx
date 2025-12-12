@@ -30,13 +30,13 @@ export default function Page() {
   }, [rootCtx]);
 
   return (
-    <div className="flex h-full items-center justify-center bg-gradient-to-b from-zinc-50 via-zinc-200 to-zinc-400 dark:from-zinc-700 dark:via-neutral-900 dark:to-zinc-900">
-      <div className="flex h-full w-full flex-col items-center justify-center gap-6 border-0 border-solid border-zinc-300 bg-zinc-50 px-8 pb-8 pt-14 sm:gap-12 md:h-auto md:w-[620px] md:rounded-[2.5rem] md:border-[1px] dark:border-zinc-700 dark:bg-zinc-900">
+    <div className="flex h-full items-center justify-center bg-linear-to-b from-zinc-50 via-zinc-200 to-zinc-400 dark:from-zinc-700 dark:via-neutral-900 dark:to-zinc-900">
+      <div className="flex h-full w-full flex-col items-center justify-center gap-6 border-0 border-solid border-zinc-300 bg-zinc-50 px-8 pb-8 pt-14 sm:gap-12 md:h-auto md:w-155 md:rounded-[2.5rem] md:border dark:border-zinc-700 dark:bg-zinc-900">
         <header className="flex flex-col items-center gap-2">
           <h1 className="leading text-2xl font-bold text-zinc-800 dark:text-zinc-100">
             Welcome to <span className="sr-only">React Router</span>
           </h1>
-          <div className="flex h-[100px] w-[301.39px] items-center sm:h-[144px] sm:w-[434px]">
+          <div className="flex h-25 w-[301.39px] items-center sm:h-36 sm:w-108.5">
             <img
               src="/logo-light.svg"
               alt="React Router"

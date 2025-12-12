@@ -9,9 +9,9 @@ import { createHonoServer } from "../server";
   }
 
   const server = Bun.serve({
-    port: reactRouterHono?.port,
+    development: globalThis.__reactRouterHono.mode !== "production",
     fetch: app.fetch,
-    development: __reactRouterHono.mode !== "production",
+    port: reactRouterHono?.port,
   });
 
   reactRouterHono?.listeningListener?.(Number(server.port));

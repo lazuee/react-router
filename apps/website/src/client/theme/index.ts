@@ -1,3 +1,5 @@
+"use client";
+
 import { useNavigation, useRouteLoaderData } from "react-router";
 
 import { type Route } from "../+types/root";

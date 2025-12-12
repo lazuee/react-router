@@ -1,25 +1,17 @@
 import { type Plugin } from "vite";
-import * as config from "./config";
-import * as deploy from "./deploy";
-import * as dev from "./dev";
-import * as prod from "./prod";
-import * as ssrReload from "./ssr-reload";
 
-export interface ReactRouterHonoOpts {
-  serverFile?: string;
-  exclude?: (string | RegExp)[];
-}
+import { preloadReact } from "../lib/react";
+import { preloadReactRouterConfig } from "../lib/react-router";
+import { preloadVite } from "../lib/vite";
+import * as config from "./config";
 
 export async function reactRouterHono(
-  opts: ReactRouterHonoOpts = {},
+  opts: config.PluginOptions = {},
 ): Promise<Plugin[]> {
-  const plugins = await Promise.all([
-    config.plugin(opts),
-    deploy.plugin(),
-    dev.plugin(opts),
-    prod.plugin(),
-    ssrReload.plugin(),
-  ]);
+  await preloadVite();
+  await preloadReact();
+  await preloadReactRouterConfig();
+  const plugins = await Promise.all([config.plugin(opts)]);
 
   return plugins.flat().filter(Boolean);
 }

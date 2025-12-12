@@ -1,17 +1,20 @@
 import { env } from "node:process";
 import { Hono } from "hono";
+
 import { type ReactRouterHono } from "../server/types";
 
 export async function resolveReactRouterHono(): Promise<
   ReactRouterHono | undefined
 > {
+  //@ts-expect-error - virtual module
   let virtual:
-    | typeof import("virtual:lazuee/react-router-hono-entry")
+    | typeof import("virtual:@lazuee/react-router-hono[entry]")
     | undefined;
 
   try {
+    //@ts-expect-error - virtual module
     virtual = await import(
-      /* @vite-ignore */ "virtual:lazuee/react-router-hono-entry"
+      /* @vite-ignore */ "virtual:@lazuee/react-router-hono[entry]"
     );
   } catch {
     // do nothing
@@ -41,20 +44,28 @@ export async function resolveReactRouterHono(): Promise<
     port:
       Number(env.PORT) ||
       Number(env.APP_PORT) ||
-      Number(__reactRouterHono.port),
+      Number(globalThis.__reactRouterHono.port),
   };
 
   return {
     ...reactRouterHono,
     server(app, { mode, build }) {
       if (typeof honoServer === "function") {
-        honoServer(app, { mode, build, reactRouterHono: __reactRouterHono });
+        honoServer(app, {
+          build,
+          mode,
+          reactRouterHono: globalThis.__reactRouterHono,
+        });
       } else if (honoServer instanceof Hono) {
         app.route("/", honoServer);
       }
 
       if (typeof entry.server === "function") {
-        entry.server(app, { mode, build, reactRouterHono: __reactRouterHono });
+        entry.server(app, {
+          build,
+          mode,
+          reactRouterHono: globalThis.__reactRouterHono,
+        });
       } else if (entry.server instanceof Hono) {
         app.route("/", entry.server);
       }

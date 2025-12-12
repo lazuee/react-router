@@ -1,23 +1,70 @@
+import { join } from "node:path";
+import { relative } from "node:path/win32";
 import { Hono, type Env } from "hono";
-import { createRequestHandler, type ServerBuild } from "react-router";
-import { isVercel } from "../../lib/utils";
+import {
+  createRequestHandler,
+  RouterContextProvider,
+  type ServerBuild,
+} from "react-router";
+
+import { isVercel } from "../../lib/react-router";
 import { cache, type CacheOptions } from "../middleware/cache";
 import { serveStatic } from "../middleware/serveStatic";
-import { type ReactRouterHono } from "./types";
+import { type ReactRouterHono, type RSCServerBuild } from "./types";
+
+function isRSCServerBuild(
+  build: ServerBuild | RSCServerBuild,
+): build is RSCServerBuild {
+  return "fetch" in build && typeof build.fetch === "function";
+}
+
+async function importBuild() {
+  let build: ServerBuild | RSCServerBuild | undefined;
+
+  try {
+    //@ts-expect-error - virtual
+    build = (await import("virtual:react-router/server-build")) as any;
+  } catch {
+    if (globalThis.__reactRouterHono.rsc) {
+      const rscBuild = await import.meta.viteRsc.loadModule<{
+        unstable_reactRouterServeConfig: Record<string, any>;
+        default: (request: Request) => Response;
+      }>("rsc", "index");
+
+      if (rscBuild?.default && typeof rscBuild.default === "function") {
+        const config = {
+          publicPath: "/",
+          ...(rscBuild.unstable_reactRouterServeConfig || {}),
+          assetsBuildDirectory: `./${relative(globalThis.__reactRouterHono.directory.root, join(globalThis.__reactRouterHono.directory.build, "client")).replaceAll("\\", "/")}`,
+        };
+        build = {
+          assetsBuildDirectory: config.assetsBuildDirectory,
+          fetch: rscBuild.default,
+          publicPath: config.publicPath,
+        } satisfies RSCServerBuild;
+      }
+    }
+  }
+
+  return build;
+}
 
 export const createHonoServer = async <E extends Env = Env>(
   options: ReactRouterHono<E> = {},
 ): Promise<Hono<E>> => {
-  let build: ServerBuild = await import(
-    //@ts-expect-error - virtual module
-    /* @vite-ignore */ "virtual:react-router/server-build"
-  );
+  let build = await importBuild();
+  if (!build) {
+    throw new Error("Failed to load server build");
+  }
 
-  const mode = __reactRouterHono.mode;
-  const publicDir = __reactRouterHono.directory.public;
+  const mode = globalThis.__reactRouterHono.mode;
+  const publicDir = globalThis.__reactRouterHono.directory.public;
   const isProduction = mode === "production";
 
   const server = new Hono<E>(options.honoOptions);
+  server.all("/.well-known/appspecific/com.chrome.devtools.json", (ctx) =>
+    ctx.newResponse(null, 403),
+  );
   server.all("*", (ctx, next) => {
     globalThis.__reactRouterHono.request.from = "hono";
     globalThis.__reactRouterHono.request.path = ctx.req.path as `/${string}`;
@@ -27,62 +74,73 @@ export const createHonoServer = async <E extends Env = Env>(
   switch (true) {
     case typeof options.server === "function":
       await options.server(server, {
+        build: isRSCServerBuild(build) ? ({} as any) : build,
         mode,
-        build,
-        reactRouterHono: __reactRouterHono,
+        reactRouterHono: globalThis.__reactRouterHono,
       });
       break;
     case options.server instanceof Hono:
       server.route("/", options.server);
+      break;
+    default:
+      throw new Error("TODO: Not implemented yet");
   }
 
   if (!isVercel()) {
     const assetsCache: CacheOptions = {
+      immutable: true,
       maxAge: "1w",
       public: true,
-      immutable: true,
     };
     const staticCache: CacheOptions = { maxAge: "1d" };
 
     if (
       isProduction &&
-      !__serveStaticRoots.includes(build.assetsBuildDirectory)
+      !globalThis.__serveStaticRoots.includes(build.assetsBuildDirectory)
     ) {
-      server.use(
-        "*",
-        cache(staticCache),
-        serveStatic({ root: build.assetsBuildDirectory }),
-      );
-      server.use(
+      server.get(
         "*",
         cache(assetsCache, "/assets/"),
-        //@ts-expect-error - bypass
-        serveStatic({ root: build.assetsBuildDirectory, bypass: true }),
+        cache(staticCache),
+        serveStatic({ root: build.assetsBuildDirectory }),
       );
     }
 
     if (
-      !__serveStaticRoots.includes(publicDir) &&
-      !__reactRouterHono.vite.copyPublicDir
+      !globalThis.__serveStaticRoots.includes(publicDir) &&
+      !globalThis.__reactRouterHono.copyPublicDir
     ) {
-      server.use("*", cache(staticCache), serveStatic({ root: publicDir }));
+      server.get("*", cache(staticCache), serveStatic({ root: publicDir }));
     }
   }
 
   server.use("*", async (ctx) => {
-    build = await import(
-      //@ts-expect-error - virtual module
-      /* @vite-ignore */ "virtual:react-router/server-build"
-    );
+    build = await importBuild();
+    if (!build) {
+      throw new Error("Failed to load server build");
+    }
 
-    const requestHandler = createRequestHandler(build, mode);
     const loadContext = await Promise.resolve(
       options.getLoadContext?.(ctx, {
         build,
         mode,
-        reactRouterHono: __reactRouterHono,
+        reactRouterHono: globalThis.__reactRouterHono,
       }),
     );
+    if (isRSCServerBuild(build)) {
+      let requestContext: RouterContextProvider | undefined;
+      if (loadContext) {
+        if (loadContext instanceof RouterContextProvider) {
+          requestContext = loadContext;
+        } else if (typeof loadContext === "object") {
+          requestContext = new RouterContextProvider();
+          Object.assign(requestContext, loadContext);
+        }
+      }
+
+      return build.fetch(ctx.req.raw, requestContext);
+    }
+    const requestHandler = createRequestHandler(build, mode);
     return requestHandler(ctx.req.raw, loadContext);
   });
 
