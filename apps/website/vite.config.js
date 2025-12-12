@@ -29,6 +29,8 @@ export default defineConfig({
       serverFile: "src/server/index.ts",
     }),
     reactRouter(),
+    // reactRouterRSC(),
+    // rsc(),
     tsconfigPaths(),
   ],
   server: {
