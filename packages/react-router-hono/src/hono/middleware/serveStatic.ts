@@ -1,8 +1,8 @@
-import { type Env, type MiddlewareHandler } from "hono";
 import { createMiddleware } from "hono/factory";
-import { type ServeStaticOptions } from "hono/serve-static";
-
 import { getRuntime } from "../../lib/utils";
+import type { Env, MiddlewareHandler } from "hono";
+
+import type { ServeStaticOptions } from "hono/serve-static";
 
 let _serveStatic: any;
 globalThis.__serveStaticRoots = [];

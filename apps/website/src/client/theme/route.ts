@@ -1,7 +1,8 @@
-import { createCookie, redirect, type ActionFunctionArgs } from "react-router";
-
+import { createCookie, redirect } from "react-router";
 import { safeRedirect } from "~/client/lib/util";
+
 import { isValidTheme, Theme } from ".";
+import type { ActionFunctionArgs } from "react-router";
 
 const themeCookie = createCookie("theme", {
   maxAge: 60 * 60 * 24 * 365,

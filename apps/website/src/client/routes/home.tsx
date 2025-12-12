@@ -1,11 +1,12 @@
 import { cloneElement, useEffect } from "react";
 
-import { useLoaderData, type MetaFunction } from "react-router";
-
+import { useLoaderData } from "react-router";
 import { ThemeToggle } from "~/client/theme/toggle";
 
 import { rootContext } from "../../contexts";
-import { type Route } from "./+types/home";
+
+import type { MetaFunction } from "react-router";
+import type { Route } from "./+types/home";
 
 export const meta: MetaFunction = () => {
   return [

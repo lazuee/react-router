@@ -1,7 +1,7 @@
-import { type Env } from "hono";
-
 import { createMiddleware } from "hono/factory";
+
 import { isIP } from "is-ip";
+import type { Env } from "hono";
 
 declare module "hono" {
   interface ContextVariableMap {

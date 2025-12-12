@@ -1,4 +1,6 @@
-import { defineConfig, type UserConfig } from "tsdown";
+import { parse } from "node:path";
+import { defineConfig } from "tsdown";
+import type { UserConfig } from "tsdown";
 
 export const baseConfig: UserConfig = {
   dts: true,
@@ -16,6 +18,7 @@ export const baseConfig: UserConfig = {
 const config = defineConfig({
   ...baseConfig,
   entry: [
+    "src/global.d.ts",
     "src/index.ts",
     "src/hono/server/index.ts",
     "src/hono/options/index.ts",
@@ -30,7 +33,8 @@ const config = defineConfig({
         Object.entries(exports)
           .map(([key, value]) => [
             key.replace(/^.\/hono\//, "./").replace(/\/index$/, ""),
-            value,
+            value ??
+              `${parse(exports["."]).dir}/${key.replace(/^.\//, "")}.d.mts`,
           ])
           .filter(([key]) =>
             [/^.\/(?:deploy|runtime|options|server)/].some((x) => !x.test(key)),

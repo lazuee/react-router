@@ -1,6 +1,6 @@
 import React from "react";
 import { Await, useAsyncError, useLoaderData } from "react-router";
-import { type Route } from "./+types/loader-client";
+import type { Route } from "./+types/loader-client";
 
 const delay = 8_000; // 8 secs
 

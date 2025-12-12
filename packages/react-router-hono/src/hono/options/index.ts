@@ -1,19 +1,17 @@
 import { env } from "node:process";
 import { Hono } from "hono";
 
-import { type ReactRouterHono } from "../server/types";
+import type { ReactRouterHono } from "../server/types";
 
 export async function resolveReactRouterHono(): Promise<
   ReactRouterHono | undefined
 > {
-  //@ts-expect-error - virtual module
-  let virtual:
-    | typeof import("virtual:@lazuee/react-router-hono[entry]")
-    | undefined;
+  let virtual: //@ts-expect-error - virtual module
+    typeof import("virtual:@lazuee/react-router-hono[entry]") | undefined;
 
   try {
-    //@ts-expect-error - virtual module
     virtual = await import(
+      //@ts-expect-error - virtual module
       /* @vite-ignore */ "virtual:@lazuee/react-router-hono[entry]"
     );
   } catch {

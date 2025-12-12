@@ -1,5 +1,5 @@
-import { type MiddlewareHandler } from "hono";
 import { createMiddleware } from "hono/factory";
+import type { MiddlewareHandler } from "hono";
 
 export type CacheOptions = {
   maxAge?:

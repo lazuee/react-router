@@ -6,8 +6,9 @@ import {
 } from "@react-router/node";
 import { isbot } from "isbot";
 import * as reactDomServer from "react-dom/server";
-import { ServerRouter, type HandleDocumentRequestFunction } from "react-router";
+import { ServerRouter } from "react-router";
 import { NonceContext } from "./components/context/nonce";
+import type { HandleDocumentRequestFunction } from "react-router";
 
 export const streamTimeout = 10_000;
 

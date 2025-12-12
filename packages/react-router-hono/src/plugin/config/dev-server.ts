@@ -1,12 +1,11 @@
 import {
   defaultOptions,
   default as honoViteDevServer,
-  type DevServerOptions,
 } from "@hono/vite-dev-server";
 import bunAdapter from "@hono/vite-dev-server/bun";
 import nodeAdapter from "@hono/vite-dev-server/node";
-
 import { getRuntime } from "../../lib/utils";
+import type { DevServerOptions } from "@hono/vite-dev-server";
 
 export const devServerConfig = {
   ...defaultOptions,

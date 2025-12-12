@@ -1,16 +1,15 @@
 import { join } from "node:path";
 import { relative } from "node:path/win32";
-import { Hono, type Env } from "hono";
-import {
-  createRequestHandler,
-  RouterContextProvider,
-  type ServerBuild,
-} from "react-router";
-
+import { Hono } from "hono";
+import { createRequestHandler, RouterContextProvider } from "react-router";
 import { isVercel } from "../../lib/react-router";
-import { cache, type CacheOptions } from "../middleware/cache";
+import { cache } from "../middleware/cache";
+
 import { serveStatic } from "../middleware/serveStatic";
-import { type ReactRouterHono, type RSCServerBuild } from "./types";
+import type { Env } from "hono";
+import type { ServerBuild } from "react-router";
+import type { CacheOptions } from "../middleware/cache";
+import type { ReactRouterHono, RSCServerBuild } from "./types";
 
 function isRSCServerBuild(
   build: ServerBuild | RSCServerBuild,

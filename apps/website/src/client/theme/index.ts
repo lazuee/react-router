@@ -2,7 +2,7 @@
 
 import { useNavigation, useRouteLoaderData } from "react-router";
 
-import { type Route } from "../+types/root";
+import type { Route } from "../+types/root";
 
 export enum Theme {
   LIGHT = "light",

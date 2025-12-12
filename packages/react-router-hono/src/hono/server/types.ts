@@ -1,13 +1,13 @@
-import { type Context, type Env, type Hono } from "hono";
-import { type HonoOptions } from "hono/hono-base";
-import {
-  type UNSAFE_MiddlewareEnabled as MiddlewareEnabled,
-  type ServerBuild,
+import type { Context, Env, Hono } from "hono";
+import type { HonoOptions } from "hono/hono-base";
+import type {
+  UNSAFE_MiddlewareEnabled as MiddlewareEnabled,
+  ServerBuild,
 } from "react-router";
 
-import { type RouterContextProvider } from "react-router";
-import { type AppLoadContext } from "react-router";
-import { type ReactRouterHono as ReactRouterHonoGlobal } from "../../plugin/config/types";
+import type { RouterContextProvider } from "react-router";
+import type { AppLoadContext } from "react-router";
+import type { ReactRouterHono as ReactRouterHonoGlobal } from "../../plugin/config/types";
 
 type MaybePromise<T> = Promise<T> | T;
 

@@ -1,4 +1,4 @@
-import { type ReactRouterHonoRuntime } from "../plugin/config/types";
+import type { ReactRouterHonoRuntime } from "../plugin/config/types";
 
 let runtime: ReactRouterHonoRuntime | undefined;
 export function getRuntime() {

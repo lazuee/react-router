@@ -1,5 +1,4 @@
 import { versions } from "node:process";
-import { type ReactRouterHono } from "@lazuee/react-router-hono";
 import { compress } from "hono/compress";
 import { prettyJSON } from "hono/pretty-json";
 import { RouterContextProvider } from "react-router";
@@ -8,6 +7,7 @@ import { clientIp } from "./middleware/clientIp";
 import { csp } from "./middleware/csp";
 import { protectRoute } from "./middleware/protectRoute";
 import routes from "./routes";
+import type { ReactRouterHono } from "@lazuee/react-router-hono";
 
 declare module "react-router" {
   export interface Future {

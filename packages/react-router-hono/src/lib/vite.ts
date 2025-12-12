@@ -1,4 +1,4 @@
-import { type UserConfig } from "vite";
+import type { UserConfig } from "vite";
 
 type Vite = typeof import("vite");
 let vite: Vite | undefined;

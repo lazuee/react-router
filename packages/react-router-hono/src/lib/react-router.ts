@@ -1,6 +1,6 @@
 import { existsSync, readFileSync } from "node:fs";
-import { type Config as ReactRouterConfig } from "@react-router/dev/config";
 import { loadConfig } from "unconfig";
+import type { Config as ReactRouterConfig } from "@react-router/dev/config";
 
 let reactRouterConfig: ReactRouterConfig | undefined;
 let reactRouterConfigPath: string | undefined;

@@ -4,10 +4,9 @@ import {
   ModuleResolutionKind,
   Project,
   SyntaxKind,
-  type StringLiteral,
 } from "ts-morph";
-
 import { findFileWithExtensions } from "../../lib/file";
+import type { StringLiteral } from "ts-morph";
 
 export async function fixRSCBuild(buildDir: string): Promise<void> {
   const serverDir = join(buildDir, "server");

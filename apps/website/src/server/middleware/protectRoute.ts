@@ -1,7 +1,7 @@
 import { redirect } from "@lazuee/react-router-hono/http";
-import { type Env } from "hono";
-
 import { createMiddleware } from "hono/factory";
+
+import type { Env } from "hono";
 
 export function protectRoute<E extends Env = Env>() {
   return createMiddleware<E>(async (ctx, next) => {

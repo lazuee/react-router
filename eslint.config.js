@@ -5,10 +5,6 @@ export default defineESLintConfig({
   ignores: ["**/README.md/*.ts"],
   importX: {
     typescript: true,
-    overrides: {
-      "import-x/consistent-type-specifier-style": ["error", "prefer-inline"],
-      "import-x/no-duplicates": ["error", { "prefer-inline": true }],
-    },
   },
   jsdoc: {
     overrides: {

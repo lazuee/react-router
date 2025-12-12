@@ -11,7 +11,11 @@
       "~/*": ["src/*"]
     },
     "rootDirs": [".", "./.react-router/types"],
-    "types": ["@react-router/node", "vite/client"],
+    "types": [
+      "@lazuee/react-router-hono/global",
+      "@react-router/node",
+      "vite/client"
+    ],
 
     "resolveJsonModule": true,
     "allowJs": true,

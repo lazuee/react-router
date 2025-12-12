@@ -17,5 +17,5 @@
     "noImplicitOverride": true,
     "skipLibCheck": true
   },
-  "include": ["src/**/*", "tsdown.config.ts", "global.d.ts"]
+  "include": ["src/**/*", "tsdown.config.ts"]
 }

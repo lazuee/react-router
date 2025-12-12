@@ -4,7 +4,7 @@ import { join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import rwr from "resolve-workspace-root";
 
-import { mergeConfig, type Plugin, type UserConfig } from "vite";
+import { mergeConfig } from "vite";
 import { findFileWithExtensions, isRelativePath } from "../../lib/file";
 import { bundleWithEsbuild } from "../../lib/package";
 import { getReactVersion } from "../../lib/react";
@@ -18,6 +18,7 @@ import { virtual } from "../../lib/virtual";
 import { loadDotenv } from "../../lib/vite";
 import { devServer, getAdapter } from "./dev-server";
 import { fixRSCBuild } from "./fix-rsc-build";
+import type { Plugin, UserConfig } from "vite";
 
 export interface PluginOptions {
   serverFile?: string;

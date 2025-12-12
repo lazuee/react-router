@@ -1,6 +1,6 @@
-import { type Env } from "hono";
 import { createMiddleware } from "hono/factory";
 import { IS_PRODUCTION_BUILD } from "~/env.server";
+import type { Env } from "hono";
 
 declare module "hono" {
   interface ContextVariableMap {

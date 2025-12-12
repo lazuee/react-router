@@ -1,9 +1,9 @@
-import {
-  type ReactRouterContext,
-  type ReactRouterHono,
-  type RecursivePartial,
-  type ResolvedReactRouterContext,
-} from "./src/plugin/config/types";
+import type {
+  ReactRouterContext,
+  ReactRouterHono,
+  RecursivePartial,
+  ResolvedReactRouterContext,
+} from "./plugin/config/types";
 
 declare global {
   var __reactRouterHono: ReactRouterHono;
@@ -11,8 +11,8 @@ declare global {
 }
 
 declare module "virtual:@lazuee/react-router-hono[entry]" {
-  import { type ReactRouterHono as ReactRouterHonoServe } from "@lazuee/react-router-hono";
-  import { type Hono } from "hono";
+  import type { ReactRouterHono as ReactRouterHonoServe } from "@lazuee/react-router-hono";
+  import type { Hono } from "hono";
 
   export const server: ReactRouterHonoServe["server"] | undefined;
   export const getLoadContext:
@@ -30,12 +30,10 @@ declare module "virtual:@lazuee/react-router-hono[entry]" {
 
 declare module "vite" {
   interface ResolvedConfig {
-    __reactRouterHono: ReactRouterHono;
     __reactRouterPluginContext: ResolvedReactRouterContext;
   }
 
   interface UserConfig {
-    __reactRouterHono?: RecursivePartial<ReactRouterHono>;
     __reactRouterPluginContext?: RecursivePartial<ReactRouterContext>;
   }
 }

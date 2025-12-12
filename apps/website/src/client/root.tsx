@@ -1,13 +1,14 @@
 import "./styles/tailwind.css";
 
-import { Outlet, type ShouldRevalidateFunctionArgs } from "react-router";
+import { Outlet } from "react-router";
 import { rootContext } from "../contexts";
-
-import { type Route } from "./+types/root";
 import { ErrorLayout } from "./components/layout/error";
-import { RootLayout } from "./components/layout/root";
 
+import { RootLayout } from "./components/layout/root";
 import { getTheme } from "./theme/route";
+import type { ShouldRevalidateFunctionArgs } from "react-router";
+
+import type { Route } from "./+types/root";
 
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }, next) => {
