@@ -17,6 +17,9 @@ export function getRuntime() {
   return runtime;
 }
 
+export const isVercel = () =>
+  process.env.VERCEL === "1" || !!process.env.VERCEL_ENV;
+
 export const semverCompare = (current: string, required: string) =>
   current.localeCompare(required, undefined, {
     numeric: true,

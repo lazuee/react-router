@@ -2,7 +2,7 @@ import { join } from "node:path";
 import { relative } from "node:path/win32";
 import { Hono } from "hono";
 import { createRequestHandler, RouterContextProvider } from "react-router";
-import { isVercel } from "../../lib/react-router";
+import { isVercel } from "../../lib/utils";
 import { cache } from "../middleware/cache";
 
 import { serveStatic } from "../middleware/serveStatic";

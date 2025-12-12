@@ -50,6 +50,3 @@ export function hasVercelPreset() {
   vercelPreset ??= hasVercelImport && hasVercelPresetCall && hasVercelInPresets;
   return vercelPreset;
 }
-
-export const isVercel = () =>
-  vercelPreset || process.env.VERCEL === "1" || !!process.env.VERCEL_ENV;

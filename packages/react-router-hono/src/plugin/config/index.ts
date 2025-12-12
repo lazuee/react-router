@@ -8,12 +8,8 @@ import { mergeConfig } from "vite";
 import { findFileWithExtensions, isRelativePath } from "../../lib/file";
 import { bundleWithEsbuild } from "../../lib/package";
 import { getReactVersion } from "../../lib/react";
-import {
-  getReactRouterConfig,
-  hasVercelPreset,
-  isVercel,
-} from "../../lib/react-router";
-import { getRuntime } from "../../lib/utils";
+import { getReactRouterConfig, hasVercelPreset } from "../../lib/react-router";
+import { getRuntime, isVercel } from "../../lib/utils";
 import { virtual } from "../../lib/virtual";
 import { loadDotenv } from "../../lib/vite";
 import { devServer, getAdapter } from "./dev-server";
@@ -184,7 +180,19 @@ export function plugin(opts: PluginOptions): Plugin[] {
                   onwarn(warning, warn) {
                     if (
                       "message" in warning &&
-                      warning.message?.includes("sourcemap")
+                      [
+                        "sourcemap",
+                        [
+                          "Module level directives",
+                          '"use client"',
+                          "node_modules/react-router",
+                        ],
+                      ].some((x) =>
+                        Array.isArray(x)
+                          ? x.length > 0 &&
+                            x.every((y) => warning.message?.includes(y))
+                          : warning.message?.includes(x),
+                      )
                     ) {
                       return;
                     }
