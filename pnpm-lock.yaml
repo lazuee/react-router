@@ -39,7 +39,7 @@ importers:
   apps/minimal:
     dependencies:
       '@lazuee/react-router-hono':
-        specifier: ^1.2.4
+        specifier: ^1.2.5
         version: link:../../packages/react-router-hono
       '@react-router/node':
         specifier: ^7.10.1
@@ -79,7 +79,7 @@ importers:
   apps/website:
     dependencies:
       '@lazuee/react-router-hono':
-        specifier: ^1.2.4
+        specifier: ^1.2.5
         version: link:../../packages/react-router-hono
       '@react-router/node':
         specifier: ^7.10.1

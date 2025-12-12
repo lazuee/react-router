@@ -1,7 +1,7 @@
 {
   "name": "@lazuee/react-router-hono",
   "type": "module",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "A vite plugin that integrates hono with react-router, providing presets to simplify production setups.",
   "keywords": [
     "hono",

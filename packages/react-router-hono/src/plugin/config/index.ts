@@ -207,6 +207,8 @@ export function plugin(opts: PluginOptions): Plugin[] {
                       external: [
                         "@hono/node-ws",
                         "@hono/node-server",
+                        "@hono/node-server/serve-static",
+                        "hono/bun",
                         ...(viteEnvConfig.isSsrBuild
                           ? []
                           : ["virtual:react-router/server-build"]),
@@ -242,7 +244,12 @@ export function plugin(opts: PluginOptions): Plugin[] {
                   Number(process.env.APP_PORT),
               },
               ssr: {
-                external: ["@hono/node-ws", "@hono/node-server"],
+                external: [
+                  "@hono/node-ws",
+                  "@hono/node-server",
+                  "@hono/node-server/serve-static",
+                  "hono/bun",
+                ],
                 noExternal: ["@lazuee/react-router-hono"],
                 target: runtime === "cloudflare" ? "webworker" : undefined,
               },
