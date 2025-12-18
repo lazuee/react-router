@@ -8,8 +8,6 @@ export function getRuntime() {
 
   if (process.versions.bun) {
     runtime = "bun";
-  } else if (process.env.WORKER_ENV) {
-    runtime = "cloudflare";
   } else {
     runtime = "node";
   }

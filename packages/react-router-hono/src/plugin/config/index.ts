@@ -7,7 +7,6 @@ import rwr from "resolve-workspace-root";
 import { mergeConfig } from "vite";
 import { findFileWithExtensions, isRelativePath } from "../../lib/file";
 import { bundleWithEsbuild } from "../../lib/package";
-import { getReactVersion } from "../../lib/react";
 import { getReactRouterConfig, hasVercelPreset } from "../../lib/react-router";
 import { getRuntime, isVercel } from "../../lib/utils";
 import { virtual } from "../../lib/virtual";
@@ -23,7 +22,6 @@ export interface PluginOptions {
 
 export function plugin(opts: PluginOptions): Plugin[] {
   const reactRouterConfig = getReactRouterConfig();
-  const reactVersion = getReactVersion();
   const runtime = getRuntime();
 
   const workspaceRootDir =
@@ -264,14 +262,6 @@ export function plugin(opts: PluginOptions): Plugin[] {
                 alias: {
                   ...(runtime === "bun"
                     ? { "react-dom/server": "react-dom/server.node" }
-                    : {}),
-                  ...(runtime === "cloudflare"
-                    ? {
-                        "react-dom/server":
-                          reactVersion && reactVersion >= 19
-                            ? "react-dom/server.edge"
-                            : "react-dom/server.browser",
-                      }
                     : {}),
                 },
               },
