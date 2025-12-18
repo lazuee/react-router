@@ -277,6 +277,7 @@ export function plugin(opts: PluginOptions): Plugin[] {
             "@hono/node-ws",
             "@hono/node-server",
             "@hono/node-server/serve-static",
+            "@hono/node-server/vercel",
             "hono/bun",
           ];
           if (config.build?.rollupOptions) {
