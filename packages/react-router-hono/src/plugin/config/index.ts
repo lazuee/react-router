@@ -30,7 +30,7 @@ export function plugin(opts: PluginOptions): Plugin[] {
     rwr.resolveWorkspaceRoot(process.cwd()) || process.cwd();
   const honoDir = resolve(import.meta.dirname, "hono");
   const runtimeFile = findFileWithExtensions({
-    cwd: join(honoDir, "runtime"),
+    cwd: join(honoDir, "runtime", isVercel() ? "vercel" : ""),
     extensions: ["js", "ts", "mjs", "mts"],
     filename: runtime,
   });
@@ -388,6 +388,21 @@ export function plugin(opts: PluginOptions): Plugin[] {
         },
         order: "post",
       },
+      ...(isVercel()
+        ? {
+            transform: {
+              order: "pre",
+              handler(code) {
+                return code.replace(
+                  // https://github.com/remix-run/react-router/blob/main/packages/react-router/lib/router/router.ts#L3835-L3839
+                  // FIXME: RouterContextProvider mismatch, only for Vercel build
+                  "requestContext instanceof RouterContextProvider",
+                  "true",
+                );
+              },
+            },
+          }
+        : {}),
       load: {
         async handler(id) {
           if (id.includes(virtual.server.id)) {

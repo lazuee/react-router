@@ -30,10 +30,7 @@ export async function generateHTML(
 
       return await renderToReadableStream(
         <NonceContext.Provider value={requestContext?.nonce}>
-          <RSCStaticRouter
-            getPayload={getPayload}
-            nonce={requestContext?.nonce}
-          />
+          <RSCStaticRouter getPayload={getPayload} />
         </NonceContext.Provider>,
         {
           ...options,

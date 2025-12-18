@@ -23,7 +23,7 @@ const config = defineConfig({
     "src/hono/server/index.ts",
     "src/hono/options/index.ts",
     "src/hono/http.ts",
-    "src/hono/runtime/*.ts",
+    "src/hono/runtime/**/*.ts",
     "src/deploy/*.ts",
     "src/hono/middleware/*.ts",
   ],
