@@ -11,6 +11,8 @@ interface CopyPackagesOptions {
 export async function copyPackages(opts: CopyPackagesOptions, toDir: string) {
   const { fileList, esmFileList } = await nodeFileTrace(opts.traceFiles, {
     base: opts.cwd,
+    processCwd: opts.cwd,
+    ts: true,
     mixedModules: true,
   });
 
