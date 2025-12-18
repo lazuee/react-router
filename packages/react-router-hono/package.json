@@ -52,13 +52,30 @@
     "build": "tsdown"
   },
   "peerDependencies": {
+    "@hono/node-server": "^1.19.7",
     "@vitejs/plugin-rsc": "^0.5.9",
     "hono": "^4.11.1",
     "react-router": "^7.11.0",
     "vite": "^7.3.0"
   },
+  "peerDependenciesMeta": {
+    "@hono/node-server": {
+      "optional": false
+    },
+    "@vitejs/plugin-rsc": {
+      "optional": true
+    },
+    "hono": {
+      "optional": false
+    },
+    "react-router": {
+      "optional": false
+    },
+    "vite": {
+      "optional": false
+    }
+  },
   "dependencies": {
-    "@hono/node-server": "^1.19.7",
     "@hono/vite-dev-server": "^0.23.0",
     "@vercel/nft": "^1.1.1",
     "resolve-workspace-root": "^2.0.0",

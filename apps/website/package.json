@@ -9,6 +9,7 @@
     "typecheck": "react-router typegen && tsc"
   },
   "dependencies": {
+    "@hono/node-server": "^1.19.7",
     "@lazuee/react-router-hono": "^1.2.5",
     "@react-router/node": "^7.11.0",
     "hono": "^4.11.1",
