@@ -173,7 +173,7 @@ export function plugin(opts: PluginOptions): Plugin[] {
             viteUserConfig,
           });
 
-          return mergeConfig(
+          const config: UserConfig = mergeConfig(
             viteUserConfig,
             {
               base: reactRouterConfig?.basename || viteUserConfig?.base,
@@ -223,12 +223,6 @@ export function plugin(opts: PluginOptions): Plugin[] {
                     : {
                         build: {
                           rollupOptions: {
-                            external: [
-                              "@hono/node-ws",
-                              "@hono/node-server",
-                              "@hono/node-server/serve-static",
-                              "hono/bun",
-                            ],
                             input: { hono: virtual.runtime.id },
                           },
                         },
@@ -249,13 +243,7 @@ export function plugin(opts: PluginOptions): Plugin[] {
                     ? {
                         build: {
                           rollupOptions: {
-                            external: [
-                              "@hono/node-ws",
-                              "@hono/node-server",
-                              "@hono/node-server/serve-static",
-                              "hono/bun",
-                              "virtual:react-router/server-build",
-                            ],
+                            external: ["virtual:react-router/server-build"],
                             input: { hono: virtual.runtime.id },
                             output: {
                               entryFileNames: "[name].js",
@@ -284,6 +272,36 @@ export function plugin(opts: PluginOptions): Plugin[] {
             } satisfies Omit<UserConfig, "plugins">,
             true,
           );
+
+          const external = [
+            "@hono/node-ws",
+            "@hono/node-server",
+            "@hono/node-server/serve-static",
+            "hono/bun",
+          ];
+          if (config.build?.rollupOptions) {
+            config.build.rollupOptions.external = [
+              ...external,
+              ...(Array.isArray(config.build.rollupOptions.external)
+                ? config.build.rollupOptions.external
+                : []),
+            ];
+          }
+
+          ["ssr", "rsc"].forEach((x) => {
+            if (config.environments?.[x]?.build?.rollupOptions) {
+              config.environments[x].build.rollupOptions.external = [
+                ...external,
+                ...(Array.isArray(
+                  config.environments[x].build.rollupOptions.external,
+                )
+                  ? config.environments[x].build.rollupOptions.external
+                  : []),
+              ];
+            }
+          });
+
+          return config;
         },
         order: "post",
       },
