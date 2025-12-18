@@ -1,6 +1,7 @@
 import { Form, useLocation } from "react-router";
 
-import { Theme, useTheme } from ".";
+import { Theme } from "./enum";
+import { useTheme } from ".";
 
 export function ThemeToggle() {
   const { pathname, search } = useLocation();

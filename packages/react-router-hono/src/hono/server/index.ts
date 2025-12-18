@@ -3,8 +3,8 @@ import { relative } from "node:path/win32";
 import { Hono } from "hono";
 import { createRequestHandler, RouterContextProvider } from "react-router";
 import { isVercel } from "../../lib/utils";
-import { cache } from "../middleware/cache";
 
+import { cache } from "../middleware/cache";
 import { serveStatic } from "../middleware/serveStatic";
 import type { Env } from "hono";
 import type { ServerBuild } from "react-router";
@@ -27,10 +27,21 @@ async function importBuild() {
     if (globalThis.__reactRouterHono.rsc) {
       const rscBuild = await import.meta.viteRsc.loadModule<{
         unstable_reactRouterServeConfig: Record<string, any>;
-        default: (request: Request) => Response;
+        default: RSCServerBuild["fetch"] | { fetch: RSCServerBuild["fetch"] };
       }>("rsc", "index");
 
+      let rscFetch: RSCServerBuild["fetch"] | undefined;
       if (rscBuild?.default && typeof rscBuild.default === "function") {
+        rscFetch = rscBuild.default;
+      } else if (
+        rscBuild?.default &&
+        typeof rscBuild.default === "object" &&
+        typeof rscBuild.default.fetch === "function"
+      ) {
+        rscFetch = rscBuild.default.fetch;
+      }
+
+      if (rscFetch) {
         const config = {
           publicPath: "/",
           ...(rscBuild.unstable_reactRouterServeConfig || {}),
@@ -38,7 +49,7 @@ async function importBuild() {
         };
         build = {
           assetsBuildDirectory: config.assetsBuildDirectory,
-          fetch: rscBuild.default,
+          fetch: rscFetch,
           publicPath: config.publicPath,
         } satisfies RSCServerBuild;
       }

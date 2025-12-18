@@ -30,7 +30,6 @@ const reactRouterHono: ReactRouterHono = {
       isBun: !!versions.bun,
       env: structuredClone(env),
     });
-
     return context;
   },
   server(app) {

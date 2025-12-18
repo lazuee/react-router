@@ -201,8 +201,26 @@ export function plugin(opts: PluginOptions): Plugin[] {
                 },
               },
               environments: {
+                client: {
+                  optimizeDeps: {
+                    include: ["react-router/internal/react-server-client"],
+                  },
+                },
                 ssr: {
+                  optimizeDeps: {
+                    include: [
+                      "isbot",
+                      "react/jsx-runtime",
+                      "react/jsx-dev-runtime",
+                      "react-router",
+                      "react-router/internal/react-server-client",
+                    ],
+                  },
+                  resolve: {
+                    noExternal: true,
+                  },
                   build: {
+                    target: runtime === "cloudflare" ? "webworker" : undefined,
                     rollupOptions: {
                       external: [
                         "@hono/node-ws",
@@ -217,6 +235,27 @@ export function plugin(opts: PluginOptions): Plugin[] {
                         hono: virtual.runtime.id,
                       },
                     },
+                  },
+                },
+                rsc: {
+                  build: {
+                    rollupOptions: {
+                      preserveEntrySignatures: "exports-only",
+                    },
+                  },
+                  optimizeDeps: {
+                    include: [
+                      "react/jsx-runtime",
+                      "react/jsx-dev-runtime",
+                      "react-router/internal/react-server-client",
+                      "react-router > cookie",
+                      "react-router > set-cookie-parser",
+                      "vite-plugin-react-use-cache/runtime",
+                    ],
+                    exclude: ["cloudflare:workers", "react-router"],
+                  },
+                  resolve: {
+                    noExternal: true,
                   },
                 },
               },
@@ -243,18 +282,8 @@ export function plugin(opts: PluginOptions): Plugin[] {
                   Number(process.env.PORT) ||
                   Number(process.env.APP_PORT),
               },
-              ssr: {
-                external: [
-                  "@hono/node-ws",
-                  "@hono/node-server",
-                  "@hono/node-server/serve-static",
-                  "hono/bun",
-                ],
-                noExternal: ["@lazuee/react-router-hono"],
-                target: runtime === "cloudflare" ? "webworker" : undefined,
-              },
             } satisfies Omit<UserConfig, "plugins">,
-            false,
+            true,
           );
         },
         order: "post",

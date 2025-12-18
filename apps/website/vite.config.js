@@ -1,10 +1,10 @@
 import { env } from "node:process";
 
 import { reactRouterHono } from "@lazuee/react-router-hono";
-import { reactRouter } from "@react-router/dev/vite";
-// import { unstable_reactRouterRSC as reactRouterRSC } from "@react-router/dev/vite";
+// import { reactRouter } from "@react-router/dev/vite";
+import { unstable_reactRouterRSC as reactRouterRSC } from "@react-router/dev/vite";
 import tailwindcss from "@tailwindcss/vite";
-// import rsc from "@vitejs/plugin-rsc";
+import rsc from "@vitejs/plugin-rsc";
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
@@ -28,9 +28,9 @@ export default defineConfig({
     reactRouterHono({
       serverFile: "src/server/index.ts",
     }),
-    reactRouter(),
-    // reactRouterRSC(),
-    // rsc(),
+    // reactRouter(),
+    reactRouterRSC(),
+    rsc(),
     tsconfigPaths(),
   ],
   server: {

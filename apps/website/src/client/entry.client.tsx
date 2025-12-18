@@ -1,22 +1,44 @@
+import {
+  createFromReadableStream,
+  createTemporaryReferenceSet,
+  encodeReply,
+  setServerCallback,
+} from "@vitejs/plugin-rsc/browser";
+
 import { startTransition, StrictMode } from "react";
-
 import { hydrateRoot } from "react-dom/client";
+import {
+  unstable_createCallServer as createCallServer,
+  unstable_getRSCStream as getRSCStream,
+  unstable_RSCHydratedRouter as RSCHydratedRouter,
+} from "react-router/dom";
+import "virtual:react-router/unstable_rsc/inject-hmr-runtime";
+import type { unstable_RSCPayload as RSCPayload } from "react-router/dom";
 
-import { HydratedRouter } from "react-router/dom";
+setServerCallback(
+  createCallServer({
+    createFromReadableStream,
+    createTemporaryReferenceSet,
+    encodeReply,
+  }),
+);
 
-function hydrate() {
-  startTransition(() => {
+createFromReadableStream<RSCPayload>(getRSCStream()).then((payload) => {
+  startTransition(async () => {
+    const formState =
+      payload.type === "render" ? await payload.formState : undefined;
     hydrateRoot(
       document,
       <StrictMode>
-        <HydratedRouter />
+        <RSCHydratedRouter
+          payload={payload}
+          createFromReadableStream={createFromReadableStream}
+        />
       </StrictMode>,
+      {
+        // @ts-expect-error - no types for this yet
+        formState,
+      },
     );
   });
-}
-
-if (window.requestIdleCallback) {
-  window.requestIdleCallback(hydrate);
-} else {
-  window.setTimeout(hydrate, 1);
-}
+});

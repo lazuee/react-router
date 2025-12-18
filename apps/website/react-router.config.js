@@ -5,10 +5,10 @@ function defineConfig(config) {
 
 export default defineConfig({
   appDirectory: "src/client",
-  prerender: ["pre-rendered"],
+  // prerender: ["pre-rendered"],
   future: {
     unstable_optimizeDeps: true,
-    v8_middleware: true,
-    v8_splitRouteModules: true,
+    // v8_middleware: true,
+    // v8_splitRouteModules: true,
   },
 });

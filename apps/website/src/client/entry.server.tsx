@@ -1,3 +1,5 @@
+// file not used in RSC
+
 import * as reactDomServer from "react-dom/server";
 import * as bunEntry from "./entry.server.bun";
 import * as nodeEntry from "./entry.server.node";
