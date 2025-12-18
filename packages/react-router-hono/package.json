@@ -59,26 +59,6 @@
     "react-router": "^7.11.0",
     "vite": "^7.3.0"
   },
-  "peerDependenciesMeta": {
-    "@hono/node-server": {
-      "optional": false
-    },
-    "@hono/vite-dev-server": {
-      "optional": false
-    },
-    "@vitejs/plugin-rsc": {
-      "optional": true
-    },
-    "hono": {
-      "optional": false
-    },
-    "react-router": {
-      "optional": false
-    },
-    "vite": {
-      "optional": false
-    }
-  },
   "dependencies": {
     "@vercel/nft": "^1.1.1",
     "resolve-workspace-root": "^2.0.0",
