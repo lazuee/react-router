@@ -2,12 +2,16 @@ import { spawn } from "node:child_process";
 import { existsSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
-import rwr from "resolve-workspace-root";
 
+import rwr from "resolve-workspace-root";
 import { mergeConfig } from "vite";
 import { findFileWithExtensions, isRelativePath } from "../../lib/file";
 import { bundleWithEsbuild } from "../../lib/package";
-import { getReactRouterConfig, hasVercelPreset } from "../../lib/react-router";
+import {
+  getReactRouterConfig,
+  hasVercelPreset,
+  isRSC,
+} from "../../lib/react-router";
 import { getRuntime, isVercel } from "../../lib/utils";
 import { virtual } from "../../lib/virtual";
 import { loadDotenv } from "../../lib/vite";
@@ -214,33 +218,23 @@ export function plugin(opts: PluginOptions): Plugin[] {
                       "react-router/internal/react-server-client",
                     ],
                   },
-                  resolve: {
-                    noExternal: true,
-                  },
-                  build: {
-                    target: runtime === "cloudflare" ? "webworker" : undefined,
-                    rollupOptions: {
-                      external: [
-                        "@hono/node-ws",
-                        "@hono/node-server",
-                        "@hono/node-server/serve-static",
-                        "hono/bun",
-                        ...(viteEnvConfig.isSsrBuild
-                          ? []
-                          : ["virtual:react-router/server-build"]),
-                      ],
-                      input: {
-                        hono: virtual.runtime.id,
-                      },
-                    },
-                  },
+                  ...(isRSC()
+                    ? {}
+                    : {
+                        build: {
+                          rollupOptions: {
+                            external: [
+                              "@hono/node-ws",
+                              "@hono/node-server",
+                              "@hono/node-server/serve-static",
+                              "hono/bun",
+                            ],
+                            input: { hono: virtual.runtime.id },
+                          },
+                        },
+                      }),
                 },
                 rsc: {
-                  build: {
-                    rollupOptions: {
-                      preserveEntrySignatures: "exports-only",
-                    },
-                  },
                   optimizeDeps: {
                     include: [
                       "react/jsx-runtime",
@@ -250,11 +244,26 @@ export function plugin(opts: PluginOptions): Plugin[] {
                       "react-router > set-cookie-parser",
                       "vite-plugin-react-use-cache/runtime",
                     ],
-                    exclude: ["cloudflare:workers", "react-router"],
                   },
-                  resolve: {
-                    noExternal: true,
-                  },
+                  ...(isRSC()
+                    ? {
+                        build: {
+                          rollupOptions: {
+                            external: [
+                              "@hono/node-ws",
+                              "@hono/node-server",
+                              "@hono/node-server/serve-static",
+                              "hono/bun",
+                              "virtual:react-router/server-build",
+                            ],
+                            input: { hono: virtual.runtime.id },
+                            output: {
+                              entryFileNames: "[name].js",
+                            },
+                          },
+                        },
+                      }
+                    : {}),
                 },
               },
               mode,
@@ -410,6 +419,17 @@ export function plugin(opts: PluginOptions): Plugin[] {
             }
             this.addWatchFile(serverFile);
             return await bundleWithEsbuild(serverFile, rootDir);
+          }
+          if (id.includes(virtual.handler.id)) {
+            const honoEntryFile = findFileWithExtensions({
+              cwd: join(honoDir, "server", "react-router"),
+              extensions: ["js", "ts", "mjs", "mts"],
+              filename: globalThis.__reactRouterHono.rsc ? "rsc" : "ssr",
+            });
+            if (!honoEntryFile) {
+              return "export default undefined;";
+            }
+            return await bundleWithEsbuild(honoEntryFile, rootDir);
           }
           if (id.includes(virtual.runtime.id)) {
             if (!runtimeFile) {

@@ -1,14 +1,17 @@
 import { join } from "node:path";
 import { relative } from "node:path/win32";
 import { Hono } from "hono";
-import { createRequestHandler, RouterContextProvider } from "react-router";
-import { isVercel } from "../../lib/utils";
+//@ts-expect-error - virtual
+import { requestHandler } from "virtual:@lazuee/react-router-hono[handler]";
 
+import { isVercel } from "../../lib/utils";
 import { cache } from "../middleware/cache";
 import { serveStatic } from "../middleware/serveStatic";
 import type { Env } from "hono";
 import type { ServerBuild } from "react-router";
 import type { CacheOptions } from "../middleware/cache";
+
+import type { RequestHandler } from "./react-router/type";
 import type { ReactRouterHono, RSCServerBuild } from "./types";
 
 function isRSCServerBuild(
@@ -21,8 +24,10 @@ async function importBuild() {
   let build: ServerBuild | RSCServerBuild | undefined;
 
   try {
-    //@ts-expect-error - virtual
-    build = (await import("virtual:react-router/server-build")) as any;
+    build = (await import(
+      //@ts-expect-error - virtual
+      /* @vite-ignore */ "virtual:react-router/server-build"
+    )) as any;
   } catch {
     if (globalThis.__reactRouterHono.rsc) {
       const rscBuild = await import.meta.viteRsc.loadModule<{
@@ -137,21 +142,12 @@ export const createHonoServer = async <E extends Env = Env>(
         reactRouterHono: globalThis.__reactRouterHono,
       }),
     );
-    if (isRSCServerBuild(build)) {
-      let requestContext: RouterContextProvider | undefined;
-      if (loadContext) {
-        if (loadContext instanceof RouterContextProvider) {
-          requestContext = loadContext;
-        } else if (typeof loadContext === "object") {
-          requestContext = new RouterContextProvider();
-          Object.assign(requestContext, loadContext);
-        }
-      }
 
-      return build.fetch(ctx.req.raw, requestContext);
-    }
-    const requestHandler = createRequestHandler(build, mode);
-    return requestHandler(ctx.req.raw, loadContext);
+    return (requestHandler as RequestHandler)(
+      build,
+      mode,
+      loadContext,
+    )(ctx.req.raw);
   });
 
   return server;

@@ -11,7 +11,7 @@ import type { ReactRouterHono as ReactRouterHonoGlobal } from "../../plugin/conf
 
 type MaybePromise<T> = Promise<T> | T;
 
-type InitialContext = MiddlewareEnabled extends true
+export type InitialContext = MiddlewareEnabled extends true
   ? RouterContextProvider
   : AppLoadContext;
 

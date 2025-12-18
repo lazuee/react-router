@@ -16,6 +16,7 @@ export function createVM(name: string): {
 export const virtual = {
   entry: createVM("entry"),
   entryRsc: createVM("entry-rsc"),
+  handler: createVM("handler"),
   runtime: createVM("runtime"),
   server: createVM("server"),
 };

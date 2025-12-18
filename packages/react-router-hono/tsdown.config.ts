@@ -11,7 +11,8 @@ export const baseConfig: UserConfig = {
   tsconfig: "tsconfig.json",
   external: [
     "virtual:react-router/server-build",
-    "virtual:lazuee/react-router-hono[entry]",
+    "virtual:@lazuee/react-router-hono[entry]",
+    "virtual:@lazuee/react-router-hono[handler]",
   ],
 };
 
@@ -20,7 +21,7 @@ const config = defineConfig({
   entry: [
     "src/global.d.ts",
     "src/index.ts",
-    "src/hono/server/index.ts",
+    "src/hono/server/**/*.ts",
     "src/hono/options/index.ts",
     "src/hono/http.ts",
     "src/hono/runtime/**/*.ts",

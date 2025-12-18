@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "build": "pnpm run build:package && pnpm run build:app",
-    "build:app": "pnpm run -r  --stream --if-present --parallel --filter {apps/website} --workspace-concurrency=Infinity /^build.*/",
+    "build:app": "pnpm run -r  --stream --if-present --parallel --filter {apps/minimal} --workspace-concurrency=Infinity /^build.*/",
     "build:package": "pnpm run -r  --stream --if-present --parallel --filter {packages/**} --workspace-concurrency=Infinity /^build.*/",
     "build:vercel": "pnpm cross-env VERCEL=1 pnpm build",
     "dev": "pnpm run -r  --stream --if-present --parallel --filter {apps/website} --workspace-concurrency=Infinity /^dev.*/",

@@ -1,5 +1,4 @@
 import { handle } from "@hono/node-server/vercel";
-
 import { resolveReactRouterHono } from "../../options";
 import { createHonoServer } from "../../server";
 

@@ -38,8 +38,13 @@ export async function deployVercel(buildDir: string, workspaceRootDir: string) {
       JSON.stringify(
         {
           handler: "./index.js",
-          launcherType: "Nodejs",
+          supportsResponseStreaming: true,
           runtime: "nodejs24.x",
+          ...(process.versions.bun
+            ? {}
+            : {
+                launcherType: "Nodejs",
+              }),
         },
         null,
         2,

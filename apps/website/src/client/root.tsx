@@ -13,7 +13,6 @@ import type { Route } from "./+types/root";
 export const middleware: Route.MiddlewareFunction[] = [
   async ({ context }, next) => {
     console.log("start root server middleware");
-    console.log(`loadContext: ${JSON.stringify(context, null, 2)}`);
     context.set(rootContext, "[middleware] ROOT");
     const res = await next();
     console.log("end root server middleware");

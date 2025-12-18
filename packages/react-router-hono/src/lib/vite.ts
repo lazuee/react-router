@@ -1,3 +1,4 @@
+import { findFileWithExtensions } from "./file";
 import type { UserConfig } from "vite";
 
 type Vite = typeof import("vite");
@@ -9,6 +10,17 @@ export async function preloadVite(): Promise<void> {
 
 export function getVite(): Vite {
   return vite!;
+}
+
+let viteConfigFile: string | undefined;
+export function getViteConfigFile(rootDir: string) {
+  viteConfigFile ??= findFileWithExtensions({
+    cwd: rootDir,
+    extensions: ["js", "ts", "mjs", "mts"],
+    filename: "vite.config",
+  });
+
+  return viteConfigFile;
 }
 
 export async function loadDotenv({

@@ -5,22 +5,15 @@ import {
   Project,
   SyntaxKind,
 } from "ts-morph";
-import { findFileWithExtensions } from "../../lib/file";
 import type { StringLiteral } from "ts-morph";
 
 export async function fixRSCBuild(buildDir: string): Promise<void> {
   const serverDir = join(buildDir, "server");
-  const ssrBuildHonoPath = findFileWithExtensions({
-    cwd: serverDir,
-    extensions: ["js", "mjs"],
-    filename: "hono",
-  });
-  const serverIndexPath = join(serverDir, "index.js");
+  const honoFilePath = join(serverDir, "hono.js");
+  const indexFilePath = join(serverDir, "index.js");
 
-  if (!ssrBuildHonoPath) {
-    throw new Error(
-      `Could not find hono.js in ${join(serverDir, "__ssr_build", "assets")}`,
-    );
+  if (!honoFilePath) {
+    throw new Error(`Could not find hono.js in '${serverDir}'`);
   }
 
   const project = new Project({
@@ -35,8 +28,8 @@ export async function fixRSCBuild(buildDir: string): Promise<void> {
 
   project.addSourceFilesAtPaths(join(serverDir, "**", "*.js"));
 
-  const honoFile = project.getSourceFile(ssrBuildHonoPath);
-  const indexFile = project.getSourceFile(serverIndexPath);
+  const honoFile = project.getSourceFile(honoFilePath);
+  const indexFile = project.getSourceFile(indexFilePath);
 
   if (!honoFile || !indexFile) {
     return;
