@@ -21,12 +21,12 @@
     "directory": "packages/react-router-hono"
   },
   "exports": {
+    "./package.json": "./package.json",
     ".": "./dist/index.mjs",
     "./global": "./dist/global.d.mts",
     "./http": "./dist/hono/http.mjs",
     "./middleware/cache": "./dist/hono/middleware/cache.mjs",
-    "./middleware/serveStatic": "./dist/hono/middleware/serveStatic.mjs",
-    "./package.json": "./package.json"
+    "./middleware/serveStatic": "./dist/hono/middleware/serveStatic.mjs"
   },
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
