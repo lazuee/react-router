@@ -7,7 +7,7 @@
 Install the package:
 
 ```bash
-pnpm add -D @lazuee/react-router-hono
+pnpm add -D @lazuee/react-router-hono @hono/node-server hono
 ```
 
 ### Usage
